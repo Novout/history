@@ -1,0 +1,9 @@
+{
+  "backgroundColor": "0x84B1FA",
+  "isAccessible": false,
+  "isColonizable": false,
+  "resources": [
+    { "production": 0, "food": 0, "influence": 0, "science": 0 }
+  ],
+  "specialResources": []
+}

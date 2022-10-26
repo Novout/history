@@ -1,0 +1,43 @@
+* {
+  font-family: 'Raleway', Arial, Helvetica, sans-serif;
+  padding: 0;
+  margin: 0;
+  outline: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.25);
+  border: 0px none #000000;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+::-webkit-scrollbar-thumb:active {
+  background: rgba(0, 0, 0, 0.4);
+}
+::-webkit-scrollbar-track {
+  background: none;
+  border: 18px none #000000;
+}
+::-webkit-scrollbar-track:hover {
+  background: none;
+}
+::-webkit-scrollbar-track:active {
+  background: none;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+.blur {
+  backdrop-filter: blur(10px);
+}

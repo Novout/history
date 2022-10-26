@@ -1,0 +1,6 @@
+{
+  "isBuildable": ["plain"],
+  "resources": {
+    "food": [2, 3, 4, 5, 6]
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "isBuildable": ["forest"],
+  "resources": {
+    "production": [2, 3, 4, 5, 6]
+  }
+}
