@@ -24,6 +24,12 @@ export const usePlayer = () => {
     return !!isAdjacent
   }
 
+  const getPlayer = (name: string): HistoryPlayer | false => {
+    return APP.player?.name === name
+      ? (APP.player as HistoryPlayer)
+      : APP.IA.find((p) => p.name === name) || false
+  }
+
   const getTerritories = (player: HistoryPlayer | null) => {
     if (player === null) return []
 
@@ -125,6 +131,7 @@ export const usePlayer = () => {
 
   return {
     isAdjacentTerritory,
+    getPlayer,
     getAllAdjacentTerritories,
     getTerritories,
     getInfluence,

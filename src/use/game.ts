@@ -7,6 +7,7 @@ import { useMap } from './map'
 import { usePlayer } from './player'
 import { useUtils } from './utils'
 import { useIA } from './ia'
+import { watch } from 'vue'
 
 export const useGame = () => {
   const APP = useApplicationStore()
@@ -27,6 +28,7 @@ export const useGame = () => {
       color: utils.getRandomColor(),
       isIA: false,
       isAlive: true,
+      knownPlayers: [],
       resources: {
         influence: 5,
         food: 5,
@@ -44,6 +46,7 @@ export const useGame = () => {
         color: utils.getRandomColor(),
         isIA: 'default',
         isAlive: true,
+        knownPlayers: [],
         resources: {
           influence: 5,
           food: 5,
@@ -55,6 +58,10 @@ export const useGame = () => {
         influenceBase: 2,
       })
     }
+
+    map.load()
+
+    watchers()
   }
 
   const next = () => {
@@ -87,6 +94,16 @@ export const useGame = () => {
     p.resources.production += player.getProduction(p)
     p.resources.influence += player.getInfluence(p)
     p.resources.science += player.getScience(p)
+  }
+
+  const watchers = () => {
+    watch(
+      APP.terrain,
+      () => {
+        map.load()
+      },
+      { deep: true }
+    )
   }
 
   return { start, next }

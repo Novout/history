@@ -34,18 +34,26 @@ export const useApplicationStore = defineStore('application', {
     setNewPlayer(player: HistoryPlayer) {
       const id = useUtils().getRandomTerrainID()
 
-      this.setTerrainOwner(player, id)
+      this.setTerrainOwner(player, id, true)
 
       !player.isIA ? (this.player = player) : this.IA.push(player)
 
       this.createCity(player, id, true)
     },
-    setTerrainOwner(player: HistoryPlayer, index: number) {
+    setTerrainOwner(
+      player: HistoryPlayer,
+      index: number,
+      newPlayer: boolean = false
+    ) {
       this.terrain[index].owner = player.name
 
-      this.setTerrainColor(index, player.color[1])
+      this.setTerrainColor(player, index, newPlayer)
     },
-    setTerrainColor(index: number, color: number) {
+    setTerrainColor(
+      player: HistoryPlayer,
+      index: number,
+      newPlayer: boolean = false
+    ) {
       const target = this.terrainContainer?.children[index] as HistoryContainer
 
       // @ts-expect-error
@@ -53,14 +61,19 @@ export const useApplicationStore = defineStore('application', {
 
       if (tr) target.removeChild(tr)
 
-      const terrain = useMap().hexOwner({
-        id: index,
-        x: 0,
-        y: 0,
-        color,
-      })
+      // @ts-expect-error
+      const fog = target.children.find((c) => c.type === 'fog')
 
-      target?.addChild(terrain)
+      if (!fog && (!newPlayer || !player.isIA)) {
+        const terrain = useMap().hexOwner({
+          id: index,
+          x: 0,
+          y: 0,
+          color: player.color[1],
+        })
+
+        target?.addChild(terrain)
+      }
     },
     annex(player: HistoryPlayer | null, terrain?: HistoryTerrain) {
       if (!player) return
@@ -87,7 +100,7 @@ export const useApplicationStore = defineStore('application', {
     createCity(
       player: HistoryPlayer | null,
       index: number,
-      first: boolean = false
+      newPlayer: boolean = false
     ) {
       const terrain = this.terrain[index]
 
@@ -100,9 +113,9 @@ export const useApplicationStore = defineStore('application', {
         (player.name === terrain.owner &&
           player.resources.food >= food &&
           player.resources.production >= production) ||
-        first
+        newPlayer
       ) {
-        if (!first) {
+        if (!newPlayer) {
           player.resources.food -= food
           player.resources.production -= production
         }
@@ -126,15 +139,25 @@ export const useApplicationStore = defineStore('application', {
           index
         ] as HistoryContainer
 
-        target.addChild(
-          new Text(this.terrain[index].city?.name, {
-            fontFamily: 'Arial',
-            fontSize: 26,
-            fill: 0xffffff,
-            align: 'center',
-          })
-        )
+        // @ts-expect-error
+        const fog = target.children.find((c) => c.type === 'fog')
+
+        if (!fog && (!newPlayer || !player.isIA)) {
+          this.setCitySprite(index, this.terrain[index])
+        }
       }
+    },
+    setCitySprite(index: number, terrain: HistoryTerrain) {
+      const target = this.terrainContainer?.children[index] as HistoryContainer
+
+      target.addChild(
+        new Text(terrain.city?.name, {
+          fontFamily: 'Arial',
+          fontSize: 26,
+          fill: 0xffffff,
+          align: 'center',
+        })
+      )
     },
     upgradeCity(player: HistoryPlayer | null) {
       if (!player) return

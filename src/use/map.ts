@@ -15,6 +15,9 @@ import { useUtils } from './utils'
 import { useDefines } from './defines'
 import { Coordinates } from '../types/utils'
 import { useListeners } from './listeners'
+import { useFactory } from './factory'
+import { usePlayer } from './player'
+import { HistoryPlayer } from '../types/player'
 
 export const useMap = () => {
   const APP = useApplicationStore()
@@ -23,6 +26,8 @@ export const useMap = () => {
   const utils = useUtils()
   const defines = useDefines()
   const listeners = useListeners()
+  const factory = useFactory()
+  const player = usePlayer()
   const loader = Loader.shared
 
   const generateType = ({ y }: Coordinates): HistoryTerrainType => {
@@ -348,5 +353,39 @@ export const useMap = () => {
     APP.terrainContainer = terrain
   }
 
-  return { generateType, hexTerrain, hexOwner, create }
+  const load = () => {
+    APP.terrain.forEach((t1) => {
+      const index = APP.terrain.indexOf(t1)
+      const target = APP.terrainContainer?.children[index] as HistoryContainer
+
+      // @ts-expect-error
+      const fog = target.children.find((c) => c.type === 'fog')
+
+      if (!player.isAdjacentTerritory(APP.player, t1)) {
+        if (!player.getTerritories(APP.player).find((t2) => t1 === t2)) {
+          if (fog) target.removeChild(fog)
+
+          const hex = factory.hexagon({
+            type: 'fog',
+            radius: OPTIONS.map.radius,
+            color: 0x000000,
+            colorAlpha: 0.6,
+          })
+
+          target.addChild(hex)
+        }
+      } else {
+        if (fog) target.removeChild(fog)
+
+        if (t1.owner) {
+          const p = player.getPlayer(t1.owner)
+
+          APP.setTerrainColor(p as HistoryPlayer, index, false)
+          APP.setCitySprite(index, t1)
+        }
+      }
+    })
+  }
+
+  return { generateType, hexTerrain, hexOwner, create, load }
 }
