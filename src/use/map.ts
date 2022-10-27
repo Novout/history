@@ -1,4 +1,4 @@
-import { Container, filters, Graphics, Loader, Sprite, Text } from 'pixi.js'
+import { Container, Graphics, Loader, Sprite, Text } from 'pixi.js'
 import { useApplicationStore } from '../store/application'
 import {
   HistoryContainer,
@@ -8,11 +8,8 @@ import {
 import {
   HistoryMapCreateOptions,
   HistoryMapHexagonCreateOptions,
-  HistoryTerrain,
-  HistoryTerrainGenerate,
   HistoryTerrainType,
 } from '../types/map'
-import { nextTick } from 'vue'
 import { useOptionsState } from '../store/options'
 import { useUtils } from './utils'
 import { useDefines } from './defines'
@@ -255,8 +252,8 @@ export const useMap = () => {
     const target: HistoryContainer = new Graphics()
 
     const bg: HistoryGraphics = new Graphics()
-    bg.beginFill(options.backgroundColor)
-    bg.filters = [new filters.AlphaFilter(0.7)]
+    bg.lineStyle(2, options.color, 1)
+    bg.beginFill(options.color, 0.5)
 
     const hexagonHeight = OPTIONS.map.radius * Math.sqrt(3)
     bg.drawPolygon([

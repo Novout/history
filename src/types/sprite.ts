@@ -7,5 +7,5 @@ export interface HistorySpriteHexagonOptions {
   id: number
   x: number
   y: number
-  backgroundColor: number
+  color: number
 }

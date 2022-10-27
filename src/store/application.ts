@@ -45,19 +45,19 @@ export const useApplicationStore = defineStore('application', {
 
       this.setTerrainColor(index, player.color[1])
     },
-    setTerrainColor(index: number, bg: number) {
+    setTerrainColor(index: number, color: number) {
       const target = this.terrainContainer?.children[index] as HistoryContainer
 
       // @ts-expect-error
-      const color = target.children.find((c) => c.type === 'territory')
+      const tr = target.children.find((c) => c.type === 'territory')
 
-      if (color) target.removeChild(color)
+      if (tr) target.removeChild(tr)
 
       const terrain = useMap().hexOwner({
         id: index,
         x: 0,
         y: 0,
-        backgroundColor: bg,
+        color,
       })
 
       target?.addChild(terrain)
