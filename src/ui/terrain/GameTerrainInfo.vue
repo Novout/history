@@ -6,14 +6,13 @@
       </div>
       <div class="flex flex-col w-full gap-2">
         <H2>Território</H2>
-        <p v-if="terrain.owner">Dominado por: <b>{{ terrain.owner }}</b></p>
+        <p class="text-lg" v-if="terrain.owner">Dominado por: <b>{{ terrain.owner }}</b></p>
         <p>Produção: {{ terrain.resources.production }}</p>
         <p>Comida: {{ terrain.resources.food }}</p>
         <p v-if="OPTIONS.debug">Posição: {{ terrain.x }} - {{ terrain.y }}</p>
       </div>
       <div v-if="terrain.city" class="flex flex-col w-full gap-2">
         <H2>{{ terrain.city.name }} {{terrain.city.structure.townHall }}</H2>
-        <p>Tamanho: {{ terrain.city.structure.townHall }}</p>
         <p>Produção por Turno: {{ terrain.city.resources.production + terrain.resources.production }}</p>
         <p>Comida por Turno: {{ terrain.city.resources.food + terrain.resources.food}}</p>
         <p>Ciência por Turno: {{ terrain.city.resources.science * 2 }}</p>
@@ -21,11 +20,11 @@
       </div>
       <div class="flex flex-col gap-2 w-full">
         <H2>Ações</H2>
-        <div :class="[player.isAdjacentTerritory(APP.player, terrain) ? '' : 'pointer-events-none opacity-50']" class="flex items-center gap-2 mt-5" v-if="!terrain.city && !terrain.owner && terrain.isAttachable">
+        <div :class="[player.isAdjacentTerritory(APP.player, terrain) && (APP.player!.resources.influence >= COST_DEFINE.COLONIZE_ANNEX * (usePlayer().getTerritories(APP.player).length + 1)) ? '' : 'pointer-events-none opacity-50']" class="flex items-center gap-2 mt-5" v-if="!terrain.city && !terrain.owner && terrain.isAttachable">
           <Button @click="APP.annex(APP.player)">Anexar</Button>
           <Influence>{{ COST_DEFINE.COLONIZE_ANNEX * (player.getTerritories(APP.player).length + 1) }}</Influence>
         </div>
-        <div class="flex items-center gap-2 mt-5" v-else-if="!terrain.city && terrain.owner === APP.player?.name && terrain.isColonizable">
+        <div :class="[APP.player!.resources.food >= COST_DEFINE.COLONIZE_FOOD && APP.player!.resources.production >= COST_DEFINE.COLONIZE_PRODUCTION ? '' : 'pointer-events-none opacity-50']" class="flex items-center gap-2 mt-5" v-else-if="!terrain.city && terrain.owner === APP.player?.name && terrain.isColonizable">
           <Button @click="APP.createCity(APP.player, APP.actives.terrain)">Colonizar</Button>
           <Food>{{ COST_DEFINE.COLONIZE_FOOD }}</Food>
           <Production>{{ COST_DEFINE.COLONIZE_PRODUCTION }}</Production>
