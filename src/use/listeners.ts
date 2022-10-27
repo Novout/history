@@ -1,5 +1,6 @@
-import { nextTick, ref } from 'vue'
+import { nextTick } from 'vue'
 import { useApplicationStore } from '../store/application'
+import { HistoryContainer } from '../types/sprite'
 
 export const useListeners = () => {
   const APP = useApplicationStore()
@@ -10,6 +11,13 @@ export const useListeners = () => {
     }, 400)
 
     if (APP.actives.terrainClicked) {
+      const target = APP.terrainContainer?.children[
+        e.target.id
+      ] as HistoryContainer
+
+      // @ts-expect-error
+      if (target.children.find((c) => c.type === 'fog')) return
+
       APP.actives.terrain = e.target.id
 
       await nextTick
