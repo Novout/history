@@ -10,12 +10,12 @@
     "format": "prettier src/**/*.{vue,ts} --write"
   },
   "dependencies": {
-    "@pixi-essentials/svg": "^1.1.5",
     "@vueuse/core": "^9.4.0",
     "pinia": "^2.0.23",
     "pixi-viewport": "^4.37.0",
     "pixi.js": "^6.5.8",
-    "vue": "^3.2.41"
+    "vue": "^3.2.41",
+    "vue-toastification": "^2.0.0-rc.5"
   },
   "devDependencies": {
     "@unocss/preset-web-fonts": "^0.46.0",
