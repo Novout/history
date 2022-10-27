@@ -209,14 +209,14 @@ export const useApplicationStore = defineStore('application', {
     setStructure(
       player: HistoryPlayer | null,
       type: HistoryTerrainStructure,
-      terrain: HistoryTerrainType
+      terrain: HistoryTerrain
     ) {
       if (!player) return
 
       const define = useDefines().getStructureDefine(type)
       const { food, production } = usePlayer().getStructureCost(type)
 
-      const target = this.actives.terrain
+      const target = terrain.id
 
       if (
         player.resources.food >= food &&
