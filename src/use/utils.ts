@@ -50,12 +50,25 @@ export const useUtils = () => {
     hex1: HistoryTerrain,
     hex2: HistoryTerrain
   ): boolean => {
+    const isEven = hex1.id % 2 === 0
+
+    if (isEven) {
+      const case1 = hex1.x === hex2.x && hex1.y - 1 === hex2.y
+      const case2 = hex1.x + 1 === hex2.x && hex1.y === hex2.y
+      const case3 = hex1.x + 1 === hex2.x && hex1.y + 1 === hex2.y
+      const case4 = hex1.x === hex2.x && hex1.y + 1 === hex2.y
+      const case5 = hex1.x - 1 === hex2.x && hex1.y + 1 === hex2.y
+      const case6 = hex1.x - 1 === hex2.x && hex1.y === hex2.y
+
+      return case1 || case2 || case3 || case4 || case5 || case6
+    }
+
     const case1 = hex1.x === hex2.x && hex1.y - 1 === hex2.y
-    const case2 = hex1.x + 1 === hex2.x && hex1.y === hex2.y
-    const case3 = hex1.x + 1 === hex2.x && hex1.y + 1 === hex2.y
+    const case2 = hex1.x + 1 === hex2.x && hex1.y - 1 === hex2.y
+    const case3 = hex1.x + 1 === hex2.x && hex1.y === hex2.y
     const case4 = hex1.x === hex2.x && hex1.y + 1 === hex2.y
-    const case5 = hex1.x - 1 === hex2.x && hex1.y + 1 === hex2.y
-    const case6 = hex1.x - 1 === hex2.x && hex1.y === hex2.y
+    const case5 = hex1.x - 1 === hex2.x && hex1.y === hex2.y
+    const case6 = hex1.x - 1 === hex2.x && hex1.y - 1 === hex2.y
 
     return case1 || case2 || case3 || case4 || case5 || case6
   }
