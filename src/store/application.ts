@@ -13,6 +13,7 @@ import { usePlayer } from '../use/player'
 import { useMap } from '../use/map'
 import COST_DEFINE from '../defines/cost.json'
 import { useDefines } from '../use/defines'
+import { useOptionsState } from './options'
 
 export const useApplicationStore = defineStore('application', {
   state: (): ApplicatonState => ({
@@ -121,7 +122,10 @@ export const useApplicationStore = defineStore('application', {
         }
 
         this.terrain[index].city = {
-          name: 'City',
+          name:
+            newPlayer && !player.isIA
+              ? useOptionsState().game.player.capital
+              : 'City',
           resources: {
             influence: 0,
             food: 1,
@@ -150,14 +154,16 @@ export const useApplicationStore = defineStore('application', {
     setCitySprite(index: number, terrain: HistoryTerrain) {
       const target = this.terrainContainer?.children[index] as HistoryContainer
 
-      target.addChild(
-        new Text(terrain.city?.name, {
-          fontFamily: 'Arial',
-          fontSize: 26,
-          fill: 0xffffff,
-          align: 'center',
-        })
-      )
+      const text = new Text(terrain.city?.name, {
+        fontFamily: 'Arial',
+        fontSize: 20,
+        fill: 0xffffff,
+        align: 'center',
+      })
+      text.x -= text.width / 2
+      text.y += 10
+
+      target.addChild(text)
     },
     upgradeCity(player: HistoryPlayer | null) {
       if (!player) return

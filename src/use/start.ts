@@ -4,10 +4,12 @@ import { useEventListener } from '@vueuse/core'
 import { useApplicationStore } from '../store/application'
 import { useOptionsState } from '../store/options'
 import { useGame } from './game'
+import { useCycleState } from '../store/cycle'
 
 export const useStart = () => {
   const APP = useApplicationStore()
   const OPTIONS = useOptionsState()
+  const CYCLE = useCycleState()
 
   const game = useGame()
 
@@ -45,6 +47,8 @@ export const useStart = () => {
 
     loader.load((loader, resources) => {
       game.start()
+
+      CYCLE.started = true
     })
   }
 

@@ -1,3 +1,8 @@
 export interface HistoryGameOptions {
-  players: number
+  playersCount: number
+  player: {
+    name: string
+    color: string
+    capital: string
+  }
 }

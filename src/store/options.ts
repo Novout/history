@@ -10,7 +10,12 @@ export const useOptionsState = defineStore('options', {
       radius: 100,
     },
     game: {
-      players: import.meta.env.PROD ? 5 : 3,
+      playersCount: import.meta.env.PROD ? 5 : 3,
+      player: {
+        name: 'Player 1',
+        color: '#00CCCC',
+        capital: 'Alexandria',
+      },
     },
     debug: import.meta.env.DEV,
   }),

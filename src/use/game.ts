@@ -24,8 +24,8 @@ export const useGame = () => {
     map.create(OPTIONS.map)
 
     APP.setNewPlayer({
-      name: 'Player 1',
-      color: utils.getRandomColor(),
+      name: OPTIONS.game.player.name,
+      color: utils.getRandomColor(OPTIONS.game.player.color),
       isIA: false,
       isAlive: true,
       knownPlayers: [],
@@ -40,7 +40,7 @@ export const useGame = () => {
       influenceBase: 2,
     })
 
-    for (let i = 1; i < OPTIONS.game.players; i++) {
+    for (let i = 1; i < OPTIONS.game.playersCount; i++) {
       APP.setNewPlayer({
         name: `Player ${i + 1}`,
         color: utils.getRandomColor(),

@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted } from 'vue'
+import { onBeforeUnmount } from 'vue'
 import { useStart } from './use/start';
+import { useCycleState } from './store/cycle'
 
-const start = useStart()
+const CYCLE = useCycleState()
 
-onMounted(() => {
-  start.create()
-})
+const { destroy } = useStart()
 
 onBeforeUnmount(() => {
-  start.destroy()
+  destroy()
 })
 </script>
 
 <template>
   <main class="h-screen w-full overflow-hidden" id="game" />
-  <GameProvider />
+  <GameNew v-if="!CYCLE.started" />
+  <GameProvider v-else />
 </template>
