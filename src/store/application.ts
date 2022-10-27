@@ -42,7 +42,7 @@ export const useApplicationStore = defineStore('application', {
     setTerrainOwner(player: HistoryPlayer, index: number) {
       this.terrain[index].owner = player.name
 
-      this.setTerrainColor(index, player.color)
+      this.setTerrainColor(index, player.color[1])
     },
     setTerrainColor(index: number, bg: number) {
       const target = this.terrainContainer?.children[index] as HistoryContainer

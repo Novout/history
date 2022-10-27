@@ -197,7 +197,6 @@ export const useMap = () => {
       loader.resources['icon_production'].texture
     )
     productionIcon.x = -26
-    productionIcon.tint = 0xffffff
     production.addChild(productionIcon)
     const productionValue = new Text(String(options.resources.production), {
       fontFamily: 'Arial',
@@ -260,7 +259,7 @@ export const useMap = () => {
 
     const bg: HistoryGraphics = new Graphics()
     bg.beginFill(options.backgroundColor)
-    bg.filters = [new filters.AlphaFilter(0.4)]
+    bg.filters = [new filters.AlphaFilter(0.7)]
 
     const hexagonHeight = OPTIONS.map.radius * Math.sqrt(3)
     bg.drawPolygon([

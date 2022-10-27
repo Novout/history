@@ -11,7 +11,7 @@ export type HistoryPlayerIA = 'default'
 
 export interface HistoryPlayer {
   name: Player
-  color: number
+  color: [string, number]
   isIA: HistoryPlayerIA | boolean
   isAlive: boolean
   resources: HistoryResources

@@ -22,7 +22,7 @@ export const useGame = () => {
 
     APP.setNewPlayer({
       name: 'Player 1',
-      color: 0xff0000,
+      color: utils.getRandomColor(),
       isIA: false,
       isAlive: true,
       resources: {
