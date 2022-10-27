@@ -24,6 +24,10 @@ export const usePlayer = () => {
     return !!isAdjacent
   }
 
+  const isKnownPlayer = (p1: HistoryPlayer, name: string) => {
+    return p1.knownPlayers.includes(name)
+  }
+
   const getPlayer = (name: string): HistoryPlayer | false => {
     return APP.player?.name === name
       ? (APP.player as HistoryPlayer)
@@ -131,6 +135,7 @@ export const usePlayer = () => {
 
   return {
     isAdjacentTerritory,
+    isKnownPlayer,
     getPlayer,
     getAllAdjacentTerritories,
     getTerritories,

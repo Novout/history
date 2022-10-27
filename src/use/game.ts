@@ -1,4 +1,3 @@
-import { useToast } from 'vue-toastification'
 import { useApplicationStore } from '../store/application'
 import { useCycleState } from '../store/cycle'
 import { useOptionsState } from '../store/options'
@@ -7,7 +6,8 @@ import { useMap } from './map'
 import { usePlayer } from './player'
 import { useUtils } from './utils'
 import { useIA } from './ia'
-import { watch } from 'vue'
+import { computed, watch } from 'vue'
+import { useEvents } from './events'
 
 export const useGame = () => {
   const APP = useApplicationStore()
@@ -18,7 +18,7 @@ export const useGame = () => {
   const map = useMap()
   const player = usePlayer()
   const ia = useIA()
-  const toast = useToast()
+  const events = useEvents()
 
   const start = () => {
     map.create(OPTIONS.map)
@@ -79,14 +79,8 @@ export const useGame = () => {
   }
 
   const runEvents = () => {
-    APP.IA.forEach((p) => {
-      if (player.getTerritories(p).length === 0) {
-        toast.success(`Jogador ${p.name} foi derrotado!`)
-
-        const index = APP.IA.indexOf(p)
-        APP.IA.splice(index, 1)
-      }
-    })
+    events.setKnownPlayers()
+    events.defeatedPlayer()
   }
 
   const runActions = (p: HistoryPlayer) => {
@@ -103,6 +97,13 @@ export const useGame = () => {
         map.load()
       },
       { deep: true }
+    )
+
+    watch(
+      computed(() => CYCLE.round),
+      () => {
+        map.load()
+      }
     )
   }
 

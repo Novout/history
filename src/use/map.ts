@@ -283,10 +283,6 @@ export const useMap = () => {
     target.y = y
     target.id = options.id
     target.type = 'territory'
-    target.interactive = true
-    target.buttonMode = true
-    target.on('click', listeners.onTerrainInfo)
-    target.on('touch', listeners.onTerrainInfo)
 
     return target
   }
@@ -361,20 +357,7 @@ export const useMap = () => {
       // @ts-expect-error
       const fog = target.children.find((c) => c.type === 'fog')
 
-      if (!player.isAdjacentTerritory(APP.player, t1)) {
-        if (!player.getTerritories(APP.player).find((t2) => t1 === t2)) {
-          if (fog) target.removeChild(fog)
-
-          const hex = factory.hexagon({
-            type: 'fog',
-            radius: OPTIONS.map.radius,
-            color: 0x000000,
-            colorAlpha: 0.6,
-          })
-
-          target.addChild(hex)
-        }
-      } else {
+      const setVisual = () => {
         if (fog) target.removeChild(fog)
 
         if (t1.owner) {
@@ -383,6 +366,34 @@ export const useMap = () => {
           APP.setTerrainColor(p as HistoryPlayer, index, false)
           APP.setCitySprite(index, t1)
         }
+      }
+
+      if (
+        APP.player &&
+        t1.owner &&
+        player.isKnownPlayer(APP.player, t1.owner)
+      ) {
+        setVisual()
+
+        return
+      }
+
+      if (
+        !player.isAdjacentTerritory(APP.player, t1) &&
+        !player.getTerritories(APP.player).find((t2) => t1 === t2)
+      ) {
+        if (fog) target.removeChild(fog)
+
+        const hex = factory.hexagon({
+          type: 'fog',
+          radius: OPTIONS.map.radius,
+          color: 0x000000,
+          colorAlpha: 0.6,
+        })
+
+        target.addChild(hex)
+      } else {
+        setVisual()
       }
     })
   }
