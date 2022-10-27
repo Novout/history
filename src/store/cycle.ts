@@ -3,6 +3,6 @@ import { CycleState } from '../types/stores'
 
 export const useCycleState = defineStore('cycle', {
   state: (): CycleState => ({
-    round: 1
+    round: 1,
   }),
 })

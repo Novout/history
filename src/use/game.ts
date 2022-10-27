@@ -1,11 +1,11 @@
-import { useApplicationStore } from "../store/application"
-import { useCycleState } from "../store/cycle"
-import { useOptionsState } from "../store/options"
-import { HistoryPlayer } from "../types/player"
-import { useMap } from "./map"
-import { usePlayer } from "./player"
-import { useUtils } from "./utils"
-import { useIA } from "./ia"
+import { useApplicationStore } from '../store/application'
+import { useCycleState } from '../store/cycle'
+import { useOptionsState } from '../store/options'
+import { HistoryPlayer } from '../types/player'
+import { useMap } from './map'
+import { usePlayer } from './player'
+import { useUtils } from './utils'
+import { useIA } from './ia'
 
 export const useGame = () => {
   const APP = useApplicationStore()
@@ -22,21 +22,21 @@ export const useGame = () => {
 
     APP.setNewPlayer({
       name: 'Player 1',
-      color: 0xFF0000,
+      color: 0xff0000,
       isIA: false,
       isAlive: true,
       resources: {
         influence: 5,
         food: 5,
         production: 5,
-        science: 2
+        science: 2,
       },
       militaryCapability: 0,
       cityLimit: 2,
-      influenceBase: 2
+      influenceBase: 2,
     })
 
-    for(let i = 1; i < OPTIONS.game.players; i++) {
+    for (let i = 1; i < OPTIONS.game.players; i++) {
       APP.setNewPlayer({
         name: `Player ${i + 1}`,
         color: utils.getRandomColor(),
@@ -46,17 +46,17 @@ export const useGame = () => {
           influence: 5,
           food: 5,
           production: 5,
-          science: 2
+          science: 2,
         },
         militaryCapability: 0,
         cityLimit: 2,
-        influenceBase: 2
+        influenceBase: 2,
       })
     }
   }
 
   const next = () => {
-    APP.IA.forEach(p => {
+    APP.IA.forEach((p) => {
       ia.runFactors(p)
 
       runActions(p)

@@ -3,7 +3,11 @@ import { HistoryPlayer } from '../types/player'
 import { HistoryContainer } from '../types/sprite'
 import { ApplicatonState } from '../types/stores'
 import { useUtils } from '../use/utils'
-import { HistoryTerrain, HistoryTerrainStructure, HistoryTerrainType } from '../types/map'
+import {
+  HistoryTerrain,
+  HistoryTerrainStructure,
+  HistoryTerrainType,
+} from '../types/map'
 import { Text } from 'pixi.js'
 import { usePlayer } from '../use/player'
 import { useMap } from '../use/map'
@@ -19,11 +23,11 @@ export const useApplicationStore = defineStore('application', {
     player: null,
     IA: [],
     actives: {
-      terrain: -1
+      terrain: -1,
     },
     absolute: {
-      terrainInfo: false
-    }
+      terrainInfo: false,
+    },
   }),
   actions: {
     setNewPlayer(player: HistoryPlayer) {
@@ -31,7 +35,7 @@ export const useApplicationStore = defineStore('application', {
 
       this.setTerrainOwner(player, id)
 
-      !player.isIA ? this.player = player : this.IA.push(player)
+      !player.isIA ? (this.player = player) : this.IA.push(player)
 
       this.createCity(player, id)
     },
@@ -44,29 +48,34 @@ export const useApplicationStore = defineStore('application', {
       const target = this.terrainContainer?.children[index] as HistoryContainer
 
       // @ts-expect-error
-      const color = target.children.find(c => c.type === 'territory')
+      const color = target.children.find((c) => c.type === 'territory')
 
-      if(color) target.removeChild(color)
+      if (color) target.removeChild(color)
 
       const terrain = useMap().hexOwner({
         id: index,
         x: 0,
         y: 0,
-        backgroundColor: bg
+        backgroundColor: bg,
       })
 
       target?.addChild(terrain)
     },
     annex(player: HistoryPlayer | null, terrain?: HistoryTerrain) {
-      if(!player) return
+      if (!player) return
 
       const target = terrain ? terrain.id : this.actives.terrain
 
-      if(!this.terrain[target]?.isAttachable) return
+      if (!this.terrain[target]?.isAttachable) return
 
-      const influenceValue = COST_DEFINE.COLONIZE_ANNEX * (usePlayer().getTerritories(this.player).length + 1)
+      const influenceValue =
+        COST_DEFINE.COLONIZE_ANNEX *
+        (usePlayer().getTerritories(this.player).length + 1)
 
-      if(player.resources.influence >= influenceValue && !this.terrain[target].owner ) {
+      if (
+        player.resources.influence >= influenceValue &&
+        !this.terrain[target].owner
+      ) {
         this.setTerrainOwner(player, target)
 
         player.resources.influence -= influenceValue
@@ -77,46 +86,54 @@ export const useApplicationStore = defineStore('application', {
     createCity(player: HistoryPlayer | null, index: number) {
       const terrain = this.terrain[index]
 
-      if(!player || !terrain?.isColonizable) return
+      if (!player || !terrain?.isColonizable) return
 
-      if(player.name === terrain.owner) {
+      if (player.name === terrain.owner) {
         this.terrain[index].city = {
           name: 'City',
           resources: {
             influence: 0,
             food: 1,
             production: 1,
-            science: 1
+            science: 1,
           },
           structure: {
             townHall: 1,
             wall: 0,
-            militaryAcademy: 1
-          }
+            militaryAcademy: 1,
+          },
         }
 
-        const target = this.terrainContainer?.children[index] as HistoryContainer
+        const target = this.terrainContainer?.children[
+          index
+        ] as HistoryContainer
 
-        target.addChild(new Text(this.terrain[index].city?.name, {
-          fontFamily: 'Arial',
-          fontSize: 26,
-          fill: 0xFFFFFF,
-          align: 'center',
-        }))
+        target.addChild(
+          new Text(this.terrain[index].city?.name, {
+            fontFamily: 'Arial',
+            fontSize: 26,
+            fill: 0xffffff,
+            align: 'center',
+          })
+        )
       }
     },
     upgradeCity(player: HistoryPlayer | null) {
-      if(!player) return
+      if (!player) return
 
       const target = this.actives.terrain
       const city = this.terrain[target].city
 
-      if(!city) return
+      if (!city) return
 
       const food = COST_DEFINE.CITY_UPGRADE_FOOD[city.structure.townHall]
-      const production = COST_DEFINE.CITY_UPGRADE_PRODUCTION[city.structure.townHall]
+      const production =
+        COST_DEFINE.CITY_UPGRADE_PRODUCTION[city.structure.townHall]
 
-      if(player.resources.food >= food && player.resources.production >= production) {
+      if (
+        player.resources.food >= food &&
+        player.resources.production >= production
+      ) {
         city.structure.townHall++
 
         player.resources.food -= food
@@ -124,17 +141,21 @@ export const useApplicationStore = defineStore('application', {
       }
     },
     upgradeWall(player: HistoryPlayer | null) {
-      if(!player) return
+      if (!player) return
 
       const target = this.actives.terrain
       const city = this.terrain[target].city
 
-      if(!city) return
+      if (!city) return
 
       const food = COST_DEFINE.CITY_WALL_UPGRADE_FOOD[city.structure.wall]
-      const production = COST_DEFINE.CITY_WALL_UPGRADE_PRODUCTION[city.structure.wall]
+      const production =
+        COST_DEFINE.CITY_WALL_UPGRADE_PRODUCTION[city.structure.wall]
 
-      if(player.resources.food >= food && player.resources.production >= production) {
+      if (
+        player.resources.food >= food &&
+        player.resources.production >= production
+      ) {
         city.structure.wall++
 
         player.resources.food -= food
@@ -142,37 +163,54 @@ export const useApplicationStore = defineStore('application', {
       }
     },
     upgradeMilitarAcademy(player: HistoryPlayer | null) {
-      if(!player) return
+      if (!player) return
 
       const target = this.actives.terrain
       const city = this.terrain[target].city
 
-      if(!city) return
+      if (!city) return
 
-      const food = COST_DEFINE.CITY_MILITAR_ACADEMY_UPGRADE_FOOD[city.structure.militaryAcademy]
-      const production = COST_DEFINE.CITY_MILITAR_ACADEMY_UPGRADE_PRODUCTION[city.structure.militaryAcademy]
+      const food =
+        COST_DEFINE.CITY_MILITAR_ACADEMY_UPGRADE_FOOD[
+          city.structure.militaryAcademy
+        ]
+      const production =
+        COST_DEFINE.CITY_MILITAR_ACADEMY_UPGRADE_PRODUCTION[
+          city.structure.militaryAcademy
+        ]
 
-      if(player.resources.food >= food && player.resources.production >= production) {
+      if (
+        player.resources.food >= food &&
+        player.resources.production >= production
+      ) {
         city.structure.militaryAcademy++
 
         player.resources.food -= food
         player.resources.production -= production
       }
     },
-    setStructure(player: HistoryPlayer | null, type: HistoryTerrainStructure, terrain: HistoryTerrainType) {
-      if(!player) return
+    setStructure(
+      player: HistoryPlayer | null,
+      type: HistoryTerrainStructure,
+      terrain: HistoryTerrainType
+    ) {
+      if (!player) return
 
       const define = useDefines().getStructureDefine(type)
       const { food, production } = usePlayer().getStructureCost(type)
 
       const target = this.actives.terrain
 
-      if(player.resources.food >= food && player.resources.production >= production && define.isBuildable.includes(terrain)) {
+      if (
+        player.resources.food >= food &&
+        player.resources.production >= production &&
+        define.isBuildable.includes(terrain)
+      ) {
         this.terrain[target].structure = type
 
         player.resources.food -= food
         player.resources.production -= production
       }
-    }
-  }
+    },
+  },
 })

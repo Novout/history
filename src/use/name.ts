@@ -1,8 +1,8 @@
-import { HistoryTerrainType } from "../types/map"
+import { HistoryTerrainType } from '../types/map'
 
 export const useName = () => {
   const getTerrainTypeName = (type: HistoryTerrainType): string => {
-    switch(type) {
+    switch (type) {
       case 'forest':
         return 'Floresta'
       case 'plain':

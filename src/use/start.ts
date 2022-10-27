@@ -2,8 +2,8 @@ import { Application, Loader } from 'pixi.js'
 import { Viewport } from 'pixi-viewport'
 import { useEventListener } from '@vueuse/core'
 import { useApplicationStore } from '../store/application'
-import { useOptionsState } from '../store/options';
-import { useGame } from './game';
+import { useOptionsState } from '../store/options'
+import { useGame } from './game'
 
 export const useStart = () => {
   const APP = useApplicationStore()
@@ -12,10 +12,13 @@ export const useStart = () => {
   const game = useGame()
 
   const create = () => {
-    const app = new Application({ antialias: true, resolution: devicePixelRatio });
-    app.renderer.resize(window.innerWidth, window.innerHeight);
+    const app = new Application({
+      antialias: true,
+      resolution: devicePixelRatio,
+    })
+    app.renderer.resize(window.innerWidth, window.innerHeight)
 
-    const loader = Loader.shared;
+    const loader = Loader.shared
     loader.add('icon_production', '/icons/production.svg')
     loader.add('icon_food', '/icons/food.svg')
 
@@ -31,12 +34,12 @@ export const useStart = () => {
 
     viewport.drag()
 
-    document.querySelector('#game')?.appendChild(app.view);
+    document.querySelector('#game')?.appendChild(app.view)
 
     useEventListener('resize', () => {
-      app.renderer.resize(window.innerWidth, window.innerHeight);
+      app.renderer.resize(window.innerWidth, window.innerHeight)
     })
-    
+
     APP.context = app
     APP.viewport = viewport
 

@@ -1,9 +1,9 @@
-import { HistoryResources } from "./map"
+import { HistoryResources } from './map'
 
 export type Player = string
 
 export interface HistoryPlayerRelations {
-  name: Player,
+  name: Player
   value: number
 }
 

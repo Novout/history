@@ -4,7 +4,7 @@
 </template>
 
 <script setup lang="ts">
-import { useApplicationStore } from '../store/application';
+  import { useApplicationStore } from '../store/application'
 
-const APP = useApplicationStore()
+  const APP = useApplicationStore()
 </script>
