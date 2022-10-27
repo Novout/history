@@ -17,6 +17,7 @@ import { useOptionsState } from '../store/options'
 import { useUtils } from './utils'
 import { useDefines } from './defines'
 import { Coordinates } from '../types/utils'
+import { useListeners } from './listeners'
 
 export const useMap = () => {
   const APP = useApplicationStore()
@@ -24,6 +25,7 @@ export const useMap = () => {
 
   const utils = useUtils()
   const defines = useDefines()
+  const listeners = useListeners()
   const loader = Loader.shared
 
   const generateType = ({ y }: Coordinates): HistoryTerrainType => {
@@ -108,13 +110,8 @@ export const useMap = () => {
     target.id = options.id
     target.interactive = true
     target.buttonMode = true
-    target.on('click', async (e) => {
-      APP.actives.terrain = e.target.id
-
-      await nextTick
-
-      APP.absolute.terrainInfo = true
-    })
+    target.on('click', listeners.onTerrainInfo)
+    target.on('touch', listeners.onTerrainInfo)
 
     if (options.type === 'forest') {
       const tree1: HistoryGraphics = new Graphics()
@@ -286,13 +283,8 @@ export const useMap = () => {
     target.type = 'territory'
     target.interactive = true
     target.buttonMode = true
-    target.on('click', async (e) => {
-      APP.actives.terrain = e.target.id
-
-      await nextTick
-
-      APP.absolute.terrainInfo = true
-    })
+    target.on('click', listeners.onTerrainInfo)
+    target.on('touch', listeners.onTerrainInfo)
 
     return target
   }

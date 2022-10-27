@@ -24,6 +24,7 @@ export const useApplicationStore = defineStore('application', {
     IA: [],
     actives: {
       terrain: -1,
+      terrainClicked: false,
     },
     absolute: {
       terrainInfo: false,

@@ -13,6 +13,7 @@ export interface ApplicatonState {
   IA: HistoryPlayer[]
   actives: {
     terrain: number
+    terrainClicked: boolean
   }
   absolute: {
     terrainInfo: boolean
