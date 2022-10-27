@@ -3,10 +3,11 @@
   "treeColor": "0x013433",
   "isAccessible": true,
   "isColonizable": true,
+  "isAttachable": true,
+  "isSpecialHex": false,
   "resources": [
     { "production": 2, "food": 2, "influence": 0, "science": 0 },
     { "production": 3, "food": 1, "influence": 0, "science": 0 },
     { "production": 2, "food": 1, "influence": 0, "science": 0 }
-  ],
-  "specialResources": []
+  ]
 }

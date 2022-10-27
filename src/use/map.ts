@@ -1,11 +1,12 @@
 import { Container, filters, Graphics, Loader, Sprite, Text } from "pixi.js";
 import { useApplicationStore } from "../store/application";
 import { HistoryContainer, HistoryGraphics, HistorySpriteHexagonOptions } from "../types/sprite";
-import { HistoryMapCreateOptions, HistoryMapHexagonCreateOptions, HistoryTerrainType } from "../types/map";
+import { HistoryMapCreateOptions, HistoryMapHexagonCreateOptions, HistoryTerrain, HistoryTerrainGenerate, HistoryTerrainType } from "../types/map";
 import { nextTick } from "vue";
 import { useOptionsState } from "../store/options";
 import { useUtils } from "./utils";
 import { useDefines } from "./defines";
+import { Coordinates } from "../types/utils";
 
 export const useMap = () => {
   const APP = useApplicationStore()
@@ -15,16 +16,32 @@ export const useMap = () => {
   const defines = useDefines()
   const loader = Loader.shared
 
-  const generateType = (): HistoryTerrainType => {
-    const random = Math.round(Math.random() * 99) + 1;
+  const generateType = ({ y }: Coordinates): HistoryTerrainType => {
+    const define = defines.getTerrainGenerateDefine(OPTIONS.map.type)
 
-    if(random > 25) {
-      return 'plain'
-    } else if(random > 4) {
-      return 'forest'
-    } else {
+    const random = utils.getRandomPercentage()
+
+    if(OPTIONS.map.type === 'pangea') {
+      if((y <= define.snow[0] && random > define.snow[1]) || (((OPTIONS.map.height - 1) - define.snow[0]) <= y && random > define.snow[1])) {
+        return 'snow'
+      }
+
+      if((y <= define.tundra[0] && random > define.tundra[1]) || (((OPTIONS.map.height - 1) - define.tundra[0]) <= y && random > define.tundra[1])) {
+        return 'tundra'
+      }
+
+      if(random > define.plain) {
+        return 'plain'
+      }
+      
+      if(random > define.forest) {
+        return 'forest'
+      } 
+
       return 'water'
     }
+
+    return 'plain'
   }
 
   const hexTerrain = (options: HistoryMapHexagonCreateOptions): HistoryContainer => {
@@ -254,7 +271,7 @@ export const useMap = () => {
 
     for(let y = opts.radius * 2; counterY < opts.height; y += opts.radius * 1.8) {
       for(let x = opts.radius * 2; counterX < opts.width; x += opts.radius * 1.5) {
-        const type = generateType()
+        const type = generateType({ x: counterX, y: counterY })
         const typeDefine = defines.getTerrainDefine(type)
 
         const resourcesSet = utils.getRandomInArray(typeDefine.resources)
@@ -267,6 +284,8 @@ export const useMap = () => {
           y: counterY,
           isColonizable: typeDefine.isColonizable,
           isAccessible: typeDefine.isAccessible,
+          isAttachable: typeDefine.isAttachable,
+          isSpecialHex: typeDefine.isSpecialHex,
           owner: undefined,
           type,
           structure: undefined,

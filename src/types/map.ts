@@ -1,5 +1,6 @@
-export type HistoryTerrainType = 'forest' | 'plain' | 'water'
+export type HistoryTerrainType = 'forest' | 'plain' | 'water' | 'snow' | 'tundra'
 export type HistoryTerrainStructure = 'farm' | 'lumber' | 'academic_center'
+export type HistoryTerrainGenerate = 'pangea'
 
 export interface HistoryResources {
   influence: number
@@ -14,6 +15,8 @@ export interface HistoryTerrain {
   y: number
   isColonizable: boolean
   isAccessible: boolean
+  isAttachable: boolean
+  isSpecialHex: boolean,
   owner: string | undefined
   type: HistoryTerrainType,
   resources: HistoryResources
@@ -37,5 +40,5 @@ export interface HistoryMapCreateOptions {
   radius: number, 
   width: number, 
   height: number, 
-  type: 'default'
+  type: HistoryTerrainGenerate
 }

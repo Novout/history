@@ -62,6 +62,8 @@ export const useApplicationStore = defineStore('application', {
 
       const target = terrain ? terrain.id : this.actives.terrain
 
+      if(!this.terrain[target]?.isAttachable) return
+
       const influenceValue = COST_DEFINE.COLONIZE_ANNEX * (usePlayer().getTerritories(this.player).length + 1)
 
       if(player.resources.influence >= influenceValue && !this.terrain[target].owner ) {
@@ -73,9 +75,11 @@ export const useApplicationStore = defineStore('application', {
       this.absolute.terrainInfo = false
     },
     createCity(player: HistoryPlayer | null, index: number) {
-      if(!player) return
+      const terrain = this.terrain[index]
 
-      if(player.name === this.terrain[index].owner) {
+      if(!player || !terrain?.isColonizable) return
+
+      if(player.name === terrain.owner) {
         this.terrain[index].city = {
           name: 'City',
           resources: {

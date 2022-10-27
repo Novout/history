@@ -52,5 +52,9 @@ export const useUtils = () => {
     return case1 || case2 || case3 || case4 || case5 || case6
   }
 
-  return { loadImage, getRandomTerrainID, getRandomInArray, getRandomColor, isAdjacentHex }
+  const getRandomPercentage = (): number => {
+    return Math.round(Math.random() * 99) + 1;
+  }
+
+  return { loadImage, getRandomTerrainID, getRandomInArray, getRandomColor, isAdjacentHex, getRandomPercentage }
 }

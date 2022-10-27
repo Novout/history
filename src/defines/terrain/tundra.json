@@ -1,0 +1,12 @@
+{
+  "backgroundColor": "0xAAAAAA",
+  "isAccessible": false,
+  "isColonizable": false,
+  "isAttachable": true,
+  "isSpecialHex": false,
+  "resources": [
+    { "production": 0, "food": 0, "influence": 0, "science": 0 },
+    { "production": 0, "food": 1, "influence": 0, "science": 0 },
+    { "production": 1, "food": 0, "influence": 0, "science": 0 }
+  ]
+}

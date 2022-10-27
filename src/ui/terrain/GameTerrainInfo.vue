@@ -1,8 +1,8 @@
 <template>
   <div class="flex items-center justify-center absolute top-0 left-0 z-max bg-dark bg-opacity-50 w-full h-screen shadow-xl">
-    <div class="flex flex-col gap-5 w-80 h-100 overflow-y-auto bg-blur text-white shadow-xl p-5">
+    <div class="flex flex-col gap-5 w-80 h-3/4 overflow-y-auto bg-blur text-white shadow-xl p-5">
       <div class="flex w-full justify-between items-center mb-5">
-        <H1>Terreno {{terrain.id}}</H1>
+        <H1>Terreno {{terrain.id}} - {{name.getTerrainTypeName(terrain.type)}}</H1>
       </div>
       <div class="flex flex-col w-full gap-2">
         <H2>Território</H2>
@@ -21,7 +21,7 @@
       </div>
       <div class="flex flex-col gap-2 w-full">
         <H2>Ações</H2>
-        <div :class="[player.isAdjacentTerritory(APP.player, terrain) ? '' : 'pointer-events-none opacity-50']" class="flex items-center gap-2 mt-5" v-if="!terrain.city && !terrain.owner && terrain.isColonizable">
+        <div :class="[player.isAdjacentTerritory(APP.player, terrain) ? '' : 'pointer-events-none opacity-50']" class="flex items-center gap-2 mt-5" v-if="!terrain.city && !terrain.owner && terrain.isAttachable">
           <Button @click="APP.annex(APP.player)">Anexar</Button>
           <Influence>{{ COST_DEFINE.COLONIZE_ANNEX * (player.getTerritories(APP.player).length + 1) }}</Influence>
         </div>
@@ -32,7 +32,7 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col gap-2 w-80 h-100 overflow-y-auto bg-blur text-white shadow-xl p-5">
+    <div class="flex flex-col gap-2 w-80 h-3/4 overflow-y-auto bg-blur text-white shadow-xl p-5">
       <div class="flex w-full justify-between items-center">
         <H2>Construção</H2>
         <Icon @click="APP.absolute.terrainInfo = false">
@@ -100,11 +100,13 @@ import COST_DEFINE from '../../defines/cost.json'
 import FARM_DEFINE from '../../defines/buildings/farm.json'
 import LUMBER_DEFINE from '../../defines/buildings/lumber.json'
 import ACADEMIC_CENTER_DEFINE from '../../defines/buildings/academic_center.json'
+import { useName } from "../../use/name";
 
 const APP = useApplicationStore()
 const OPTIONS = useOptionsState()
 
 const player = usePlayer()
+const name = useName()
 
 const terrain = computed(() => APP.terrain[APP.actives.terrain])
 </script>
