@@ -3,9 +3,9 @@ import { OptionsState } from '../types/stores'
 
 export const useOptionsState = defineStore('options', {
   state: (): OptionsState => ({
-    map: { height: 6, width: 6, type: 'pangea', radius: 100 },
+    map: { height: import.meta.env.PROD ? 8 : 6, width: import.meta.env.PROD ? 30 : 6, type: 'pangea', radius: 100 },
     game: {
-      players: 3,
+      players: import.meta.env.PROD ? 5 : 3,
     },
     debug: import.meta.env.DEV,
   }),
