@@ -69,44 +69,18 @@ export const useMap = () => {
   const hexTerrain = (
     options: HistoryMapHexagonCreateOptions
   ): HistoryContainer => {
-    const toFixedPosition = (pos: { x: number; y: number }) => {
-      const newP = { x: 0, y: 0 }
-      let xIdx = Math.round(pos.x / (options.radius * (3 / 2)))
-      newP.x = xIdx * (options.radius * (3 / 2))
-      if (xIdx % 2) {
-        newP.y =
-          Math.floor(pos.y / hexagonHeight) * hexagonHeight + hexagonHeight / 2
-      } else {
-        newP.y = Math.round(pos.y / hexagonHeight) * hexagonHeight
-      }
+    const target = factory.hexagon({
+      type: 'fog',
+      radius: OPTIONS.map.radius,
+      color: options.typeDefine.backgroundColor,
+      colorAlpha: 0.6,
+    })
 
-      return newP
-    }
-
-    const target: HistoryContainer = new Container()
-
-    const bg: HistoryGraphics = new Graphics()
-    bg.beginFill(Number(options.typeDefine.backgroundColor))
-
-    const hexagonHeight = options.radius * Math.sqrt(3)
-    bg.drawPolygon([
-      -options.radius,
-      0,
-      -options.radius / 2,
-      hexagonHeight / 2,
-      options.radius / 2,
-      hexagonHeight / 2,
-      options.radius,
-      0,
-      options.radius / 2,
-      -hexagonHeight / 2,
-      -options.radius / 2,
-      -hexagonHeight / 2,
-    ])
-    bg.endFill()
-    target.addChild(bg)
-
-    const { x, y } = toFixedPosition({ x: options.x, y: options.y })
+    const { x, y } = factory.hexagonTile({
+      x: options.x,
+      y: options.y,
+      radius: OPTIONS.map.radius,
+    })
     target.x = x
     target.y = y
     target.id = options.id
@@ -240,45 +214,20 @@ export const useMap = () => {
   }
 
   const hexOwner = (options: HistorySpriteHexagonOptions) => {
-    const toFixedPosition = (pos: { x: number; y: number }) => {
-      const newP = { x: 0, y: 0 }
-      let xIdx = Math.round(pos.x / (OPTIONS.map.radius * (3 / 2)))
-      newP.x = xIdx * (OPTIONS.map.radius * (3 / 2))
-      if (xIdx % 2) {
-        newP.y =
-          Math.floor(pos.y / hexagonHeight) * hexagonHeight + hexagonHeight / 2
-      } else {
-        newP.y = Math.round(pos.y / hexagonHeight) * hexagonHeight
-      }
+    const target = factory.hexagon({
+      type: 'fog',
+      radius: OPTIONS.map.radius,
+      color: options.color,
+      colorAlpha: 0.15,
+      border: 3,
+      borderAlpha: 1.0,
+    })
 
-      return newP
-    }
-
-    const target: HistoryContainer = new Graphics()
-
-    const bg: HistoryGraphics = new Graphics()
-    bg.lineStyle(2, options.color, 1)
-    bg.beginFill(options.color, 0.5)
-
-    const hexagonHeight = OPTIONS.map.radius * Math.sqrt(3)
-    bg.drawPolygon([
-      -OPTIONS.map.radius,
-      0,
-      -OPTIONS.map.radius / 2,
-      hexagonHeight / 2,
-      OPTIONS.map.radius / 2,
-      hexagonHeight / 2,
-      OPTIONS.map.radius,
-      0,
-      OPTIONS.map.radius / 2,
-      -hexagonHeight / 2,
-      -OPTIONS.map.radius / 2,
-      -hexagonHeight / 2,
-    ])
-    bg.endFill()
-    target.addChild(bg)
-
-    const { x, y } = toFixedPosition({ x: options.x, y: options.y })
+    const { x, y } = factory.hexagonTile({
+      radius: 100,
+      x: options.x,
+      y: options.y,
+    })
     target.x = x
     target.y = y
     target.id = options.id
@@ -388,7 +337,7 @@ export const useMap = () => {
           type: 'fog',
           radius: OPTIONS.map.radius,
           color: 0x000000,
-          colorAlpha: 0.6,
+          colorAlpha: 0.8,
         })
 
         target.addChild(hex)
