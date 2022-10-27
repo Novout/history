@@ -37,7 +37,7 @@ export const useApplicationStore = defineStore('application', {
 
       !player.isIA ? (this.player = player) : this.IA.push(player)
 
-      this.createCity(player, id)
+      this.createCity(player, id, true)
     },
     setTerrainOwner(player: HistoryPlayer, index: number) {
       this.terrain[index].owner = player.name
@@ -83,12 +83,29 @@ export const useApplicationStore = defineStore('application', {
 
       this.absolute.terrainInfo = false
     },
-    createCity(player: HistoryPlayer | null, index: number) {
+    createCity(
+      player: HistoryPlayer | null,
+      index: number,
+      first: boolean = false
+    ) {
       const terrain = this.terrain[index]
 
       if (!player || !terrain?.isColonizable) return
 
-      if (player.name === terrain.owner) {
+      const food = COST_DEFINE.COLONIZE_FOOD
+      const production = COST_DEFINE.COLONIZE_PRODUCTION
+
+      if (
+        (player.name === terrain.owner &&
+          player.resources.food >= food &&
+          player.resources.production >= production) ||
+        first
+      ) {
+        if (!first) {
+          player.resources.food -= food
+          player.resources.production -= production
+        }
+
         this.terrain[index].city = {
           name: 'City',
           resources: {
