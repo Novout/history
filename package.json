@@ -15,6 +15,7 @@
     "pixi-viewport": "^4.37.0",
     "pixi.js": "^6.5.8",
     "vue": "^3.2.41",
+    "vue-directive-providers": "^0.1.0",
     "vue-toastification": "^2.0.0-rc.5"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center justify-center absolute top-0 left-0 z-max bg-dark bg-opacity-50 w-full h-screen">
-    <div class="flex w-auto max-h-screen md:max-h-3/4 bg-blur">
+    <div v-provider-close :esc="() => APP.absolute.terrainInfo = false" class="flex w-auto max-h-screen md:max-h-3/4 bg-blur">
       <div class="flex flex-col gap-5 w-80 overflow-y-auto text-white shadow-xl p-5">
         <div class="flex w-full justify-between items-center mb-5">
           <H1>Terreno {{terrain.id}} - {{name.getTerrainTypeName(terrain.type)}}</H1>
