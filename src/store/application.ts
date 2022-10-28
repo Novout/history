@@ -154,6 +154,11 @@ export const useApplicationStore = defineStore('application', {
     setCitySprite(index: number, terrain: HistoryTerrain) {
       const target = this.terrainContainer?.children[index] as HistoryContainer
 
+      // @ts-expect-error
+      const city = target.children.find((c) => c.type === 'city')
+
+      if (city) target.removeChild(city)
+
       const text = new Text(terrain.city?.name, {
         fontFamily: 'Arial',
         fontSize: 20,
@@ -162,6 +167,8 @@ export const useApplicationStore = defineStore('application', {
       })
       text.x -= text.width / 2
       text.y += 10
+      // @ts-expect-error
+      text.type = 'city'
 
       target.addChild(text)
     },
