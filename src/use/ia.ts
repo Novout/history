@@ -59,11 +59,22 @@ export const useIA = () => {
           )
           if (cc) APP.createCity(p, cc.id, false)
           break
-        case 'UPGRADE_CITY':
+        case 'CREATE_OR_UPGRADE_CITY':
           const uc: HistoryTerrain = utils.getRandomInArray(
             player.getTerritories(p).filter((p) => p.city)
           )
           if (uc) APP.upgradeCity(p, uc)
+          break
+        case 'NEW_STRUCTURE':
+          const ns: HistoryTerrain = utils.getRandomInArray(
+            player.getTerritories(p).filter((p) => !p.city && !p.structure)
+          )
+          if (ns)
+            APP.setStructure(
+              p,
+              utils.getRandomInArray(['farm', 'lumber', 'academic_center']),
+              ns
+            )
           break
       }
     }

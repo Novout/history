@@ -1,5 +1,5 @@
 <template>
-  <header class="gap-5 cursor-pointer fixed text-white top-0 left-15 flex z-max items-center text-xl">
+  <header class="gap-5 cursor-pointer fixed text-white top-0 left-15 flex z-max items-center text-xl select-none">
     <div :style="{ borderColor: APP.player?.color[0] }" class="p-1 border-b-10 rounded-b-md shadow-lg bg-blur mr-10">
       <p class="text-base font-bold select-none">{{ APP.player?.name }}</p>
       <div class="flex items-center justify-between">
