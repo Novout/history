@@ -170,6 +170,26 @@ export const usePlayer = () => {
     })
   }
 
+  const getEconomicPower = (player: HistoryPlayer | null): string => {
+    if (!player) return '0'
+
+    const resources =
+      getFood(player) * 1 +
+      (getProduction(player) + 1) +
+      (getInfluence(player) + 1) +
+      (getScience(player) + 1)
+
+    const set = resources / 2
+
+    return set.toFixed(0)
+  }
+
+  const getMilitaryPower = (player: HistoryPlayer | null): string => {
+    if (!player) return '0'
+
+    return '0'
+  }
+
   return {
     isAdjacentTerritory,
     isKnownPlayer,
@@ -186,5 +206,7 @@ export const usePlayer = () => {
     getStructureCost,
     getStructureValue,
     getBestCaseTerritory,
+    getEconomicPower,
+    getMilitaryPower,
   }
 }
