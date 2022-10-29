@@ -12,6 +12,12 @@ export interface HistoryResources {
   production: number
   food: number
   science: number
+  multipliers: {
+    influence: number
+    production: number
+    food: number
+    science: number
+  }
 }
 
 export interface HistoryTerrain {

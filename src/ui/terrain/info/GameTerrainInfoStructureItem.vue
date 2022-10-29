@@ -11,11 +11,11 @@
       <Production v-if="define.resources?.production">{{ define.resources.production[0] }}</Production>
       <Influence v-if="define.resources?.influence">{{ define.resources.influence[0] }}</Influence>
       <Science v-if="define.resources?.science">{{ define.resources.science[0] }}</Science>
-      <H2 v-if="define.multiplier">Multiplicador</H2>
-      <Food v-if="define.multiplier?.food">{{ String(define.multiplier.food[0]).substring(2) }}0%</Food>
-      <Production v-if="define.multiplier?.production">{{ String(define.multiplier.production[0]).substring(2) }}0%</Production>
-      <Influence v-if="define.multiplier?.influence">{{ String(define.multiplier.influence[0]).substring(2) }}0%</Influence>
-      <Science v-if="define.multiplier?.science">{{ String(define.multiplier.science[0]).substring(2) }}0%</Science>
+      <H2 v-if="define.multipliers">Multiplicador</H2>
+      <Food v-if="define.multipliers?.food">{{ String(define.multipliers.food[0]).substring(2) }}0%</Food>
+      <Production v-if="define.multipliers?.production">{{ String(define.multipliers.production[0]).substring(2) }}0%</Production>
+      <Influence v-if="define.multipliers?.influence">{{ String(define.multipliers.influence[0]).substring(2) }}0%</Influence>
+      <Science v-if="define.multipliers?.science">{{ String(define.multipliers.science[0]).substring(2) }}0%</Science>
     </div>
   </div>
 </template>

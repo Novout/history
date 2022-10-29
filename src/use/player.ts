@@ -48,50 +48,66 @@ export const usePlayer = () => {
       .filter((f) => f.owner !== player.name)
   }
 
-  const getFood = (player: HistoryPlayer | null) => {
+  const getMultipliersStructure = (player: HistoryPlayer | null) => {
     if (player === null) return 0
 
     return getTerritories(player).reduce((sum, acc) => {
+      return (sum += acc.structure ? getStructureValue(acc.structure).food : 0)
+    }, 0)
+  }
+
+  const getFood = (player: HistoryPlayer | null) => {
+    if (player === null) return 0
+
+    const value = getTerritories(player).reduce((sum, acc) => {
       return (sum +=
         (acc.city ? acc.resources.food + acc.city.resources.food : 0) +
         (acc.structure ? getStructureValue(acc.structure).food : 0))
     }, 0)
+
+    return value * player.resources.multipliers.food
   }
 
   const getProduction = (player: HistoryPlayer | null) => {
     if (player === null) return 0
 
-    return getTerritories(player).reduce((sum, acc) => {
+    const value = getTerritories(player).reduce((sum, acc) => {
       return (sum +=
         (acc.city
           ? acc.resources.production + acc.city.resources.production
           : 0) +
         (acc.structure ? getStructureValue(acc.structure).production : 0))
     }, 0)
+
+    return value * player.resources.multipliers.production
   }
 
   const getInfluence = (player: HistoryPlayer | null) => {
     if (player === null) return 0
 
-    return player.influenceBase
+    return player.influenceBase * player.resources.multipliers.influence
   }
 
   const getScience = (player: HistoryPlayer | null) => {
     if (player === null) return 0
 
-    return getTerritories(player).reduce((sum, acc) => {
+    const value = getTerritories(player).reduce((sum, acc) => {
       return (sum +=
         (acc.city ? acc.resources.science + acc.city.resources.science : 0) +
         (acc.structure ? getStructureValue(acc.structure).science : 0))
     }, 0)
+
+    return value * player.resources.multipliers.science
   }
 
   const getMilitaryCapacity = (player: HistoryPlayer | null) => {
     if (player === null) return 0
 
-    return getTerritories(player).reduce((sum, acc) => {
+    const value = getTerritories(player).reduce((sum, acc) => {
       return (sum += acc.city ? acc.city.structure.militaryAcademy * 6 : 0)
     }, player.militaryCapability)
+
+    return value
   }
 
   const getStructureCost = (type: HistoryTerrainStructure) => {
@@ -129,7 +145,7 @@ export const usePlayer = () => {
       science: define?.resources?.influence
         ? define?.resources?.science[0] || 0
         : 0,
-      multiplier: define?.multiplier || undefined,
+      multipliers: define?.multipliers || undefined,
     }
   }
 

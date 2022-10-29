@@ -131,6 +131,12 @@ export const useApplicationStore = defineStore('application', {
             food: 1,
             production: 1,
             science: 1,
+            multipliers: {
+              influence: 1.0,
+              food: 1.0,
+              production: 1.0,
+              science: 1.0,
+            },
           },
           structure: {
             townHall: 1,
@@ -258,7 +264,7 @@ export const useApplicationStore = defineStore('application', {
       if (
         player.resources.food >= food &&
         player.resources.production >= production &&
-        define.isBuildable.includes(terrain)
+        define.isBuildable.includes(terrain.type)
       ) {
         this.terrain[target].structure = type
 

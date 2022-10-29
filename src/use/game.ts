@@ -31,13 +31,19 @@ export const useGame = () => {
       knownPlayers: [],
       resources: {
         influence: 5,
-        food: 5,
-        production: 5,
+        food: 30,
+        production: 30,
         science: 2,
+        multipliers: {
+          influence: 1.0,
+          food: 1.0,
+          production: 1.0,
+          science: 1.0,
+        },
       },
       militaryCapability: 0,
-      cityLimit: 2,
-      influenceBase: 2,
+      cityLimit: 3,
+      influenceBase: 3,
     })
 
     for (let i = 1; i < OPTIONS.game.playersCount; i++) {
@@ -49,13 +55,19 @@ export const useGame = () => {
         knownPlayers: [],
         resources: {
           influence: 5,
-          food: 5,
-          production: 5,
+          food: 30,
+          production: 30,
           science: 2,
+          multipliers: {
+            influence: 1.0,
+            food: 1.0,
+            production: 1.0,
+            science: 1.0,
+          },
         },
         militaryCapability: 0,
-        cityLimit: 2,
-        influenceBase: 2,
+        cityLimit: 3,
+        influenceBase: 3,
       })
     }
 
