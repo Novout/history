@@ -11,7 +11,7 @@ export const useOptionsState = defineStore('options', {
       radius: 100,
     },
     game: {
-      playersCount: import.meta.env.PROD ? 5 : 3,
+      playersCount: 3,
       player: {
         name: 'Player 1',
         color: useUtils().getRandomColor()[0],
