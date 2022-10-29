@@ -178,10 +178,10 @@ export const useApplicationStore = defineStore('application', {
 
       target.addChild(text)
     },
-    upgradeCity(player: HistoryPlayer | null) {
+    upgradeCity(player: HistoryPlayer | null, terrain?: HistoryTerrain) {
       if (!player) return
 
-      const target = this.actives.terrain
+      const target = terrain ? terrain.id : this.actives.terrain
       const city = this.terrain[target].city
 
       if (!city) return

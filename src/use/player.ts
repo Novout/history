@@ -149,6 +149,25 @@ export const usePlayer = () => {
     }
   }
 
+  const getBestCaseTerritory = (tr: HistoryTerrain[]) => {
+    return tr.reduce((a1, a2) => {
+      const t1: number =
+        a1.resources.food +
+        a1.resources.production +
+        a1.resources.science +
+        a1.resources.influence
+      const t2: number =
+        a2.resources.food +
+        a2.resources.production +
+        a2.resources.science +
+        a2.resources.influence
+
+      const max = Math.max(t1, t2)
+
+      return max === t1 ? a1 : a2
+    })
+  }
+
   return {
     isAdjacentTerritory,
     isKnownPlayer,
@@ -162,5 +181,6 @@ export const usePlayer = () => {
     getMilitaryCapacity,
     getStructureCost,
     getStructureValue,
+    getBestCaseTerritory,
   }
 }

@@ -1,4 +1,5 @@
 import { useApplicationStore } from '../store/application'
+import { HistoryActionsItem } from '../types/actions'
 import { HistoryTerrain } from '../types/map'
 import { HistoryPlayer, HistoryPlayerIA } from '../types/player'
 import { useDefines } from './defines'
@@ -12,9 +13,11 @@ export const useIA = () => {
   const player = usePlayer()
   const defines = useDefines()
 
-  const getFactor = (arr: any[]) => {
+  const getFactor = (arr: HistoryActionsItem[]): HistoryActionsItem => {
     return arr.reduce(
       (t, val) => {
+        if (t[1] === val[1]) return utils.getRandomInArray([t, val])
+
         const max = Math.max(t[1], val[1])
 
         return max === val[1] ? val : t
@@ -26,7 +29,9 @@ export const useIA = () => {
   const runFactors = (p: HistoryPlayer) => {
     if (!p.isIA) return
 
-    let arr = Object.entries(defines.getIAType(p.isIA as HistoryPlayerIA))
+    const arr = Object.entries(
+      defines.getIAType(p.isIA as HistoryPlayerIA)
+    ) as HistoryActionsItem[]
 
     while (arr.length !== 0) {
       const factor = getFactor(arr)
@@ -35,15 +40,30 @@ export const useIA = () => {
       arr.splice(index, 1)
 
       switch (factor[0]) {
-        case 'COLONIZE_TERRAIN':
-          const terrain: HistoryTerrain = utils.getRandomInArray(
-            player.getAllAdjacentTerritories(p)
-          )
-          APP.annex(p, terrain)
+        case 'ANNEX':
+          const territories = player
+            .getAllAdjacentTerritories(p)
+            ?.filter((t) => t.isAttachable && !t.owner)
+
+          if (territories) {
+            const bestCase = territories[0]
+              ? player.getBestCaseTerritory(territories)
+              : false
+
+            if (bestCase) APP.annex(p, bestCase)
+          }
           break
-        case 'CREATE_CITY':
+        case 'COLONIZE':
+          const cc: HistoryTerrain = utils.getRandomInArray(
+            player.getTerritories(p).filter((p) => !p.city)
+          )
+          if (cc) APP.createCity(p, cc.id, false)
           break
         case 'UPGRADE_CITY':
+          const uc: HistoryTerrain = utils.getRandomInArray(
+            player.getTerritories(p).filter((p) => p.city)
+          )
+          if (uc) APP.upgradeCity(p, uc)
           break
       }
     }

@@ -22,7 +22,7 @@ export const useUtils = () => {
     return terrain.id
   }
 
-  const getRandomInArray = (arr: any[]) => {
+  const getRandomInArray = (arr: any[]): any => {
     return arr[Math.floor(Math.random() * arr.length)]
   }
 
