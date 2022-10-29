@@ -202,6 +202,7 @@ export const useApplicationStore = defineStore('application', {
         player.resources.production >= production
       ) {
         city.structure.townHall++
+        this.terrain[target].structure = undefined
 
         player.resources.food -= food
         player.resources.production -= production

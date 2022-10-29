@@ -11,8 +11,8 @@
         <p>{{ player.getMilitaryPower(APP.player) }}</p>
       </div>
     </div>
-    <div v-for="(ia, index) in APP.IA" :key="index" class="shadow-lg bg-blur border-b-5 rounded-b-md">
-      <p :style="{ borderColor: ia.color[0] }" v-if="APP.player?.knownPlayers.includes(ia.name)" class="text-base font-bold select-none">{{ ia.name }}</p>
+    <div :style="{ borderColor: ia.color[0] }" v-for="(ia, index) in APP.IA" :key="index" class="shadow-lg bg-blur border-b-5 rounded-b-md">
+      <p v-if="APP.player?.knownPlayers.includes(ia.name)" class="text-base font-bold select-none">{{ ia.name }}</p>
       <div v-if="APP.player?.knownPlayers.includes(ia.name)" class="flex text-base items-center justify-between">
         <IconEconomic class="w-5 h-5" />
         <p>{{ player.getEconomicPower(ia) }}</p>
