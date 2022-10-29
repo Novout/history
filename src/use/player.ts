@@ -173,21 +173,49 @@ export const usePlayer = () => {
   const getEconomicPower = (player: HistoryPlayer | null): string => {
     if (!player) return '0'
 
-    const resources =
-      getFood(player) * 1 +
-      (getProduction(player) + 1) +
-      (getInfluence(player) + 1) +
-      (getScience(player) + 1)
+    const tr = getTerritories(player)
 
-    const set = resources / 2
+    const resourcesPerTurn =
+      getFood(player) * 2 +
+      (getProduction(player) + 2) +
+      (getInfluence(player) + 2) +
+      (getScience(player) + 2)
 
-    return set.toFixed(0)
+    const resourcesBase =
+      (player.resources.food +
+        player.resources.influence +
+        player.resources.production +
+        player.resources.science) /
+      20
+
+    const cities = getCityTerritories(player).reduce((acc, t) => {
+      return (acc += (t.city?.structure?.townHall || 0) * 5)
+    }, 0)
+
+    const territories = tr.length
+
+    const structures = tr.reduce((acc, t) => {
+      return (acc += t.structure ? 3 : 0)
+    }, 0)
+
+    const result =
+      resourcesPerTurn + resourcesBase + cities + territories + structures
+
+    return (result / 2).toFixed(0)
   }
 
   const getMilitaryPower = (player: HistoryPlayer | null): string => {
     if (!player) return '0'
 
-    return '0'
+    const tr = getTerritories(player)
+
+    const troops = tr.reduce((sum, t) => {
+      return (sum += t.troops ? 0 : 0)
+    }, 0)
+
+    const result = troops
+
+    return result.toFixed(0)
   }
 
   return {
