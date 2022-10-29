@@ -21,15 +21,23 @@
         </div>
         <div class="flex flex-col gap-2 w-full">
           <H2>Ações</H2>
-          <div :class="[player.isAdjacentTerritory(APP.player, terrain) && (APP.player!.resources.influence >= COST_DEFINE.COLONIZE_ANNEX * (usePlayer().getTerritories(APP.player).length + 1)) ? '' : 'pointer-events-none opacity-50']" class="flex items-center gap-2 mt-5" v-if="!terrain.city && !terrain.owner && terrain.isAttachable">
-            <Button @click="APP.annex(APP.player)">Anexar</Button>
-            <Influence>{{ COST_DEFINE.COLONIZE_ANNEX * (player.getTerritories(APP.player).length + 1) }}</Influence>
-          </div>
-          <div :class="[APP.player!.resources.food >= COST_DEFINE.COLONIZE_FOOD && APP.player!.resources.production >= COST_DEFINE.COLONIZE_PRODUCTION ? '' : 'pointer-events-none opacity-50']" class="flex items-center gap-2 mt-5" v-else-if="!terrain.city && terrain.owner === APP.player?.name && terrain.isColonizable">
-            <Button @click="APP.createCity(APP.player, APP.actives.terrain)">Colonizar</Button>
+          <GameTerrainInfoActionContainer :class="[player.isAdjacentTerritory(APP.player, terrain) && (APP.player!.resources.influence >= COST_DEFINE.COLONIZE_ANNEX * (usePlayer().getTerritories(APP.player).length + 1)) ? '' : 'pointer-events-none opacity-50']" v-if="!terrain.city && !terrain.owner && terrain.isAttachable">
+            <div class="flex gap-2 w-full">
+              <Button @click="APP.annex(APP.player)">Anexar</Button>
+              <Influence>{{ COST_DEFINE.COLONIZE_ANNEX * (player.getTerritories(APP.player).length + 1) }}</Influence>
+            </div>
+          </GameTerrainInfoActionContainer>
+          <GameTerrainInfoActionContainer :class="[APP.player!.resources.food >= COST_DEFINE.COLONIZE_FOOD && APP.player!.resources.production >= COST_DEFINE.COLONIZE_PRODUCTION ? '' : 'pointer-events-none opacity-50']" v-else-if="!terrain.city && terrain.owner === APP.player?.name && terrain.isColonizable">
+            <H3>Nova Cidade</H3>
+            <div class="mt-5">
+              <input class="bg-blur border-none p-2 text-white text-lg w-full" v-model="cityName" type="text" />
+            </div>
+            <div class="flex gap-5 justify-between w-full">
+              <Button @click="APP.createCity(APP.player, APP.actives.terrain, false, cityName)">Colonizar</Button>
             <Food>{{ COST_DEFINE.COLONIZE_FOOD }}</Food>
             <Production>{{ COST_DEFINE.COLONIZE_PRODUCTION }}</Production>
-          </div>
+            </div>
+          </GameTerrainInfoActionContainer>
         </div>
       </div>
       <div class="flex flex-col gap-2 w-80 overflow-y-auto text-white shadow-xl p-5">
@@ -87,7 +95,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { ref, computed } from "vue";
 import { useApplicationStore } from "../../store/application";
 import { useOptionsState } from "../../store/options";
 import { usePlayer } from "../../use/player";
@@ -96,12 +104,16 @@ import COST_DEFINE from '../../defines/cost.json'
 import FARM_DEFINE from '../../defines/buildings/farm.json'
 import LUMBER_DEFINE from '../../defines/buildings/lumber.json'
 import ACADEMIC_CENTER_DEFINE from '../../defines/buildings/academic_center.json'
+import { useDefines } from "../../use/defines";
 
 const APP = useApplicationStore()
 const OPTIONS = useOptionsState()
 
 const player = usePlayer()
 const name = useName()
+const defines = useDefines()
 
 const terrain = computed(() => APP.terrain[APP.actives.terrain])
+
+const cityName = ref(defines.getRandomCityName())
 </script>

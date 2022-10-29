@@ -101,11 +101,17 @@ export const useApplicationStore = defineStore('application', {
     createCity(
       player: HistoryPlayer | null,
       index: number,
-      newPlayer: boolean = false
+      newPlayer: boolean = false,
+      cityName?: string
     ) {
       const terrain = this.terrain[index]
 
-      if (!player || !terrain?.isColonizable) return
+      if (
+        !player ||
+        !terrain?.isColonizable ||
+        usePlayer().getCityTerritories(player).length >= player.cityLimit
+      )
+        return
 
       const food = COST_DEFINE.COLONIZE_FOOD
       const production = COST_DEFINE.COLONIZE_PRODUCTION
@@ -123,9 +129,10 @@ export const useApplicationStore = defineStore('application', {
 
         this.terrain[index].city = {
           name:
-            newPlayer && !player.isIA
+            cityName ||
+            (newPlayer && !player.isIA
               ? useOptionsState().game.player.capital
-              : useDefines().getRandomCityName(),
+              : useDefines().getRandomCityName()),
           resources: {
             influence: 0,
             food: 1,

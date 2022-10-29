@@ -8,6 +8,7 @@ import { useUtils } from './utils'
 import { useIA } from './ia'
 import { computed, watch } from 'vue'
 import { useEvents } from './events'
+import { watchThrottled } from '@vueuse/core'
 
 export const useGame = () => {
   const APP = useApplicationStore()
@@ -103,12 +104,12 @@ export const useGame = () => {
   }
 
   const watchers = () => {
-    watch(
+    watchThrottled(
       APP.terrain,
       () => {
         map.load()
       },
-      { deep: true }
+      { deep: true, throttle: 500 }
     )
 
     watch(

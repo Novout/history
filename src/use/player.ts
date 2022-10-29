@@ -49,7 +49,7 @@ export const usePlayer = () => {
   }
 
   const getCityTerritories = (player: HistoryPlayer | null) => {
-    if (player === null) return 0
+    if (player === null) return []
 
     return getTerritories(player).filter((t) => t.city)
   }
