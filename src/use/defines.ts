@@ -13,9 +13,13 @@ import FARM_DEFINE from '../defines/buildings/farm.json'
 import LUMBER_DEFINE from '../defines/buildings/lumber.json'
 import ACADEMIC_CENTER_DEFINE from '../defines/buildings/academic_center.json'
 import DEFAULT_FACTOR_DEFINE from '../defines/factors/default.json'
+import RANDOM_CITY_NAMES_DEFINE from '../defines/random/city_names.json'
 import { HistoryPlayerIA } from '../types/player'
+import { useUtils } from './utils'
 
 export const useDefines = () => {
+  const utils = useUtils()
+
   const getTerrainGenerateDefine = (type: HistoryTerrainGenerate) => {
     switch (type) {
       case 'pangea':
@@ -58,10 +62,15 @@ export const useDefines = () => {
     }
   }
 
+  const getRandomCityName = (): string => {
+    return utils.getRandomInArray(RANDOM_CITY_NAMES_DEFINE as string[])
+  }
+
   return {
     getTerrainGenerateDefine,
     getTerrainDefine,
     getStructureDefine,
     getIAType,
+    getRandomCityName,
   }
 }

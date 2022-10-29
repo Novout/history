@@ -125,7 +125,7 @@ export const useApplicationStore = defineStore('application', {
           name:
             newPlayer && !player.isIA
               ? useOptionsState().game.player.capital
-              : 'City',
+              : useDefines().getRandomCityName(),
           resources: {
             influence: 0,
             food: 1,

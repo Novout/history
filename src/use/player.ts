@@ -48,12 +48,14 @@ export const usePlayer = () => {
       .filter((f) => f.owner !== player.name)
   }
 
-  const getMultipliersStructure = (player: HistoryPlayer | null) => {
+  const getCityTerritories = (player: HistoryPlayer | null) => {
     if (player === null) return 0
 
-    return getTerritories(player).reduce((sum, acc) => {
-      return (sum += acc.structure ? getStructureValue(acc.structure).food : 0)
-    }, 0)
+    return getTerritories(player).filter((t) => t.city)
+  }
+
+  const getAllCityTerritories = () => {
+    return APP.terrain.filter((t) => t.city)
   }
 
   const getFood = (player: HistoryPlayer | null) => {
@@ -173,6 +175,8 @@ export const usePlayer = () => {
     isKnownPlayer,
     getPlayer,
     getAllAdjacentTerritories,
+    getCityTerritories,
+    getAllCityTerritories,
     getTerritories,
     getInfluence,
     getFood,
