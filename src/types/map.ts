@@ -58,7 +58,6 @@ export interface HistoryMapHexagonCreateOptions {
 }
 export interface HistoryMapCreateOptions {
   radius: number
-  width: number
-  height: number
+  size: 'small' | 'medium' | 'large'
   type: HistoryTerrainGenerate
 }

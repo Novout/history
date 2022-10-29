@@ -30,24 +30,35 @@ export const useMap = () => {
   const player = usePlayer()
   const loader = Loader.shared
 
+  const getSize = (): { width: number; height: number } => {
+    switch (OPTIONS.map.size) {
+      case 'small':
+        return { width: 6, height: 6 }
+      case 'medium':
+        return { width: 12, height: 8 }
+      case 'large':
+        return { width: 30, height: 8 }
+    }
+  }
+
   const generateType = ({ y }: Coordinates): HistoryTerrainType => {
     const define = defines.getTerrainGenerateDefine(OPTIONS.map.type)
 
     const random = utils.getRandomPercentage()
 
+    const { height } = getSize()
+
     if (OPTIONS.map.type === 'pangea') {
       if (
         (y <= define.snow[0] && random > define.snow[1]) ||
-        (OPTIONS.map.height - 1 - define.snow[0] <= y &&
-          random > define.snow[1])
+        (height - 1 - define.snow[0] <= y && random > define.snow[1])
       ) {
         return 'snow'
       }
 
       if (
         (y <= define.tundra[0] && random > define.tundra[1]) ||
-        (OPTIONS.map.height - 1 - define.tundra[0] <= y &&
-          random > define.tundra[1])
+        (height - 1 - define.tundra[0] <= y && random > define.tundra[1])
       ) {
         return 'tundra'
       }
@@ -237,22 +248,16 @@ export const useMap = () => {
   }
 
   const create = (opts: HistoryMapCreateOptions) => {
+    const { width, height } = getSize()
+
     let counterX = 0
     let counterY = 0
     let ID = 0
 
     const terrain = new Container()
 
-    for (
-      let y = opts.radius * 2;
-      counterY < opts.height;
-      y += opts.radius * 1.8
-    ) {
-      for (
-        let x = opts.radius * 2;
-        counterX < opts.width;
-        x += opts.radius * 1.5
-      ) {
+    for (let y = opts.radius * 2; counterY < height; y += opts.radius * 1.8) {
+      for (let x = opts.radius * 2; counterX < width; x += opts.radius * 1.5) {
         const type = generateType({ x: counterX, y: counterY })
         const typeDefine = defines.getTerrainDefine(type)
 

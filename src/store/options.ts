@@ -4,8 +4,7 @@ import { OptionsState } from '../types/stores'
 export const useOptionsState = defineStore('options', {
   state: (): OptionsState => ({
     map: {
-      height: import.meta.env.PROD ? 8 : 4,
-      width: import.meta.env.PROD ? 30 : 4,
+      size: 'small',
       type: 'pangea',
       radius: 100,
     },
