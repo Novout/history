@@ -70,7 +70,7 @@ export const usePlayer = () => {
       getTerritories(player).reduce((sum, acc) => {
         return (sum +=
           (acc.city ? acc.resources.food + acc.city.resources.food : 0) +
-          (acc.structure ? getStructureValue(acc.structure).food : 0))
+          (acc.structure ? getStructureValue(acc, acc.structure).food : 0))
       }, 0) * player.resources.multipliers.food
 
     const sub = getUnitsMaintenance(player, 'food')
@@ -87,7 +87,9 @@ export const usePlayer = () => {
           (acc.city
             ? acc.resources.production + acc.city.resources.production
             : 0) +
-          (acc.structure ? getStructureValue(acc.structure).production : 0))
+          (acc.structure
+            ? getStructureValue(acc, acc.structure).production
+            : 0))
       }, 0) * player.resources.multipliers.production
 
     const sub = getUnitsMaintenance(player, 'production')
@@ -96,7 +98,7 @@ export const usePlayer = () => {
   }
 
   const getInfluence = (player: HistoryPlayer | null) => {
-    if (player === null) return 0
+    if (player === null) return 0.0
 
     const add = player.influenceBase * player.resources.multipliers.influence
 
@@ -111,9 +113,11 @@ export const usePlayer = () => {
     const add =
       getTerritories(player).reduce((sum, acc) => {
         return (sum +=
-          (acc.city ? acc.resources.science + acc.city.resources.science : 0) +
-          (acc.structure ? getStructureValue(acc.structure).science : 0))
-      }, 0) * player.resources.multipliers.science
+          (acc.city
+            ? acc.resources.science + acc.city.resources.science
+            : 0.0) +
+          (acc.structure ? getStructureValue(acc, acc.structure).science : 0.0))
+      }, 0.0) * player.resources.multipliers.science
 
     const sub = getUnitsMaintenance(player, 'science')
 
@@ -151,20 +155,25 @@ export const usePlayer = () => {
     }
   }
 
-  const getStructureValue = (type: HistoryTerrainStructure) => {
+  const getStructureValue = (
+    terrain: HistoryTerrain,
+    type: HistoryTerrainStructure
+  ) => {
     const define = defines.getStructureDefine(type)
 
     return {
-      food: define?.resources?.food ? define?.resources?.food[0] || 0 : 0,
+      food: define?.resources?.food
+        ? terrain.resources.food + define?.resources?.food[0] || 0.0
+        : 0.0,
       production: define?.resources?.production
-        ? define?.resources?.production[0] || 0
-        : 0,
+        ? terrain.resources.production + define?.resources?.production[0] || 0.0
+        : 0.0,
       influence: define?.resources?.influence
-        ? define?.resources?.influence[0] || 0
-        : 0,
+        ? terrain.resources.influence + define?.resources?.influence[0] || 0.0
+        : 0.0,
       science: define?.resources?.influence
-        ? define?.resources?.science[0] || 0
-        : 0,
+        ? terrain.resources.science + define?.resources?.science[0] || 0.0
+        : 0.0,
       multipliers: define?.multipliers || undefined,
     }
   }
@@ -194,27 +203,27 @@ export const usePlayer = () => {
     const tr = getTerritories(player)
 
     const resourcesPerTurn =
-      getFood(player) * 2 +
-      (getProduction(player) + 2) +
-      (getInfluence(player) + 2) +
-      (getScience(player) + 2)
+      getFood(player) * 2.0 +
+      getProduction(player) * 2.0 +
+      getInfluence(player) * 2.0 +
+      getScience(player) * 2.0
 
     const resourcesBase =
       (player.resources.food +
         player.resources.influence +
         player.resources.production +
         player.resources.science) /
-      20
+      20.0
 
     const cities = getCityTerritories(player).reduce((acc, t) => {
-      return (acc += (t.city?.structure?.townHall || 0) * 5)
+      return (acc += (t.city?.structure?.townHall || 0.0) * 5.0)
     }, 0)
 
     const territories = tr.length
 
     const structures = tr.reduce((acc, t) => {
-      return (acc += t.structure ? 3 : 0)
-    }, 0)
+      return (acc += t.structure ? 3.0 : 0.0)
+    }, 0.0)
 
     const result =
       resourcesPerTurn + resourcesBase + cities + territories + structures
@@ -226,13 +235,13 @@ export const usePlayer = () => {
     player: HistoryPlayer | null,
     resource: HistoryResourcesType
   ) => {
-    if (!player) return 0
+    if (!player) return 0.0
 
     const tr = getTerritories(player)
 
     return tr.reduce((sum, t) => {
       return (sum += getUnitsCostInTerrain(t, resource))
-    }, 0)
+    }, 0.0)
   }
 
   const getUnitsMaintenance = (
@@ -245,7 +254,7 @@ export const usePlayer = () => {
 
     return tr.reduce((sum, t) => {
       return (sum += getUnitsMaintenanceInTerrain(t, resource))
-    }, 0)
+    }, 0.0)
   }
 
   const getUnitsMaintenanceInTerrain = (
@@ -310,7 +319,7 @@ export const usePlayer = () => {
 
     const troops = getAllUnitsCount(player) * 1.25
 
-    const capacity = getMilitaryCapacity(player) / 2
+    const capacity = getMilitaryCapacity(player) / 2.0
 
     const result = troops + capacity
 
