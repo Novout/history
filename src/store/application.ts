@@ -298,6 +298,14 @@ export const useApplicationStore = defineStore('application', {
 
       this.setSquad(terrain, units)
     },
+    setSquad(terrain: HistoryTerrain, squad: HistoryTerrainUnits) {
+      this.terrain[terrain.id].units = squad
+    },
+    deleteSquad(terrain: HistoryTerrain, squad: HistoryTerrainUnits) {
+      if (confirm('Você tem certeza que deseja deletar uma tropa inteira?')) {
+        this.terrain[terrain.id].units = undefined
+      }
+    },
     recruitUnits(
       player: HistoryPlayer | null,
       terrain: HistoryTerrain,
@@ -342,9 +350,6 @@ export const useApplicationStore = defineStore('application', {
       } else if (!player.isIA) {
         useToast().error('Você não possui recursos suficientes para recrutar!')
       }
-    },
-    setSquad(terrain: HistoryTerrain, squad: HistoryTerrainUnits) {
-      this.terrain[terrain.id].units = squad
     },
     removeSquadFromTerrain(terrain: HistoryTerrain) {
       this.terrain[terrain.id].units = undefined

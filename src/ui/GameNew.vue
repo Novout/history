@@ -24,7 +24,10 @@
         <H1>Mapa</H1>
         <div class="flex flex-col w-full gap-2">
           <H2>Tamanho do Mapa</H2>
-          <select class="text-xl" v-model="OPTIONS.map.size">
+          <select
+            class="text-xl bg-blur border border-none rounded p-0.5 text-white"
+            v-model="OPTIONS.map.size"
+          >
             <option value="small">Pequeno</option>
             <option value="medium">Médio</option>
             <option value="large">Grande</option>
@@ -32,16 +35,20 @@
         </div>
         <div class="flex flex-col w-full gap-2">
           <H2>Bioma</H2>
-          <select class="text-xl" v-model="OPTIONS.map.type">
+          <select
+            class="text-xl bg-blur border border-none p-0.5 rounded text-white"
+            v-model="OPTIONS.map.type"
+          >
             <option value="pangea">Pangeia</option>
           </select>
         </div>
         <div class="flex flex-col w-full gap-2">
           <H2>Impérios</H2>
           <input
-            class="bg-transparent border-transparent w-10 p-1 text-lg text-white"
+            class="bg-blur border-transparent w-10 p-1 text-lg text-white"
             type="number"
-            :min="1"
+            :min="2"
+            :max="15"
             v-model="OPTIONS.game.playersCount"
           />
         </div>

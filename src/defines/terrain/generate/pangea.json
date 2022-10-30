@@ -1,7 +1,7 @@
 {
-  "forest": 4,
+  "forest": 6,
   "plain": 25,
   "water": 2,
-  "tundra": [1, 80],
+  "tundra": [1, 60],
   "snow": [0, 0]
 }

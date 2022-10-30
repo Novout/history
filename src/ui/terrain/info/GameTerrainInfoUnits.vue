@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="flex flex-col gap-5 w-auto border border-dark-100 shadow-lg p-5 rounded-lg bg-dark-800">
-      <H2 class="mb-2">Criar Tropa</H2>
+      <H2 class="mb-2">Criar Tropas</H2>
       <div v-if="!terrain.units?.squad" class="flex gap-2 w-full items-center">
         <input v-model="name" type="text" class="bg-blur h-8 w-40 text-white text-lg border-none" />
         <Button @click="APP.createSquad(APP.player, terrain, name)" class="flex-1">Squad</Button>
