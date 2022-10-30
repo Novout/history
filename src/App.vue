@@ -13,7 +13,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <main class="h-screen w-full overflow-hidden" id="game" />
+  <main class="h-screen w-full overflow-hidden bg-main" id="game" />
   <GameNew v-if="!CYCLE.started" />
   <GameProvider v-else />
 </template>

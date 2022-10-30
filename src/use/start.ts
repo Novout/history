@@ -17,6 +17,7 @@ export const useStart = () => {
     const app = new Application({
       antialias: true,
       resolution: devicePixelRatio,
+      backgroundAlpha: 0.75,
     })
     app.renderer.resize(window.innerWidth, window.innerHeight)
 

@@ -2,4 +2,5 @@
   <GameHUDHeaderPlayers />
   <GameHUDHeaderData />
   <GameHUDRound />
+  <GameHUDCities />
 </template>

@@ -7,6 +7,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  background-color: white;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

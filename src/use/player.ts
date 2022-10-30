@@ -59,6 +59,12 @@ export const usePlayer = () => {
     return getTerritories(player).filter((t) => t.city)
   }
 
+  const getUnitsTerritories = (player: HistoryPlayer | null) => {
+    if (player === null) return []
+
+    return APP.terrain.filter((t) => t.units && t.units.owner === player.name)
+  }
+
   const getAllCityTerritories = () => {
     return APP.terrain.filter((t) => t.city)
   }
@@ -333,6 +339,7 @@ export const usePlayer = () => {
     getAllAdjacentTerritories,
     getCityTerritories,
     getAllCityTerritories,
+    getUnitsTerritories,
     getTerritories,
     getInfluence,
     getFood,
