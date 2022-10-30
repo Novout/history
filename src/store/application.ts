@@ -7,6 +7,7 @@ import {
   HistoryTerrain,
   HistoryTerrainStructure,
   HistoryTerrainType,
+  HistoryTerrainUnits,
 } from '../types/map'
 import { Text } from 'pixi.js'
 import { usePlayer } from '../use/player'
@@ -14,6 +15,9 @@ import { useMap } from '../use/map'
 import COST_DEFINE from '../defines/cost.json'
 import { useDefines } from '../use/defines'
 import { useOptionsState } from './options'
+import { HistoryUnitType } from '../types/units'
+import { useUnits } from '../use/units'
+import { useToast } from 'vue-toastification'
 
 export const useApplicationStore = defineStore('application', {
   state: (): ApplicatonState => ({
@@ -279,6 +283,81 @@ export const useApplicationStore = defineStore('application', {
         player.resources.food -= food
         player.resources.production -= production
       }
+    },
+    createSquad(
+      player: HistoryPlayer | null,
+      terrain: HistoryTerrain,
+      name?: string
+    ) {
+      if (!player || name === '') return
+
+      const units = useDefines().getUnits()
+
+      units.owner = player.name
+      units.squad = name || useDefines().getRandomSquadName()
+
+      this.setSquad(terrain, units)
+    },
+    recruitUnits(
+      player: HistoryPlayer | null,
+      terrain: HistoryTerrain,
+      units: Record<HistoryUnitType, number>
+    ) {
+      if (!player) return
+
+      const { food, production, science, influence } =
+        useUnits().getRecruitCost(units)
+
+      const count = usePlayer().getAllUnitsCount(player)
+
+      if (
+        count + usePlayer().getUnitsCountInRecord(units) >
+        usePlayer().getMilitaryCapacity(player)
+      ) {
+        if (!player.isIA)
+          useToast().error(
+            'Você não pode recrutar mais do que a sua capacidade militar!'
+          )
+
+        return
+      }
+
+      if (
+        player.resources.food >= food &&
+        player.resources.production >= production &&
+        player.resources.science >= science &&
+        player.resources.influence >= influence
+      ) {
+        if (this.terrain[terrain.id]?.units) {
+          this.terrain[terrain.id].units!.spearman.count += units.spearman
+          this.terrain[terrain.id].units!.archer.count += units.archer
+          this.terrain[terrain.id].units!.dragon.count += units.dragon
+          this.terrain[terrain.id].units!.catapult.count += units.catapult
+
+          player.resources.food -= food
+          player.resources.production -= production
+          player.resources.influence -= influence
+          player.resources.science -= science
+        }
+      } else if (!player.isIA) {
+        useToast().error('Você não possui recursos suficientes para recrutar!')
+      }
+    },
+    setSquad(terrain: HistoryTerrain, squad: HistoryTerrainUnits) {
+      this.terrain[terrain.id].units = squad
+    },
+    removeSquadFromTerrain(terrain: HistoryTerrain) {
+      this.terrain[terrain.id].units = undefined
+    },
+    moveSquad(from: HistoryTerrain, to: HistoryTerrain) {
+      if (to.units || to.owner !== from.owner || !to.owner) return
+
+      const squad = from.units as HistoryTerrainUnits
+
+      if (squad.inCombat) return
+
+      this.removeSquadFromTerrain(from)
+      this.setSquad(to, squad)
     },
   },
 })

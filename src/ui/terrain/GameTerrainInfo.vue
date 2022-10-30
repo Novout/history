@@ -89,6 +89,7 @@
           <GameTerrainInfoStructureItem v-if="terrain.structure === 'lumber'" :terrain="terrain" :define="LUMBER_DEFINE" />
           <GameTerrainInfoStructureItem v-if="terrain.structure === 'academic_center'" :terrain="terrain" :define="ACADEMIC_CENTER_DEFINE" />
         </div>
+        <GameTerrainInfoUnits v-if="APP.player?.name === terrain.owner" :terrain="terrain" />
       </div>
     </div>
   </div>

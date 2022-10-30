@@ -286,7 +286,7 @@ export const useMap = () => {
           structure: undefined,
           city: undefined,
           resources: resourcesSet,
-          troops: {},
+          units: undefined,
         })
 
         ID++

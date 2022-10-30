@@ -12,6 +12,6 @@ createApp(App)
   .use(ProviderPlugin)
   .use(Toast, {
     position: POSITION.TOP_CENTER,
-    timeout: 3000
+    timeout: 5000
   })
   .mount('#app')

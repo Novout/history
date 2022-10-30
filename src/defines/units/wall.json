@@ -1,0 +1,20 @@
+{
+  "type": "wall",
+  "line": "wall",
+  "weight": 0,
+  "attack": [10, 16, 24, 30, 36],
+  "HP": [100, 150, 200, 250, 300],
+  "time": 0,
+  "cost": {
+    "influence": 0.0,
+    "production": 0.0,
+    "food": 0.0,
+    "science": 0.0
+  },
+  "maintenance": {
+    "influence": 0.0,
+    "production": 0.0,
+    "food": 0.0,
+    "science": 0.0
+  }
+}

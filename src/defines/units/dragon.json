@@ -1,0 +1,20 @@
+{
+  "type": "dragon",
+  "line": "extra",
+  "weight": 5,
+  "attack": 35,
+  "HP": 125,
+  "time": 0,
+  "cost": {
+    "influence": 0.0,
+    "production": 0.0,
+    "food": 65.0,
+    "science": 0.0
+  },
+  "maintenance": {
+    "influence": 0.0,
+    "production": 5.0,
+    "food": 5.0,
+    "science": 0.0
+  }
+}

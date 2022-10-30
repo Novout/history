@@ -1,0 +1,20 @@
+{
+  "type": "catapult",
+  "line": "destruction_line",
+  "weight": 3,
+  "attack": 18,
+  "HP": 22,
+  "time": 0,
+  "cost": {
+    "influence": 0.0,
+    "production": 10.0,
+    "food": 10.0,
+    "science": 0.0
+  },
+  "maintenance": {
+    "influence": 0.0,
+    "production": 1.5,
+    "food": 1.5,
+    "science": 0.0
+  }
+}

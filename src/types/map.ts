@@ -1,3 +1,5 @@
+import { HistoryUnit } from './units'
+
 export type HistoryTerrainType =
   | 'forest'
   | 'plain'
@@ -7,17 +9,37 @@ export type HistoryTerrainType =
 export type HistoryTerrainStructure = 'farm' | 'lumber' | 'academic_center'
 export type HistoryTerrainGenerate = 'pangea'
 
-export interface HistoryResources {
+export type HistoryResourcesType =
+  | 'influence'
+  | 'production'
+  | 'food'
+  | 'science'
+
+export interface HistoryResourcesBase {
   influence: number
   production: number
   food: number
   science: number
+}
+
+export interface HistoryResources extends HistoryResourcesBase {
   multipliers: {
     influence: number
     production: number
     food: number
     science: number
   }
+}
+
+export interface HistoryTerrainUnits {
+  owner?: string
+  squad?: string
+  wasMoved: boolean
+  inCombat: boolean
+  archer: HistoryUnit<'archer'>
+  catapult: HistoryUnit<'catapult'>
+  dragon: HistoryUnit<'dragon'>
+  spearman: HistoryUnit<'spearman'>
 }
 
 export interface HistoryTerrain {
@@ -41,7 +63,7 @@ export interface HistoryTerrain {
       militaryAcademy: number
     }
   }
-  troops?: {}
+  units?: HistoryTerrainUnits
 }
 export interface HistoryMapHexagonCreateOptions {
   type: HistoryTerrainType

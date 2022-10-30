@@ -1,9 +1,14 @@
 import { useApplicationStore } from '../store/application'
-import { HistoryTerrain, HistoryTerrainStructure } from '../types/map'
+import {
+  HistoryResourcesType,
+  HistoryTerrain,
+  HistoryTerrainStructure,
+} from '../types/map'
 import { HistoryPlayer } from '../types/player'
 import { useUtils } from './utils'
 import { useDefines } from './defines'
 import COST_DEFINE from '../defines/cost.json'
+import { HistoryUnitType } from '../types/units'
 
 export const usePlayer = () => {
   const APP = useApplicationStore()
@@ -61,45 +66,58 @@ export const usePlayer = () => {
   const getFood = (player: HistoryPlayer | null) => {
     if (player === null) return 0
 
-    const value = getTerritories(player).reduce((sum, acc) => {
-      return (sum +=
-        (acc.city ? acc.resources.food + acc.city.resources.food : 0) +
-        (acc.structure ? getStructureValue(acc.structure).food : 0))
-    }, 0)
+    const add =
+      getTerritories(player).reduce((sum, acc) => {
+        return (sum +=
+          (acc.city ? acc.resources.food + acc.city.resources.food : 0) +
+          (acc.structure ? getStructureValue(acc.structure).food : 0))
+      }, 0) * player.resources.multipliers.food
 
-    return value * player.resources.multipliers.food
+    const sub = getUnitsMaintenance(player, 'food')
+
+    return add - sub
   }
 
   const getProduction = (player: HistoryPlayer | null) => {
     if (player === null) return 0
 
-    const value = getTerritories(player).reduce((sum, acc) => {
-      return (sum +=
-        (acc.city
-          ? acc.resources.production + acc.city.resources.production
-          : 0) +
-        (acc.structure ? getStructureValue(acc.structure).production : 0))
-    }, 0)
+    const add =
+      getTerritories(player).reduce((sum, acc) => {
+        return (sum +=
+          (acc.city
+            ? acc.resources.production + acc.city.resources.production
+            : 0) +
+          (acc.structure ? getStructureValue(acc.structure).production : 0))
+      }, 0) * player.resources.multipliers.production
 
-    return value * player.resources.multipliers.production
+    const sub = getUnitsMaintenance(player, 'production')
+
+    return add - sub
   }
 
   const getInfluence = (player: HistoryPlayer | null) => {
     if (player === null) return 0
 
-    return player.influenceBase * player.resources.multipliers.influence
+    const add = player.influenceBase * player.resources.multipliers.influence
+
+    const sub = getUnitsMaintenance(player, 'influence')
+
+    return add - sub
   }
 
   const getScience = (player: HistoryPlayer | null) => {
     if (player === null) return 0
 
-    const value = getTerritories(player).reduce((sum, acc) => {
-      return (sum +=
-        (acc.city ? acc.resources.science + acc.city.resources.science : 0) +
-        (acc.structure ? getStructureValue(acc.structure).science : 0))
-    }, 0)
+    const add =
+      getTerritories(player).reduce((sum, acc) => {
+        return (sum +=
+          (acc.city ? acc.resources.science + acc.city.resources.science : 0) +
+          (acc.structure ? getStructureValue(acc.structure).science : 0))
+      }, 0) * player.resources.multipliers.science
 
-    return value * player.resources.multipliers.science
+    const sub = getUnitsMaintenance(player, 'science')
+
+    return add - sub
   }
 
   const getMilitaryCapacity = (player: HistoryPlayer | null) => {
@@ -204,18 +222,99 @@ export const usePlayer = () => {
     return (result / 2).toFixed(0)
   }
 
-  const getMilitaryPower = (player: HistoryPlayer | null): string => {
-    if (!player) return '0'
+  const getUnitsCost = (
+    player: HistoryPlayer | null,
+    resource: HistoryResourcesType
+  ) => {
+    if (!player) return 0
 
     const tr = getTerritories(player)
 
-    const troops = tr.reduce((sum, t) => {
-      return (sum += t.troops ? 0 : 0)
+    return tr.reduce((sum, t) => {
+      return (sum += getUnitsCostInTerrain(t, resource))
     }, 0)
+  }
 
-    const result = troops
+  const getUnitsMaintenance = (
+    player: HistoryPlayer | null,
+    resource: HistoryResourcesType
+  ): number => {
+    if (!player) return 0.0
 
-    return result.toFixed(0)
+    const tr = getTerritories(player)
+
+    return tr.reduce((sum, t) => {
+      return (sum += getUnitsMaintenanceInTerrain(t, resource))
+    }, 0)
+  }
+
+  const getUnitsMaintenanceInTerrain = (
+    terrain: HistoryTerrain,
+    resource: HistoryResourcesType
+  ): number => {
+    if (!terrain.units) return 0.0
+
+    return (
+      terrain.units.archer.maintenance[resource] * terrain.units.archer.count +
+      terrain.units.spearman.maintenance[resource] *
+        terrain.units.spearman.count +
+      terrain.units.catapult.maintenance[resource] *
+        terrain.units.catapult.count +
+      terrain.units.dragon.maintenance[resource] * terrain.units.dragon.count
+    )
+  }
+
+  const getUnitsCostInTerrain = (
+    terrain: HistoryTerrain,
+    resource: HistoryResourcesType
+  ) => {
+    if (!terrain.units) return 0.0
+
+    return (
+      terrain.units.archer.cost[resource] +
+      terrain.units.spearman.cost[resource] +
+      terrain.units.catapult.cost[resource] +
+      terrain.units.dragon.cost[resource]
+    )
+  }
+
+  const getAllUnitsCount = (player: HistoryPlayer | null): number => {
+    if (!player) return 0
+
+    const tr = getTerritories(player)
+
+    return tr.reduce((sum, t) => {
+      return (sum += getUnitsCountInTerrain(t))
+    }, 0)
+  }
+
+  const getUnitsCountInTerrain = (terrain: HistoryTerrain): number => {
+    if (!terrain.units) return 0
+
+    return (
+      terrain.units.archer.count +
+      terrain.units.spearman.count +
+      terrain.units.catapult.count +
+      terrain.units.dragon.count
+    )
+  }
+
+  const getUnitsCountInRecord = (units?: Record<HistoryUnitType, number>) => {
+    if (!units) return 0
+
+    return units.archer + units.spearman + units.catapult + units.dragon
+  }
+
+  const getMilitaryPower = (player: HistoryPlayer | null): string => {
+    if (!player) return '0'
+
+    const troops = getAllUnitsCount(player) * 1.25
+
+    const capacity = getMilitaryCapacity(player) / 2
+
+    const result = troops + capacity
+
+    return (result / 2).toFixed(0)
   }
 
   return {
@@ -235,6 +334,13 @@ export const usePlayer = () => {
     getStructureValue,
     getBestCaseTerritory,
     getEconomicPower,
+    getUnitsMaintenance,
+    getUnitsMaintenanceInTerrain,
+    getUnitsCost,
+    getUnitsCostInTerrain,
+    getAllUnitsCount,
+    getUnitsCountInRecord,
+    getUnitsCountInTerrain,
     getMilitaryPower,
   }
 }
