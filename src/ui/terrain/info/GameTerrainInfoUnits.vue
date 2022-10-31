@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col w-full gap-2">
     <div class="mt-2" />
-    <H2 v-if="terrain.units?.squad">Tropas <span class="border-b">{{ terrain.units?.squad }}</span></H2>
-    <p>Controlado por: <b>{{ terrain.units?.owner }}</b></p>
+    <H2 v-if="terrain.units">Tropas <span class="border-b">{{ terrain.units?.squad }}</span></H2>
+    <p v-if="terrain.units">Controlado por: <b>{{ terrain.units?.owner }}</b></p>
     <div>
       <div v-if="terrain.units?.squad" class="">
         <div class="flex gap-2 items-center">
