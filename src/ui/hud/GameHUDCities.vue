@@ -10,18 +10,18 @@
       </div>
     </div>
     <H2 class="mt-3">Tropas</H2>
-    <div v-for="(terrain, index) in player.getUnitsTerritories(APP.player)" :key="index">
-      <div @click="onTerrainInfo(terrain.id)" class="flex flex-col w-full pt-3 cursor-pointer">
+    <div class="cursor-pointer" v-for="(terrain, index) in player.getUnitsTerritories(APP.player)" :key="index">
+      <div @click="onTerrainInfo(terrain.id)" class="flex flex-col w-full pt-3 my-1">
         <div class="flex items-center gap-2">
           <div>
-            <IconMilitar class="w-8 h-8" />
+            <IconMilitar class="w-7 h-7" />
           </div>
           <H3 class="truncate">{{ terrain.units?.squad }}</H3>
         </div>
         <div>
           <div class="flex flex-wrap justify-between gap-2 w-full">
             <div class="flex gap-2 items-center">
-              <IconUnitSpear class="w-8 h-5" />
+              <IconUnitSpear class="w-5 h-5" />
               <H3>{{ terrain.units?.spearman.count }}</H3>
             </div>
             <div class="flex gap-2 items-center">
@@ -31,7 +31,7 @@
           </div>
           <div class="flex flex-wrap justify-between gap-2 w-full">
             <div class="flex gap-2 items-center">
-              <IconUnitCatapult class="w-8 h-5" />
+              <IconUnitCatapult class="w-5 h-5" />
               <H3>{{ terrain.units?.catapult.count }}</H3>
             </div>
             <div class="flex gap-2 items-center">

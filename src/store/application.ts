@@ -87,6 +87,12 @@ export const useApplicationStore = defineStore('application', {
 
       if (!this.terrain[target]?.isAttachable) return
 
+      if (
+        this.terrain[target].units &&
+        this.terrain[target].units?.owner !== player.name
+      )
+        return
+
       const influenceValue =
         COST_DEFINE.COLONIZE_ANNEX *
         (usePlayer().getTerritories(this.player).length + 1)
@@ -355,11 +361,11 @@ export const useApplicationStore = defineStore('application', {
       this.terrain[terrain.id].units = undefined
     },
     moveSquad(from: HistoryTerrain, to: HistoryTerrain) {
-      if (to.units || to.owner !== from.owner || !to.owner) return
-
       const squad = from.units as HistoryTerrainUnits
 
-      if (squad.inCombat) return
+      if (squad.inCombat || !to.isAccessible) return
+
+      squad.wasMoved = true
 
       this.removeSquadFromTerrain(from)
       this.setSquad(to, squad)

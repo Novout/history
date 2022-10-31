@@ -38,6 +38,13 @@
             <Production>{{ COST_DEFINE.COLONIZE_PRODUCTION }}</Production>
             </div>
           </GameTerrainInfoActionContainer>
+          <GameTerrainInfoActionContainer v-if="terrain.isAccessible && player.getPossibleUnitsMove(APP.player, terrain).length > 0">
+            <H3>Mover Tropas</H3>
+            <div class="flex items-center w-full justify-between p-2 gap-5" v-for="(tr, index) in player.getPossibleUnitsMove(APP.player, terrain)" :key="index">
+              <p class="text-xl truncate">{{ tr.units?.squad }}</p>
+              <Button @click="APP.moveSquad(tr, terrain)">Mover</Button>
+            </div>
+          </GameTerrainInfoActionContainer>
         </div>
       </div>
       <div class="flex flex-col gap-2 w-80 overflow-y-auto text-white shadow-xl p-5">
@@ -89,7 +96,7 @@
           <GameTerrainInfoStructureItem v-if="terrain.structure === 'lumber'" :terrain="terrain" :define="LUMBER_DEFINE" />
           <GameTerrainInfoStructureItem v-if="terrain.structure === 'academic_center'" :terrain="terrain" :define="ACADEMIC_CENTER_DEFINE" />
         </div>
-        <GameTerrainInfoUnits v-if="APP.player?.name === terrain.owner && terrain.city" :terrain="terrain" />
+        <GameTerrainInfoUnits v-if="APP.player?.name === terrain.owner || terrain.units?.owner === APP.player?.name" :terrain="terrain" />
       </div>
     </div>
   </div>

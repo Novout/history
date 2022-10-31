@@ -1,6 +1,6 @@
 {
   "backgroundColor": "0xAAAAAA",
-  "isAccessible": false,
+  "isAccessible": true,
   "isColonizable": false,
   "isAttachable": true,
   "isSpecialHex": false,

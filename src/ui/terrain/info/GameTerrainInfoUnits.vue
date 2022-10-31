@@ -1,35 +1,37 @@
 <template>
   <div class="flex flex-col w-full gap-2">
+    <div class="mt-2" />
     <H2 v-if="terrain.units?.squad">Tropas <span class="border-b">{{ terrain.units?.squad }}</span></H2>
-    <div class="my-2">
+    <p>Controlado por: <b>{{ terrain.units?.owner }}</b></p>
+    <div>
       <div v-if="terrain.units?.squad" class="">
         <div class="flex gap-2 items-center">
           <IconUnitSpear class="w-5 h-5" />
-          <p>Lanceiro</p>
+          <p class="text-lg">Lanceiro</p>
           <p>{{ terrain.units.spearman.count }}</p>
         </div>
         <div class="flex gap-2 items-center">
           <IconUnitArcher class="w-5 h-5" />
-          <p>Arqueiro</p>
+          <p class="text-lg">Arqueiro</p>
           <p>{{ terrain.units.archer.count }}</p>
         </div>
         <div class="flex gap-2 items-center">
           <IconUnitCatapult class="w-5 h-5" />
-          <p>Catapulta</p>
+          <p class="text-lg">Catapulta</p>
           <p>{{ terrain.units.catapult.count }}</p>
         </div>
         <div class="flex gap-2 items-center">
           <IconUnitDragon class="w-5 h-5" />
-          <p>Dragão</p>
+          <p class="text-lg">Dragão</p>
           <p>{{ terrain.units.dragon.count }}</p>
         </div>
       </div>
     </div>
-    <div class="flex flex-col gap-5 w-auto border border-dark-100 shadow-lg p-5 rounded-lg bg-dark-800">
+    <div v-if="terrain.city && terrain.owner === APP.player?.name" class="flex flex-col gap-5 w-auto border border-dark-100 shadow-lg p-5 rounded-lg bg-dark-800">
       <H2 class="mb-2">Criar Tropas</H2>
       <div v-if="!terrain.units?.squad" class="flex gap-2 w-full items-center">
         <input v-model="name" type="text" class="bg-blur h-8 w-40 text-white text-lg border-none" />
-        <Button @click="APP.createSquad(APP.player, terrain, name)" class="flex-1">Squad</Button>
+        <Button @click="APP.createSquad(APP.player, terrain, name)" class="flex-1">Criar</Button>
       </div>
       <div v-if="terrain.units?.squad">
         <div class="flex gap-2 items-center">
@@ -58,10 +60,13 @@
 import { HistoryTerrain } from '../../../types/map';
 import { useApplicationStore } from '../../../store/application';
 import { ref, reactive } from 'vue';
+import { useDefines } from '../../../use/defines';
 
 const APP = useApplicationStore()
 
-const name = ref('')
+const defines = useDefines()
+
+const name = ref(defines.getRandomSquadName())
 
 const recruit = reactive({
   spearman: 0,

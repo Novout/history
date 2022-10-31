@@ -89,6 +89,8 @@ export const useGame = () => {
     runActions(APP.player as HistoryPlayer)
 
     CYCLE.round++
+
+    runTerrainSets()
   }
 
   const runEvents = () => {
@@ -101,6 +103,12 @@ export const useGame = () => {
     p.resources.production += player.getProduction(p)
     p.resources.influence += player.getInfluence(p)
     p.resources.science += player.getScience(p)
+  }
+
+  const runTerrainSets = () => {
+    APP.terrain.forEach((tr) => {
+      if (tr.units) tr.units.wasMoved = false
+    })
   }
 
   const watchers = () => {

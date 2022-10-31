@@ -7,8 +7,8 @@ import {
 import { HistoryPlayer } from '../types/player'
 import { useUtils } from './utils'
 import { useDefines } from './defines'
-import COST_DEFINE from '../defines/cost.json'
 import { HistoryUnitType } from '../types/units'
+import COST_DEFINE from '../defines/cost.json'
 
 export const usePlayer = () => {
   const APP = useApplicationStore()
@@ -256,10 +256,11 @@ export const usePlayer = () => {
   ): number => {
     if (!player) return 0.0
 
-    const tr = getTerritories(player)
-
-    return tr.reduce((sum, t) => {
-      return (sum += getUnitsMaintenanceInTerrain(t, resource))
+    return APP.terrain.reduce((sum, t) => {
+      return (sum +=
+        t.units?.owner === player.name
+          ? getUnitsMaintenanceInTerrain(t, resource)
+          : 0)
     }, 0.0)
   }
 
@@ -296,10 +297,9 @@ export const usePlayer = () => {
   const getAllUnitsCount = (player: HistoryPlayer | null): number => {
     if (!player) return 0
 
-    const tr = getTerritories(player)
-
-    return tr.reduce((sum, t) => {
-      return (sum += getUnitsCountInTerrain(t))
+    return APP.terrain.reduce((sum, t) => {
+      return (sum +=
+        t.units?.owner === player.name ? getUnitsCountInTerrain(t) : 0)
     }, 0)
   }
 
@@ -332,6 +332,31 @@ export const usePlayer = () => {
     return (result / 2).toFixed(0)
   }
 
+  const getPossibleUnitsMove = (
+    player: HistoryPlayer | null,
+    terrain: HistoryTerrain
+  ): HistoryTerrain[] => {
+    if (
+      !player ||
+      (player.name !== terrain.owner && terrain.owner !== undefined)
+    )
+      return []
+
+    const possibleTroops = APP.terrain
+      .filter(
+        (tr) =>
+          utils.isAdjacentHex(tr, terrain) &&
+          getUnitsCountInTerrain(tr) > 0 &&
+          !tr.units?.wasMoved
+      )
+      .filter(
+        (tr) =>
+          tr.units?.owner === player.name || (!terrain.owner && !terrain.units)
+      )
+
+    return possibleTroops
+  }
+
   return {
     isAdjacentTerritory,
     isKnownPlayer,
@@ -358,5 +383,6 @@ export const usePlayer = () => {
     getUnitsCountInRecord,
     getUnitsCountInTerrain,
     getMilitaryPower,
+    getPossibleUnitsMove,
   }
 }

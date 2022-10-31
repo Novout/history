@@ -55,7 +55,7 @@ export const useIA = () => {
           break
         case 'COLONIZE':
           const cc: HistoryTerrain = utils.getRandomInArray(
-            player.getTerritories(p).filter((p) => !p.city)
+            player.getTerritories(p).filter((pc) => !pc.city && !pc.owner)
           )
           if (cc) APP.createCity(p, cc.id, false)
           break
