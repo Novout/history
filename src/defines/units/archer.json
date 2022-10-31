@@ -2,7 +2,7 @@
   "type": "archer",
   "line": "back_line",
   "weight": 1,
-  "attack": 2,
+  "attack": 3,
   "HP": 7,
   "time": 0,
   "cost": {
@@ -13,8 +13,8 @@
   },
   "maintenance": {
     "influence": 0.0,
-    "production": 0.5,
-    "food": 0.5,
+    "production": 0.2,
+    "food": 0.2,
     "science": 0.0
   }
 }

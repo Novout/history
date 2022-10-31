@@ -299,8 +299,19 @@ export const usePlayer = () => {
 
     return APP.terrain.reduce((sum, t) => {
       return (sum +=
-        t.units?.owner === player.name ? getUnitsCountInTerrain(t) : 0)
+        t.units?.owner === player.name ? getUnitsCountByWeightInTerrain(t) : 0)
     }, 0)
+  }
+
+  const getUnitsCountByWeightInTerrain = (terrain: HistoryTerrain): number => {
+    if (!terrain.units) return 0
+
+    return (
+      terrain.units.archer.count * terrain.units.archer.weight +
+      terrain.units.spearman.count * terrain.units.spearman.weight +
+      terrain.units.catapult.count * terrain.units.catapult.weight +
+      terrain.units.dragon.count * terrain.units.dragon.weight
+    )
   }
 
   const getUnitsCountInTerrain = (terrain: HistoryTerrain): number => {

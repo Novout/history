@@ -13,8 +13,8 @@
   },
   "maintenance": {
     "influence": 0.0,
-    "production": 0.5,
-    "food": 0.5,
+    "production": 0.35,
+    "food": 0.35,
     "science": 0.0
   }
 }
