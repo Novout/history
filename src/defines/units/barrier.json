@@ -2,6 +2,7 @@
   "type": "barrier",
   "line": "wall",
   "weight": 0,
+  "stack": 1,
   "attack": [2],
   "HP": [20],
   "time": 0,

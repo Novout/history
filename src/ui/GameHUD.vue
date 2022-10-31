@@ -3,4 +3,5 @@
   <GameHUDHeaderData />
   <GameHUDRound />
   <GameHUDCities />
+  <GameHUDBattles />
 </template>

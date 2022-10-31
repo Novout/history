@@ -32,6 +32,8 @@ export const useApplicationStore = defineStore('application', {
       terrainClicked: false,
     },
     absolute: {
+      battleWindow: false,
+      battleInfo: false,
       terrainInfo: false,
     },
   }),

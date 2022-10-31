@@ -3,6 +3,7 @@ import { Viewport } from 'pixi-viewport'
 import { HistoryMapCreateOptions, HistoryTerrain } from './map'
 import { HistoryPlayer } from './player'
 import { HistoryGameOptions } from './game'
+import { HistoryBattle } from './battle'
 
 export interface ApplicatonState {
   context: Application | null
@@ -16,6 +17,8 @@ export interface ApplicatonState {
     terrainClicked: boolean
   }
   absolute: {
+    battleWindow: boolean
+    battleInfo: boolean
     terrainInfo: boolean
   }
 }
@@ -29,4 +32,8 @@ export interface OptionsState {
 export interface CycleState {
   started: boolean
   round: number
+}
+
+export interface BattleState {
+  battles: HistoryBattle[]
 }

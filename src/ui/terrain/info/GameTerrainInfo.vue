@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-center absolute top-0 left-0 z-max bg-dark bg-opacity-50 w-full h-screen">
+  <Modal>
     <div v-provider-close :esc="() => APP.absolute.terrainInfo = false" class="flex w-auto max-h-screen md:max-h-3/4 bg-blur">
       <div class="flex flex-col gap-5 w-80 overflow-y-auto text-white shadow-xl p-5">
         <div class="flex w-full justify-between items-center mb-5">
@@ -99,20 +99,20 @@
         <GameTerrainInfoUnits v-if="APP.player?.name === terrain.owner || terrain.units?.owner === APP.player?.name" :terrain="terrain" />
       </div>
     </div>
-  </div>
+  </Modal>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { useApplicationStore } from "../../store/application";
-import { useOptionsState } from "../../store/options";
-import { usePlayer } from "../../use/player";
-import { useName } from "../../use/name";
-import COST_DEFINE from '../../defines/cost.json'
-import FARM_DEFINE from '../../defines/buildings/farm.json'
-import LUMBER_DEFINE from '../../defines/buildings/lumber.json'
-import ACADEMIC_CENTER_DEFINE from '../../defines/buildings/academic_center.json'
-import { useDefines } from "../../use/defines";
+import { useApplicationStore } from "../../../store/application";
+import { useOptionsState } from "../../../store/options";
+import { usePlayer } from "../../../use/player";
+import { useName } from "../../../use/name";
+import COST_DEFINE from '../../../defines/cost.json'
+import FARM_DEFINE from '../../../defines/buildings/farm.json'
+import LUMBER_DEFINE from '../../../defines/buildings/lumber.json'
+import ACADEMIC_CENTER_DEFINE from '../../../defines/buildings/academic_center.json'
+import { useDefines } from "../../../use/defines";
 
 const APP = useApplicationStore()
 const OPTIONS = useOptionsState()

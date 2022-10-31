@@ -2,6 +2,7 @@
   "type": "wall",
   "line": "wall",
   "weight": 0,
+  "stack": 1,
   "attack": [10, 16, 24, 30, 36],
   "HP": [100, 150, 200, 250, 300],
   "time": 0,

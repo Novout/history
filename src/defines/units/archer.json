@@ -2,6 +2,7 @@
   "type": "archer",
   "line": "back_line",
   "weight": 1,
+  "stack": 10,
   "attack": 3,
   "HP": 7,
   "time": 0,
