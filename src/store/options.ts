@@ -17,6 +17,7 @@ export const useOptionsState = defineStore('options', {
         color: useUtils().getRandomColor()[0],
         capital: useDefines().getRandomCityName(),
       },
+      barbarians: 1,
     },
     debug: import.meta.env.DEV,
   }),

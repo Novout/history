@@ -12,6 +12,7 @@ export interface ApplicatonState {
   terrain: HistoryTerrain[]
   player: HistoryPlayer | null
   IA: HistoryPlayer[]
+  barbarians: HistoryPlayer[]
   actives: {
     terrain: number
     terrainClicked: boolean

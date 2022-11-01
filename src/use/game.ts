@@ -29,6 +29,7 @@ export const useGame = () => {
       color: utils.getRandomColor(OPTIONS.game.player.color),
       isIA: false,
       isAlive: true,
+      isBarbarian: false,
       knownPlayers: [],
       resources: {
         influence: 5,
@@ -47,11 +48,38 @@ export const useGame = () => {
       influenceBase: 3,
     })
 
+    for (let i = 0; i < OPTIONS.game.barbarians; i++) {
+      APP.setNewPlayer({
+        name: `Bárbaros ${i + 1}`,
+        color: ['#4A341C', 0x4a341c],
+        isIA: 'default',
+        isBarbarian: true,
+        isAlive: true,
+        knownPlayers: [],
+        resources: {
+          influence: 5,
+          food: 30,
+          production: 30,
+          science: 2,
+          multipliers: {
+            influence: 1.0,
+            food: 1.0,
+            production: 1.0,
+            science: 1.0,
+          },
+        },
+        militaryCapability: 0,
+        cityLimit: 3,
+        influenceBase: 3,
+      })
+    }
+
     for (let i = 1; i < OPTIONS.game.playersCount; i++) {
       APP.setNewPlayer({
         name: `Player ${i + 1}`,
         color: utils.getRandomColor(),
         isIA: 'default',
+        isBarbarian: false,
         isAlive: true,
         knownPlayers: [],
         resources: {

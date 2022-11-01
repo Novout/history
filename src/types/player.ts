@@ -13,6 +13,7 @@ export interface HistoryPlayer {
   name: Player
   color: [string, number]
   isIA: HistoryPlayerIA | boolean
+  isBarbarian: boolean
   isAlive: boolean
   knownPlayers: string[]
   resources: HistoryResources

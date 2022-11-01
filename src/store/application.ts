@@ -28,6 +28,7 @@ export const useApplicationStore = defineStore('application', {
     terrain: [],
     player: null,
     IA: [],
+    barbarians: [],
     actives: {
       terrain: -1,
       terrainClicked: false,
@@ -44,9 +45,23 @@ export const useApplicationStore = defineStore('application', {
 
       this.setTerrainOwner(player, id, true)
 
-      !player.isIA ? (this.player = player) : this.IA.push(player)
+      if (player.isBarbarian) {
+        this.setBarbarianPlayer(player, id)
+
+        return
+      }
+
+      if (player.isIA) this.IA.push(player)
+      else this.player = player
 
       this.createCity(player, id, true)
+    },
+    setBarbarianPlayer(player: HistoryPlayer, id: number) {
+      this.barbarians.push(player)
+
+      this.createCity(player, id, true)
+
+      this.terrain[id].units = useDefines().getBarbarianUnits(player)
     },
     setTerrainOwner(
       player: HistoryPlayer,

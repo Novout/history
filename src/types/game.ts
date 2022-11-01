@@ -5,4 +5,5 @@ export interface HistoryGameOptions {
     color: string
     capital: string
   }
+  barbarians: number
 }

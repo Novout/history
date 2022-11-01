@@ -52,6 +52,16 @@
             v-model="OPTIONS.game.playersCount"
           />
         </div>
+        <div class="flex flex-col w-full gap-2">
+          <H2>Bárbaros</H2>
+          <input
+            class="bg-blur border-transparent w-10 p-1 text-lg text-white"
+            type="number"
+            :min="0"
+            :max="10"
+            v-model="OPTIONS.game.barbarians"
+          />
+        </div>
         <Button @click.prevent.stop="onClick">Iniciar Jogo</Button>
       </div>
     </div>

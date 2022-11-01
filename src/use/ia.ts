@@ -27,7 +27,7 @@ export const useIA = () => {
   }
 
   const runFactors = (p: HistoryPlayer) => {
-    if (!p.isIA) return
+    if (!p.isIA || p.isBarbarian) return
 
     const arr = Object.entries(
       defines.getIAType(p.isIA as HistoryPlayerIA)
