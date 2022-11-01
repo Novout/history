@@ -18,6 +18,7 @@ import { useOptionsState } from './options'
 import { HistoryUnitType } from '../types/units'
 import { useUnits } from '../use/units'
 import { useToast } from 'vue-toastification'
+import { nextTick } from 'vue'
 
 export const useApplicationStore = defineStore('application', {
   state: (): ApplicatonState => ({
@@ -292,7 +293,7 @@ export const useApplicationStore = defineStore('application', {
         player.resources.production -= production
       }
     },
-    createSquad(
+    async createSquad(
       player: HistoryPlayer | null,
       terrain: HistoryTerrain,
       name?: string
@@ -305,6 +306,12 @@ export const useApplicationStore = defineStore('application', {
       units.squad = name || useDefines().getRandomSquadName()
 
       this.setSquad(terrain, units)
+
+      await nextTick
+
+      const div = document.querySelector('#terrain-info-right')
+
+      if (div) div.scrollTop = div.scrollHeight
     },
     setSquad(terrain: HistoryTerrain, squad: HistoryTerrainUnits) {
       this.terrain[terrain.id].units = squad

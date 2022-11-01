@@ -1,5 +1,5 @@
 <template>
-  <div class="p-10 z-max max-h-100 select-none overflow-y-auto w-35 gap-2 fixed top-1/2 transform -translate-y-1/2 text-white left-0 z-max bg-blur flex flex-col rounded-t-md">
+  <div v-if="BATTLE.getPlayerBattles.length > 0" class="p-10 z-max max-h-100 select-none overflow-y-auto w-35 gap-2 fixed top-1/2 transform -translate-y-1/2 text-white left-0 z-max bg-blur flex flex-col rounded-t-md">
     <div @click="onOpenBattle(battle.terrain)" v-for="(battle, index) in BATTLE.getPlayerBattles" :key="index">
       <div class="flex flex-col gap-2 w-full">
         <div class="flex items-center gap-2">

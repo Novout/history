@@ -47,7 +47,7 @@
           </GameTerrainInfoActionContainer>
         </div>
       </div>
-      <div class="flex flex-col gap-2 w-80 overflow-y-auto text-white shadow-xl p-5">
+      <div id="terrain-info-right" class="flex flex-col gap-2 w-80 overflow-y-auto text-white shadow-xl p-5">
         <div class="flex w-full justify-between items-center">
           <H2>Construção</H2>
           <Icon @click="APP.absolute.terrainInfo = false">

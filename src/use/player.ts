@@ -1,5 +1,6 @@
 import { useApplicationStore } from '../store/application'
 import {
+  HistoryResourcesBase,
   HistoryResourcesType,
   HistoryTerrain,
   HistoryTerrainStructure,
@@ -280,6 +281,31 @@ export const usePlayer = () => {
     )
   }
 
+  const getUnitsMaintenanceInBase = (
+    { spearman, archer, catapult, dragon }: Record<HistoryUnitType, number>,
+    resource: HistoryResourcesType
+  ): Record<HistoryUnitType, number> => {
+    const define = defines.getUnits()
+
+    return {
+      spearman: spearman * define.spearman.maintenance[resource],
+      archer: archer * define.archer.maintenance[resource],
+      catapult: catapult * define.catapult.maintenance[resource],
+      dragon: dragon * define.dragon.maintenance[resource],
+    }
+  }
+
+  const getUnitsMaintenanceInBaseResources = (
+    units: Record<HistoryUnitType, number>,
+    resource: HistoryResourcesType
+  ): number => {
+    const values = getUnitsMaintenanceInBase(units, resource)
+
+    return Object.values(values).reduce((sum, val) => {
+      return (sum += val)
+    }, 0)
+  }
+
   const getUnitsCostInTerrain = (
     terrain: HistoryTerrain,
     resource: HistoryResourcesType
@@ -292,6 +318,31 @@ export const usePlayer = () => {
       terrain.units.catapult.cost[resource] +
       terrain.units.dragon.cost[resource]
     )
+  }
+
+  const getUnitsCostInBase = (
+    { spearman, archer, catapult, dragon }: Record<HistoryUnitType, number>,
+    resource: HistoryResourcesType
+  ): Record<HistoryUnitType, number> => {
+    const define = defines.getUnits()
+
+    return {
+      spearman: spearman * define.spearman.cost[resource],
+      archer: archer * define.archer.cost[resource],
+      catapult: catapult * define.catapult.cost[resource],
+      dragon: dragon * define.dragon.cost[resource],
+    }
+  }
+
+  const getUnitsCostInBaseResources = (
+    units: Record<HistoryUnitType, number>,
+    resource: HistoryResourcesType
+  ): number => {
+    const values = getUnitsCostInBase(units, resource)
+
+    return Object.values(values).reduce((sum, val) => {
+      return (sum += val)
+    }, 0)
   }
 
   const getAllUnitsCount = (player: HistoryPlayer | null): number => {
@@ -388,8 +439,12 @@ export const usePlayer = () => {
     getEconomicPower,
     getUnitsMaintenance,
     getUnitsMaintenanceInTerrain,
+    getUnitsMaintenanceInBase,
+    getUnitsMaintenanceInBaseResources,
     getUnitsCost,
     getUnitsCostInTerrain,
+    getUnitsCostInBase,
+    getUnitsCostInBaseResources,
     getAllUnitsCount,
     getUnitsCountInRecord,
     getUnitsCountInTerrain,

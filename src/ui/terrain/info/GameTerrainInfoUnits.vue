@@ -51,6 +51,18 @@
           <input :min="0" class="bg-transparent border-transparent w-10 text-white text-xl" v-model="recruit.dragon" type="number" />
         </div>
       </div>
+      <p>Custo Base: <Resources :resources="{
+        food: player.getUnitsCostInBaseResources(recruit, 'food'),
+        production: player.getUnitsCostInBaseResources(recruit, 'production'),
+        science: player.getUnitsCostInBaseResources(recruit, 'science'),
+        influence: player.getUnitsCostInBaseResources(recruit, 'influence')
+      }" /></p>
+      <p>Manutenção: <Resources :resources="{
+        food: player.getUnitsMaintenanceInBaseResources(recruit, 'food'),
+        production: player.getUnitsMaintenanceInBaseResources(recruit, 'production'),
+        science: player.getUnitsMaintenanceInBaseResources(recruit, 'science'),
+        influence: player.getUnitsMaintenanceInBaseResources(recruit, 'influence')
+      }" /></p>
       <Button v-if="terrain.units?.squad" @click="onRecruit">Recrutar</Button>
     </div>
   </div>
@@ -61,10 +73,12 @@ import { HistoryTerrain } from '../../../types/map';
 import { useApplicationStore } from '../../../store/application';
 import { ref, reactive } from 'vue';
 import { useDefines } from '../../../use/defines';
+import { usePlayer } from '../../../use/player';
 
 const APP = useApplicationStore()
 
 const defines = useDefines()
+const player = usePlayer()
 
 const name = ref(defines.getRandomSquadName())
 
