@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { HistoryPlayer } from '../types/player'
-import { HistoryContainer } from '../types/sprite'
+import { HistoryContainer, HistoryGraphics } from '../types/sprite'
 import { ApplicatonState } from '../types/stores'
 import { useUtils } from '../use/utils'
 import {
@@ -9,7 +9,7 @@ import {
   HistoryTerrainType,
   HistoryTerrainUnits,
 } from '../types/map'
-import { Text } from 'pixi.js'
+import { Container, Graphics, Loader, Rectangle, Sprite, Text } from 'pixi.js'
 import { usePlayer } from '../use/player'
 import { useMap } from '../use/map'
 import COST_DEFINE from '../defines/cost.json'
@@ -315,6 +315,8 @@ export const useApplicationStore = defineStore('application', {
     },
     setSquad(terrain: HistoryTerrain, squad: HistoryTerrainUnits) {
       this.terrain[terrain.id].units = squad
+
+      this.setSquadSprite(terrain)
     },
     deleteSquad(terrain: HistoryTerrain, squad: HistoryTerrainUnits) {
       if (confirm('Você tem certeza que deseja deletar uma tropa inteira?')) {
@@ -361,6 +363,8 @@ export const useApplicationStore = defineStore('application', {
           player.resources.production -= production
           player.resources.influence -= influence
           player.resources.science -= science
+
+          this.setSquadSprite(terrain)
         }
       } else if (!player.isIA) {
         useToast().error('Você não possui recursos suficientes para recrutar!')
@@ -368,6 +372,8 @@ export const useApplicationStore = defineStore('application', {
     },
     removeSquadFromTerrain(terrain: HistoryTerrain) {
       this.terrain[terrain.id].units = undefined
+
+      this.removeSquadSprite(terrain)
     },
     moveSquad(from: HistoryTerrain, to: HistoryTerrain) {
       const squad = from.units as HistoryTerrainUnits
@@ -378,6 +384,58 @@ export const useApplicationStore = defineStore('application', {
 
       this.removeSquadFromTerrain(from)
       this.setSquad(to, squad)
+    },
+    setSquadSprite(tr: HistoryTerrain) {
+      if (!tr.units) return
+
+      this.removeSquadSprite(tr)
+
+      const player = usePlayer().getPlayer(
+        tr.units.owner as string
+      ) as HistoryPlayer
+
+      const container = new Container() as HistoryContainer
+      container.type = 'unit'
+
+      const rect = new Graphics() as HistoryGraphics
+      rect.lineStyle(2, player.color[1])
+      rect.drawRect(0, 0, 80, 50)
+      rect.x = -25
+      rect.y += 22
+
+      const target = this.terrainContainer?.children[tr.id] as HistoryContainer
+      const icon = Sprite.from(
+        // @ts-expect-error
+        Loader.shared.resources['icon_unit'].texture
+      )
+      icon.x -= icon.width / 2
+      icon.y += 30
+      icon.height = 30
+      icon.width = 30
+
+      const text = new Text(usePlayer().getUnitsCountByWeightInTerrain(tr), {
+        fontFamily: 'Arial',
+        fontSize: 25,
+        fill: 0xffffff,
+        align: 'center',
+      })
+      text.x -= text.width / 2 - 30
+      text.y += 30
+      // @ts-expect-error
+      text.type = 'city'
+
+      container.addChild(rect)
+      container.addChild(icon)
+      container.addChild(text)
+
+      target.addChild(container)
+    },
+    removeSquadSprite(tr: HistoryTerrain) {
+      const target = this.terrainContainer?.children[tr.id] as HistoryContainer
+
+      // @ts-expect-error
+      const unit = target.children.find((c) => c.type === 'unit')
+      if (unit) target.removeChild(unit)
     },
   },
 })

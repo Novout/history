@@ -81,7 +81,7 @@ export const useDefines = () => {
     return {
       owner: undefined,
       squad: undefined,
-      wasMoved: false,
+      wasMoved: true,
       inCombat: false,
       archer: {
         type: UNIT_ARCHER_DEFINE.type,

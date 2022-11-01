@@ -426,6 +426,7 @@ export const usePlayer = () => {
     getAllAdjacentTerritories,
     getCityTerritories,
     getAllCityTerritories,
+    getUnitsCountByWeightInTerrain,
     getUnitsTerritories,
     getTerritories,
     getInfluence,

@@ -24,6 +24,7 @@ export const useStart = () => {
     const loader = Loader.shared
     loader.add('icon_production', '/icons/production.svg')
     loader.add('icon_food', '/icons/food.svg')
+    loader.add('icon_unit', '/icons/unit.svg')
 
     const viewport = new Viewport({
       screenWidth: window.innerWidth,
@@ -46,7 +47,7 @@ export const useStart = () => {
     APP.context = app
     APP.viewport = viewport
 
-    loader.load((loader, resources) => {
+    loader.load(() => {
       game.start()
 
       CYCLE.started = true
