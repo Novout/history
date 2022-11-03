@@ -20,6 +20,8 @@ import UNIT_ARCHER_DEFINE from '../defines/units/archer.json'
 import UNIT_SPEARMAN_DEFINE from '../defines/units/spearman.json'
 import UNIT_DRAGON_DEFINE from '../defines/units/dragon.json'
 import UNIT_CATAPULT_DEFINE from '../defines/units/catapult.json'
+import BARRIER_DEFINE from '../defines/units/barrier.json'
+import WALL_DEFINE from '../defines/units/wall.json'
 import { HistoryPlayer, HistoryPlayerIA } from '../types/player'
 import { useUtils } from './utils'
 import { HistoryUnit } from '../types/units'
@@ -89,6 +91,7 @@ export const useDefines = () => {
         count: 0,
         weight: UNIT_ARCHER_DEFINE.weight,
         attack: UNIT_ARCHER_DEFINE.attack,
+        stack: UNIT_ARCHER_DEFINE.stack,
         HP: UNIT_ARCHER_DEFINE.HP,
         maxHP: UNIT_ARCHER_DEFINE.HP,
         time: UNIT_ARCHER_DEFINE.time,
@@ -100,6 +103,7 @@ export const useDefines = () => {
         line: UNIT_CATAPULT_DEFINE.line,
         count: 0,
         weight: UNIT_CATAPULT_DEFINE.weight,
+        stack: UNIT_CATAPULT_DEFINE.stack,
         attack: UNIT_CATAPULT_DEFINE.attack,
         HP: UNIT_CATAPULT_DEFINE.HP,
         maxHP: UNIT_CATAPULT_DEFINE.HP,
@@ -112,6 +116,7 @@ export const useDefines = () => {
         line: UNIT_DRAGON_DEFINE.line,
         count: 0,
         weight: UNIT_DRAGON_DEFINE.weight,
+        stack: UNIT_DRAGON_DEFINE.stack,
         attack: UNIT_DRAGON_DEFINE.attack,
         HP: UNIT_DRAGON_DEFINE.HP,
         maxHP: UNIT_DRAGON_DEFINE.HP,
@@ -124,6 +129,7 @@ export const useDefines = () => {
         line: UNIT_SPEARMAN_DEFINE.line,
         count: Math.floor(Math.random() * 30) + 1,
         weight: UNIT_SPEARMAN_DEFINE.weight,
+        stack: UNIT_SPEARMAN_DEFINE.stack,
         attack: UNIT_SPEARMAN_DEFINE.attack,
         HP: UNIT_SPEARMAN_DEFINE.HP,
         maxHP: UNIT_SPEARMAN_DEFINE.HP,
@@ -145,6 +151,7 @@ export const useDefines = () => {
         line: UNIT_ARCHER_DEFINE.line,
         count: 0,
         weight: UNIT_ARCHER_DEFINE.weight,
+        stack: UNIT_ARCHER_DEFINE.stack,
         attack: UNIT_ARCHER_DEFINE.attack,
         HP: UNIT_ARCHER_DEFINE.HP,
         maxHP: UNIT_ARCHER_DEFINE.HP,
@@ -157,6 +164,7 @@ export const useDefines = () => {
         line: UNIT_CATAPULT_DEFINE.line,
         count: 0,
         weight: UNIT_CATAPULT_DEFINE.weight,
+        stack: UNIT_CATAPULT_DEFINE.stack,
         attack: UNIT_CATAPULT_DEFINE.attack,
         HP: UNIT_CATAPULT_DEFINE.HP,
         maxHP: UNIT_CATAPULT_DEFINE.HP,
@@ -169,6 +177,7 @@ export const useDefines = () => {
         line: UNIT_DRAGON_DEFINE.line,
         count: 0,
         weight: UNIT_DRAGON_DEFINE.weight,
+        stack: UNIT_DRAGON_DEFINE.stack,
         attack: UNIT_DRAGON_DEFINE.attack,
         HP: UNIT_DRAGON_DEFINE.HP,
         maxHP: UNIT_DRAGON_DEFINE.HP,
@@ -181,6 +190,7 @@ export const useDefines = () => {
         line: UNIT_SPEARMAN_DEFINE.line,
         count: 0,
         weight: UNIT_SPEARMAN_DEFINE.weight,
+        stack: UNIT_SPEARMAN_DEFINE.stack,
         attack: UNIT_SPEARMAN_DEFINE.attack,
         HP: UNIT_SPEARMAN_DEFINE.HP,
         maxHP: UNIT_SPEARMAN_DEFINE.HP,
@@ -189,6 +199,14 @@ export const useDefines = () => {
         maintenance: UNIT_SPEARMAN_DEFINE.maintenance,
       } as HistoryUnit<'spearman'>,
     }
+  }
+
+  const getBarrierDefine = () => {
+    return BARRIER_DEFINE
+  }
+
+  const getWallDefine = () => {
+    return WALL_DEFINE
   }
 
   return {
@@ -200,5 +218,7 @@ export const useDefines = () => {
     getRandomSquadName,
     getBarbarianUnits,
     getUnits,
+    getBarrierDefine,
+    getWallDefine,
   }
 }

@@ -9,11 +9,13 @@ import { useIA } from './ia'
 import { computed, watch } from 'vue'
 import { useEvents } from './events'
 import { watchThrottled } from '@vueuse/core'
+import { useBattleStore } from '../store/battle'
 
 export const useGame = () => {
   const APP = useApplicationStore()
   const OPTIONS = useOptionsState()
   const CYCLE = useCycleState()
+  const BATTLE = useBattleStore()
 
   const utils = useUtils()
   const map = useMap()
@@ -107,6 +109,8 @@ export const useGame = () => {
 
   const next = () => {
     runEvents()
+
+    BATTLE.runBattles()
 
     APP.IA.forEach((p) => {
       ia.runFactors(p)

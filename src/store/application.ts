@@ -6,10 +6,9 @@ import { useUtils } from '../use/utils'
 import {
   HistoryTerrain,
   HistoryTerrainStructure,
-  HistoryTerrainType,
   HistoryTerrainUnits,
 } from '../types/map'
-import { Container, Graphics, Loader, Rectangle, Sprite, Text } from 'pixi.js'
+import { Container, Graphics, Loader, Sprite, Text } from 'pixi.js'
 import { usePlayer } from '../use/player'
 import { useMap } from '../use/map'
 import COST_DEFINE from '../defines/cost.json'
@@ -32,6 +31,7 @@ export const useApplicationStore = defineStore('application', {
     actives: {
       terrain: -1,
       terrainClicked: false,
+      battleClicked: 0,
     },
     absolute: {
       battleWindow: false,

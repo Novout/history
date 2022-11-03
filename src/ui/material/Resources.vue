@@ -8,9 +8,9 @@
 </template>
 
 <script setup lang="ts">
-import { HistoryResourcesBase } from '../../types/map';
+  import { HistoryResourcesBase } from '../../types/map'
 
-defineProps<{
-  resources: HistoryResourcesBase
-}>()
+  defineProps<{
+    resources: HistoryResourcesBase
+  }>()
 </script>

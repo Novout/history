@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { onBeforeUnmount } from 'vue'
-import { useStart } from './use/start';
-import { useCycleState } from './store/cycle'
+  import { onBeforeUnmount } from 'vue'
+  import { useStart } from './use/start'
+  import { useCycleState } from './store/cycle'
 
-const CYCLE = useCycleState()
+  const CYCLE = useCycleState()
 
-const { destroy } = useStart()
+  const { destroy } = useStart()
 
-onBeforeUnmount(() => {
-  destroy()
-})
+  onBeforeUnmount(() => {
+    destroy()
+  })
 </script>
 
 <template>

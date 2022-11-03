@@ -1,4 +1,8 @@
-
 <template>
-  <svg width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M1 21V9h2v2h2V3h2v2h2V3h2v2h2V3h2v2h2V3h2v8h2V9h2v12h-9v-3q0-.825-.587-1.413Q12.825 16 12 16q-.825 0-1.412.587Q10 17.175 10 18v3Zm8-9h2V9H9Zm4 0h2V9h-2Z"></path></svg>
+  <svg width="1em" height="1em" viewBox="0 0 24 24">
+    <path
+      fill="currentColor"
+      d="M1 21V9h2v2h2V3h2v2h2V3h2v2h2V3h2v2h2V3h2v8h2V9h2v12h-9v-3q0-.825-.587-1.413Q12.825 16 12 16q-.825 0-1.412.587Q10 17.175 10 18v3Zm8-9h2V9H9Zm4 0h2V9h-2Z"
+    ></path>
+  </svg>
 </template>

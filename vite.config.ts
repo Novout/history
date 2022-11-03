@@ -33,7 +33,12 @@ export default defineConfig({
       rules: [
         ['bg-blur', { 'backdrop-filter': 'blur(10px)', 'background-color': 'rgba(0, 0, 0, 0.3)' }],
         ['bg-blur-button', { 'backdrop-filter': 'blur(10px)', 'background-color': 'rgba(0, 0, 0, 0.5)' }],
-      ]
+      ],
+      shortcuts: {
+        'history-line-item': 'p-2 rounded-lg bg-dark-300 shadow-lg flex gap-1 items-center justify-between h-12 w-12 select-none',
+        'history-line-item-empty': 'p-2 rounded-lg bg-none border-3 border-dark-100 shadow-lg flex gap-1 items-center justify-between h-12 w-12 select-none',
+        'history-line-icon': 'w-7 h-7 text-white'
+      }
     }),
   ],
   build: {

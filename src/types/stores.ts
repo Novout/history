@@ -16,6 +16,7 @@ export interface ApplicatonState {
   actives: {
     terrain: number
     terrainClicked: boolean
+    battleClicked: number
   }
   absolute: {
     battleWindow: boolean

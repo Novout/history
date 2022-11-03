@@ -1,6 +1,9 @@
-
 <template>
-  <input ref="inp" v-model="cmp" class="px-3 py-1 bg-dark-300 border-none shadow-xl rounded text-light-500 text-lg" />
+  <input
+    ref="inp"
+    v-model="cmp"
+    class="px-3 py-1 bg-dark-300 border-none shadow-xl rounded text-light-500 text-lg"
+  />
 </template>
 
 <script setup lang="ts">
@@ -9,7 +12,7 @@
     modelValue: {
       required: true,
       type: String,
-    }
+    },
   })
   const emit = defineEmits(['update:modelValue'])
   const inp = ref<HTMLElement | null>(null)

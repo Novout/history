@@ -1,6 +1,12 @@
 import { HistoryResourcesBase } from './map'
 
-export type HistoryUnitType = 'spearman' | 'archer' | 'catapult' | 'dragon'
+export type HistoryUnitType =
+  | 'spearman'
+  | 'archer'
+  | 'catapult'
+  | 'dragon'
+  | 'wall'
+  | 'barrier'
 export type HistoryUnitLineType =
   | 'front_line'
   | 'back_line'
@@ -14,6 +20,7 @@ export interface HistoryUnit<T extends HistoryUnitType> {
   line: HistoryUnitLineType
   count: number
   weight: number
+  stack: number
   attack: number
   HP: number
   maxHP: number
