@@ -335,7 +335,8 @@ export const useMap = () => {
 
       if (
         !player.isAdjacentTerritory(APP.player, t1) &&
-        !player.getTerritories(APP.player).find((t2) => t1 === t2)
+        !player.getTerritories(APP.player).find((t2) => t1 === t2) &&
+        !player.isAdjacentUnitOwnerTerritory(APP.player, t1)
       ) {
         if (fog) target.removeChild(fog)
 

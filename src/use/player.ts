@@ -1,6 +1,5 @@
 import { useApplicationStore } from '../store/application'
 import {
-  HistoryResourcesBase,
   HistoryResourcesType,
   HistoryTerrain,
   HistoryTerrainStructure,
@@ -10,12 +9,23 @@ import { useUtils } from './utils'
 import { useDefines } from './defines'
 import { HistoryUnitType } from '../types/units'
 import COST_DEFINE from '../defines/cost.json'
+import { HistoryContainer } from '../types/sprite'
 
 export const usePlayer = () => {
   const APP = useApplicationStore()
 
   const utils = useUtils()
   const defines = useDefines()
+
+  const isFogTerrain = (terrain: HistoryTerrain): boolean => {
+    const index = APP.terrain.indexOf(terrain)
+    const target = APP.terrainContainer?.children[index] as HistoryContainer
+
+    // @ts-expect-error
+    const fog = target.children.find((c) => c.type === 'fog')
+
+    return !!fog
+  }
 
   const isAdjacentTerritory = (
     player: HistoryPlayer | null,
@@ -28,6 +38,19 @@ export const usePlayer = () => {
     )
 
     return !!isAdjacent
+  }
+
+  const isAdjacentUnitOwnerTerritory = (
+    player: HistoryPlayer | null,
+    target: HistoryTerrain
+  ) => {
+    if (player === null) return false
+
+    const isAdjacent = getUnitsTerritories(player).find(
+      (t) => utils.isAdjacentHex(t, target) || t === target
+    )
+
+    return isAdjacent
   }
 
   const isKnownPlayer = (p1: HistoryPlayer, name: string) => {
@@ -462,7 +485,9 @@ export const usePlayer = () => {
   }
 
   return {
+    isFogTerrain,
     isAdjacentTerritory,
+    isAdjacentUnitOwnerTerritory,
     isKnownPlayer,
     isBarbarian,
     getPlayer,
