@@ -8,7 +8,7 @@ import {
   HistoryTerrainStructure,
   HistoryTerrainUnits,
 } from '../types/map'
-import { Container, Graphics, Loader, Sprite, Text } from 'pixi.js'
+import { Container, Graphics, Loader, Sprite, Text, utils } from 'pixi.js'
 import { usePlayer } from '../use/player'
 import { useMap } from '../use/map'
 import COST_DEFINE from '../defines/cost.json'
@@ -18,6 +18,8 @@ import { HistoryUnitType } from '../types/units'
 import { useUnits } from '../use/units'
 import { useToast } from 'vue-toastification'
 import { nextTick } from 'vue'
+import { useBattleStore } from './battle'
+import { useBattle } from '../use/battle'
 
 export const useApplicationStore = defineStore('application', {
   state: (): ApplicatonState => ({
@@ -62,6 +64,8 @@ export const useApplicationStore = defineStore('application', {
       this.createCity(player, id, true)
 
       this.terrain[id].units = useDefines().getBarbarianUnits(player)
+
+      this.setSquadSprite(this.terrain[id], player)
     },
     setTerrainOwner(
       player: HistoryPlayer,
@@ -92,7 +96,7 @@ export const useApplicationStore = defineStore('application', {
           id: index,
           x: 0,
           y: 0,
-          color: player.color[1],
+          color: utils.string2hex(player.color),
         })
 
         target?.addChild(terrain)
@@ -400,20 +404,83 @@ export const useApplicationStore = defineStore('application', {
       this.removeSquadFromTerrain(from)
       this.setSquad(to, squad)
     },
-    setSquadSprite(tr: HistoryTerrain) {
+    async attack(from: HistoryTerrain, to: HistoryTerrain) {
+      if (!from.units || !to.units) return
+
+      const attacker = usePlayer().getPlayer(
+        from.units.owner as string
+      ) as HistoryPlayer
+      const defender = usePlayer().getPlayer(
+        to.units.owner as string
+      ) as HistoryPlayer
+
+      const squad = from.units as HistoryTerrainUnits
+
+      if (!attacker || !defender) return
+
+      if (attacker.players.allies.includes(defender.name)) {
+        if (!attacker.isIA)
+          useToast().error('Não é permitido atacar um aliado!')
+
+        return
+      }
+
+      if (!to.isAccessible) return
+
+      if (
+        !attacker.players.enemies.includes(defender.name) &&
+        !defender.isBarbarian
+      ) {
+        if (
+          confirm(`Deseja declarar guerra contra o jogador ${defender.name}?`)
+        ) {
+          attacker.players.enemies.unshift(defender.name)
+          defender.players.enemies.unshift(attacker.name)
+        } else {
+          return
+        }
+      }
+
+      squad.wasMoved = true
+      squad.inCombat = true
+
+      to.units.wasMoved = true
+      to.units.inCombat = true
+
+      useBattleStore().battles.push({
+        isActive: true,
+        winner: undefined,
+        attacker: from,
+        defender: to,
+        round: {
+          value: 1,
+          attacker: useBattle().getUnitsCounter(from, 'attacker'),
+          defender: useBattle().getUnitsCounter(to, 'defender'),
+        },
+      })
+
+      await nextTick
+
+      this.absolute.terrainInfo = false
+      this.actives.battleClicked = useBattleStore().battles.length - 1
+      this.absolute.battleWindow = true
+
+      useToast().info(`Guerra declarada contra ${defender.name}!`)
+    },
+    setSquadSprite(tr: HistoryTerrain, player?: HistoryPlayer) {
       if (!tr.units) return
 
       this.removeSquadSprite(tr)
 
-      const player = usePlayer().getPlayer(
-        tr.units.owner as string
-      ) as HistoryPlayer
+      player =
+        player ||
+        (usePlayer().getPlayer(tr.units.owner as string) as HistoryPlayer)
 
       const container = new Container() as HistoryContainer
       container.type = 'unit'
 
       const rect = new Graphics() as HistoryGraphics
-      rect.lineStyle(2, player.color[1])
+      rect.lineStyle(2, utils.string2hex(player.color))
       rect.drawRect(0, 0, 80, 50)
       rect.x = -25
       rect.y += 22

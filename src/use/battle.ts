@@ -120,14 +120,24 @@ export const useBattle = () => {
   }
 
   const getUnitsCounter = (
-    terrain: HistoryTerrain
+    terrain: HistoryTerrain,
+    type: 'attacker' | 'defender'
   ): HistoryBattleRoundPlayer => {
-    return [
+    const units = [
       ['spearman', 'front_line', terrain.units!.spearman.count],
       ['archer', 'back_line', terrain.units!.archer.count],
       ['catapult', 'destruction_line', terrain.units!.catapult.count],
       ['dragon', 'extra', terrain.units!.dragon.count],
-    ]
+    ] as HistoryBattleRoundPlayer
+
+    if (type === 'defender' && terrain.city)
+      units.unshift([
+        terrain.city.structure.wall > 0 ? 'wall' : 'barrier',
+        'wall',
+        3,
+      ])
+
+    return units
   }
 
   const getLineSequence = (
@@ -171,20 +181,34 @@ export const useBattle = () => {
     })
   }
 
-  const damageInWall = (context: HistoryBattleRoundPlayer) => {
+  const damageInWall = (
+    context: HistoryBattleRoundPlayer,
+    isBarrier: boolean
+  ) => {
     let val = 0
 
     context.forEach((c) => {
       const [type, line, count] = c
 
+      const maxCount = getMaxCountByStack(count, type)
+
       if (line === 'destruction_line') {
         if (type === 'catapult') {
-          const dmg = defines.getUnits().catapult.attack * count
+          const dmg = defines.getUnits().catapult.attack * maxCount
 
-          val += dmg
+          isBarrier ? (val += dmg * 2) : (val += dmg)
         }
       } else {
-        val += count
+        if (isBarrier) {
+          if (type === 'spearman')
+            val += (defines.getUnits().catapult.attack * maxCount) / 2
+          if (type === 'archer')
+            val += (defines.getUnits().archer.attack * maxCount) / 2
+          if (type === 'dragon')
+            val += (defines.getUnits().dragon.attack * maxCount) / 2
+        } else {
+          val += maxCount
+        }
       }
     })
 
@@ -197,13 +221,17 @@ export const useBattle = () => {
     context.forEach((c) => {
       const [type, line, count] = c
 
+      const maxCount = getMaxCountByStack(count, type)
+
       if (line === 'destruction_line') {
-        val += count
+        val += maxCount
       } else {
         if (type === 'spearman')
-          val += defines.getUnits().catapult.attack * count
-        if (type === 'archer') val += defines.getUnits().archer.attack * count
-        if (type === 'dragon') val += defines.getUnits().dragon.attack * count
+          val += defines.getUnits().catapult.attack * maxCount
+        if (type === 'archer')
+          val += defines.getUnits().archer.attack * maxCount
+        if (type === 'dragon')
+          val += defines.getUnits().dragon.attack * maxCount
       }
     })
 
@@ -216,13 +244,17 @@ export const useBattle = () => {
     context.forEach((c) => {
       const [type, line, count] = c
 
+      const maxCount = getMaxCountByStack(count, type)
+
       if (line === 'destruction_line') {
-        val += count
+        val += maxCount
       } else {
         if (type === 'spearman')
-          val += defines.getUnits().catapult.attack * count
-        if (type === 'archer') val += defines.getUnits().archer.attack * count
-        if (type === 'dragon') val += defines.getUnits().dragon.attack * count
+          val += defines.getUnits().catapult.attack * maxCount
+        if (type === 'archer')
+          val += defines.getUnits().archer.attack * maxCount
+        if (type === 'dragon')
+          val += defines.getUnits().dragon.attack * maxCount
       }
     })
 
@@ -272,6 +304,20 @@ export const useBattle = () => {
     return context
   }
 
+  const getStack = (type: HistoryUnitType): number => {
+    const unit = defines.getUnits() as Record<any, any>
+
+    if (type === 'wall' || type === 'barrier') return 1
+
+    return unit[type].stack
+  }
+
+  const getMaxCountByStack = (count: number, type: HistoryUnitType) => {
+    const stack = getStack(type) * 3
+
+    return count <= stack ? count : stack
+  }
+
   return {
     generateRandomBattle,
     splitUnitsByStack,
@@ -283,5 +329,7 @@ export const useBattle = () => {
     damageInUnitsWithWall,
     wallSet,
     killUnits,
+    getStack,
+    getMaxCountByStack,
   }
 }

@@ -31,10 +31,17 @@ export const usePlayer = () => {
   }
 
   const isKnownPlayer = (p1: HistoryPlayer, name: string) => {
-    return p1.knownPlayers.includes(name)
+    return p1.players.known.includes(name)
+  }
+
+  const isBarbarian = (name: string) => {
+    return name.includes('Bárbaro')
   }
 
   const getPlayer = (name: string): HistoryPlayer | false => {
+    if (isBarbarian(name))
+      return APP.barbarians.find((p) => p.name === name) || false
+
     return APP.player?.name === name
       ? (APP.player as HistoryPlayer)
       : APP.IA.find((p) => p.name === name) || false
@@ -292,7 +299,7 @@ export const usePlayer = () => {
       archer: archer * define.archer.maintenance[resource],
       catapult: catapult * define.catapult.maintenance[resource],
       dragon: dragon * define.dragon.maintenance[resource],
-    }
+    } as Record<HistoryUnitType, number>
   }
 
   const getUnitsMaintenanceInBaseResources = (
@@ -331,7 +338,7 @@ export const usePlayer = () => {
       archer: archer * define.archer.cost[resource],
       catapult: catapult * define.catapult.cost[resource],
       dragon: dragon * define.dragon.cost[resource],
-    }
+    } as Record<HistoryUnitType, number>
   }
 
   const getUnitsCostInBaseResources = (
@@ -400,15 +407,17 @@ export const usePlayer = () => {
   ): HistoryTerrain[] => {
     if (
       !player ||
+      player.isBarbarian ||
       (player.name !== terrain.owner && terrain.owner !== undefined)
     )
       return []
-
     const possibleTroops = APP.terrain
+      .filter((tr) => tr.units)
       .filter(
         (tr) =>
           utils.isAdjacentHex(tr, terrain) &&
           getUnitsCountInTerrain(tr) > 0 &&
+          !isBarbarian(tr.units?.squad as string) &&
           !tr.units?.wasMoved
       )
       .filter(
@@ -419,9 +428,39 @@ export const usePlayer = () => {
     return possibleTroops
   }
 
+  const getPossibleUnitsAttack = (
+    player: HistoryPlayer | null,
+    terrain: HistoryTerrain
+  ): HistoryTerrain[] => {
+    if (
+      !player ||
+      player.name === terrain.units?.owner ||
+      player.players.allies.includes(terrain.owner || '')
+    )
+      return []
+
+    const possibleAttack = APP.terrain
+      .filter(
+        (tr) =>
+          utils.isAdjacentHex(tr, terrain) &&
+          getUnitsCountInTerrain(tr) > 0 &&
+          getUnitsCountInTerrain(terrain) > 0 &&
+          !tr.units?.wasMoved
+      )
+      .filter(
+        (tr) =>
+          (tr.units?.squad === 'Bárbaros' && terrain.owner === player.name) ||
+          tr.units?.owner === player.name ||
+          (!terrain.owner && !terrain.units)
+      )
+
+    return possibleAttack
+  }
+
   return {
     isAdjacentTerritory,
     isKnownPlayer,
+    isBarbarian,
     getPlayer,
     getAllAdjacentTerritories,
     getCityTerritories,
@@ -451,5 +490,6 @@ export const usePlayer = () => {
     getUnitsCountInTerrain,
     getMilitaryPower,
     getPossibleUnitsMove,
+    getPossibleUnitsAttack,
   }
 }

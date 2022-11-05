@@ -26,14 +26,12 @@ export const useUtils = () => {
     return arr[Math.floor(Math.random() * arr.length)]
   }
 
-  const getRandomColor = (hex?: string): [string, number] => {
+  const getRandomColor = (hex?: string): string => {
     hex = hex ? hex.slice(1) : undefined
 
     const h = hex || Math.floor(Math.random() * 16777215).toString(16)
 
-    const hexToNumber = '0x' + h
-
-    return [`#${h}`, Number(hexToNumber)]
+    return `#${h}`
   }
 
   const loadImage = (url: string) => {

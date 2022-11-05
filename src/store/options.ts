@@ -14,7 +14,7 @@ export const useOptionsState = defineStore('options', {
       playersCount: 3,
       player: {
         name: 'Player 1',
-        color: useUtils().getRandomColor()[0],
+        color: useUtils().getRandomColor(),
         capital: useDefines().getRandomCityName(),
       },
       barbarians: 1,

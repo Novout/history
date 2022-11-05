@@ -33,8 +33,9 @@
           <div>
             <IconMilitar class="w-7 h-7" />
           </div>
-          <H3 class="truncate">{{ terrain.units?.squad }}</H3>
-          <p class="text-lg">- {{ terrain.id }}</p>
+          <H3 class="truncate"
+            >{{ terrain.units?.squad }} - {{ terrain.id }}</H3
+          >
         </div>
         <div>
           <div class="flex flex-wrap justify-between gap-2 w-full">

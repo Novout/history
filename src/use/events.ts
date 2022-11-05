@@ -10,8 +10,8 @@ export const useEvents = () => {
 
   const setKnownPlayers = () => {
     player.getAllAdjacentTerritories(APP.player).forEach((t) => {
-      if (t.owner && !APP.player?.knownPlayers.includes(t.owner)) {
-        APP.player?.knownPlayers.push(t.owner)
+      if (t.owner && !APP.player?.players.known.includes(t.owner)) {
+        APP.player?.players.known.push(t.owner)
       }
     })
   }

@@ -4,19 +4,20 @@
     class="p-10 z-max max-h-100 select-none overflow-y-auto w-35 gap-2 fixed top-1/2 transform -translate-y-1/2 text-white left-0 z-max bg-blur flex flex-col rounded-t-md"
   >
     <div
-      @click="onOpenBattle(battle.terrain)"
+      @click="onOpenBattle(index)"
       v-for="(battle, index) in BATTLE.getPlayerBattles"
       :key="index"
+      class="cursor-pointer"
     >
       <div class="flex flex-col gap-2 w-full">
         <div class="flex items-center gap-2">
           <IconAttacker
-            v-if="APP.player?.name === battle.attacker"
+            v-if="APP.player?.name === battle.attacker.owner"
             class="w-6 h-6"
           />
           <IconDefender v-else class="w-6 h-6" />
           <p class="font-bold">
-            {{ battle.terrain }} - Rodada {{ battle.round }}
+            Batalha {{ index }} - Rodada {{ battle.round?.value }}
           </p>
         </div>
       </div>
@@ -37,6 +38,6 @@
 
     await nextTick
 
-    APP.absolute.terrainInfo = true
+    APP.absolute.battleWindow = true
   }
 </script>

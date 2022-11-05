@@ -127,7 +127,7 @@ export const useDefines = () => {
       spearman: {
         type: UNIT_SPEARMAN_DEFINE.type,
         line: UNIT_SPEARMAN_DEFINE.line,
-        count: Math.floor(Math.random() * 30) + 1,
+        count: Math.floor(Math.random() * 7) + 2,
         weight: UNIT_SPEARMAN_DEFINE.weight,
         stack: UNIT_SPEARMAN_DEFINE.stack,
         attack: UNIT_SPEARMAN_DEFINE.attack,

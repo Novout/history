@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useToast } from 'vue-toastification'
 import { HistoryBattle } from '../types/battle'
 import { BattleState } from '../types/stores'
 import { useBattle } from '../use/battle'
@@ -11,23 +12,15 @@ export const useBattleStore = defineStore('battle', {
   actions: {
     runBattles() {
       this.battles?.forEach((battle) => {
-        if (!battle.isActive) return
-
-        if (!battle.round) {
-          const attacker = useBattle().getUnitsCounter(battle.attacker)
-          const defender = useBattle().getUnitsCounter(battle.defender)
-
-          battle.round = {
-            value: 1,
-            attacker,
-            defender,
-          }
-        }
+        if (!battle.isActive || !battle.round) return
 
         const asWall = useBattle().asType(battle.round.defender, 'wall')
 
         const attackerDmg = asWall
-          ? useBattle().damageInWall(battle.round.attacker)
+          ? useBattle().damageInWall(
+              battle.round.attacker,
+              battle.defender.city!.structure.wall === 0
+            )
           : useBattle().damageInUnits(battle.round.attacker)
         const defenderDmg = asWall
           ? useBattle().damageInUnitsWithWall(battle.round.defender)
@@ -69,18 +62,38 @@ export const useBattleStore = defineStore('battle', {
 
         if (battle.round.attacker.length === 0) {
           battle.isActive = false
-          battle.owner = battle.defender.units?.owner
+          battle.winner = battle.defender.units?.owner
 
           useApplicationStore().terrain[battle.attacker.id].units = undefined
+          useApplicationStore().removeSquadSprite(battle.attacker)
+
+          useApplicationStore().terrain[battle.defender.id].units!.inCombat =
+            false
+
+          if (battle.defender.owner === useApplicationStore().player?.name)
+            useToast().success(`Você ganhou a batalha ${battle.defender.id}!`)
+          if (battle.attacker.owner === useApplicationStore().player?.name)
+            useToast().error(`Você perdeu a batalha em ${battle.defender.id}!`)
 
           return
         }
 
         if (battle.round.defender.length === 0) {
           battle.isActive = false
-          battle.owner = battle.attacker.units?.owner
+          battle.winner = battle.attacker.units?.owner
 
           useApplicationStore().terrain[battle.defender.id].units = undefined
+          useApplicationStore().removeSquadSprite(battle.defender)
+
+          useApplicationStore().terrain[battle.attacker.id].units!.inCombat =
+            false
+
+          if (battle.defender.owner === useApplicationStore().player?.name)
+            useToast().error(`Você perdeu a batalha em ${battle.defender.id}!`)
+          if (battle.attacker.owner === useApplicationStore().player?.name)
+            useToast().success(
+              `Você ganhou a batalha em ${battle.defender.id}!`
+            )
 
           return
         }
@@ -92,9 +105,10 @@ export const useBattleStore = defineStore('battle', {
   getters: {
     getPlayerBattles(state) {
       return state.battles.filter(
-        ({ attacker, defender }) =>
-          attacker.units?.owner === useApplicationStore().player?.name ||
-          defender.units?.owner === useApplicationStore().player?.name
+        ({ attacker, defender, winner }) =>
+          (attacker.units?.owner === useApplicationStore().player?.name ||
+            defender.units?.owner === useApplicationStore().player?.name) &&
+          !winner
       )
     },
   },

@@ -105,6 +105,26 @@
               <Button @click="APP.moveSquad(tr, terrain)">Mover</Button>
             </div>
           </GameTerrainInfoActionContainer>
+          <GameTerrainInfoActionContainer
+            v-if="
+              terrain.units &&
+              terrain.units.owner !== APP.player?.name &&
+              player.getPossibleUnitsAttack(APP.player, terrain).length > 0
+            "
+          >
+            <H3>Atacar</H3>
+            <div
+              class="flex items-center w-full justify-between p-2 gap-5"
+              v-for="(tr, index) in player.getPossibleUnitsAttack(
+                APP.player,
+                terrain
+              )"
+              :key="index"
+            >
+              <p class="text-xl truncate">{{ tr.units?.squad }}</p>
+              <Button @click="APP.attack(tr, terrain)">Atacar</Button>
+            </div>
+          </GameTerrainInfoActionContainer>
         </div>
       </div>
       <div
@@ -130,7 +150,7 @@
             class="flex items-center gap-2 mt-5"
           >
             <Button @click="APP.upgradeCity(APP.player)"
-              >Prefeitura lvl {{ terrain.city.structure.townHall }}</Button
+              >Prefeitura {{ terrain.city.structure.townHall }}</Button
             >
             <Food>{{
               COST_DEFINE.CITY_UPGRADE_FOOD[terrain.city.structure.townHall]
@@ -151,7 +171,7 @@
             class="flex items-center gap-2 mt-5"
           >
             <Button @click="APP.upgradeWall(APP.player)"
-              >Muralha lvl {{ terrain.city.structure.wall }}</Button
+              >Muralha {{ terrain.city.structure.wall }}</Button
             >
             <Food>{{
               COST_DEFINE.CITY_WALL_UPGRADE_FOOD[terrain.city.structure.wall]
@@ -173,7 +193,7 @@
             class="flex items-center gap-2 mt-5"
           >
             <Button @click="APP.upgradeMilitarAcademy(APP.player)"
-              >Militar lvl {{ terrain.city.structure.militaryAcademy }}</Button
+              >Militar {{ terrain.city.structure.militaryAcademy }}</Button
             >
             <Food>{{
               COST_DEFINE.CITY_MILITAR_ACADEMY_UPGRADE_FOOD[

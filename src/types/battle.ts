@@ -16,7 +16,7 @@ export interface HistoryBattleRound {
 
 export interface HistoryBattle {
   isActive: boolean
-  owner?: string
+  winner?: string
   attacker: HistoryTerrain
   defender: HistoryTerrain
   round?: HistoryBattleRound

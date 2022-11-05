@@ -131,6 +131,7 @@
   import { ref, reactive } from 'vue'
   import { useDefines } from '../../../use/defines'
   import { usePlayer } from '../../../use/player'
+  import { HistoryUnitType } from '../../../types/units'
 
   const APP = useApplicationStore()
 
@@ -144,7 +145,7 @@
     archer: 0,
     catapult: 0,
     dragon: 0,
-  })
+  } as Record<HistoryUnitType, number>)
 
   const props = defineProps<{
     terrain: HistoryTerrain

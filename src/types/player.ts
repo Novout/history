@@ -7,15 +7,19 @@ export interface HistoryPlayerRelations {
   value: number
 }
 
-export type HistoryPlayerIA = 'default'
+export type HistoryPlayerIA = 'default' | 'barbarian'
 
 export interface HistoryPlayer {
   name: Player
-  color: [string, number]
+  color: string
   isIA: HistoryPlayerIA | boolean
   isBarbarian: boolean
   isAlive: boolean
-  knownPlayers: string[]
+  players: {
+    known: string[]
+    allies: string[]
+    enemies: string[]
+  }
   resources: HistoryResources
   militaryCapability: number
   cityLimit: number

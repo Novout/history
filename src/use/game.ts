@@ -28,11 +28,15 @@ export const useGame = () => {
 
     APP.setNewPlayer({
       name: OPTIONS.game.player.name,
-      color: utils.getRandomColor(OPTIONS.game.player.color),
+      color: OPTIONS.game.player.color,
       isIA: false,
       isAlive: true,
       isBarbarian: false,
-      knownPlayers: [],
+      players: {
+        known: [],
+        allies: [],
+        enemies: [],
+      },
       resources: {
         influence: 5,
         food: 30,
@@ -53,11 +57,15 @@ export const useGame = () => {
     for (let i = 0; i < OPTIONS.game.barbarians; i++) {
       APP.setNewPlayer({
         name: `Bárbaros ${i + 1}`,
-        color: ['#4A341C', 0x4a341c],
-        isIA: 'default',
+        color: '#4A341C',
+        isIA: 'barbarian',
         isBarbarian: true,
         isAlive: true,
-        knownPlayers: [],
+        players: {
+          known: [],
+          allies: [],
+          enemies: [],
+        },
         resources: {
           influence: 5,
           food: 30,
@@ -83,7 +91,11 @@ export const useGame = () => {
         isIA: 'default',
         isBarbarian: false,
         isAlive: true,
-        knownPlayers: [],
+        players: {
+          known: [],
+          allies: [],
+          enemies: [],
+        },
         resources: {
           influence: 5,
           food: 30,
