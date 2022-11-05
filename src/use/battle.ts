@@ -123,12 +123,20 @@ export const useBattle = () => {
     terrain: HistoryTerrain,
     type: 'attacker' | 'defender'
   ): HistoryBattleRoundPlayer => {
-    const units = [
-      ['spearman', 'front_line', terrain.units!.spearman.count],
-      ['archer', 'back_line', terrain.units!.archer.count],
-      ['catapult', 'destruction_line', terrain.units!.catapult.count],
-      ['dragon', 'extra', terrain.units!.dragon.count],
-    ] as HistoryBattleRoundPlayer
+    const units =
+      type === 'attacker'
+        ? [
+            ['dragon', 'extra', terrain.units!.dragon.count],
+            ['catapult', 'destruction_line', terrain.units!.catapult.count],
+            ['archer', 'back_line', terrain.units!.archer.count],
+            ['spearman', 'front_line', terrain.units!.spearman.count],
+          ]
+        : [
+            ['spearman', 'front_line', terrain.units!.spearman.count],
+            ['archer', 'back_line', terrain.units!.archer.count],
+            ['catapult', 'destruction_line', terrain.units!.catapult.count],
+            ['dragon', 'extra', terrain.units!.dragon.count],
+          ]
 
     if (type === 'defender' && terrain.city)
       units.unshift([
@@ -137,7 +145,7 @@ export const useBattle = () => {
         3,
       ])
 
-    return units
+    return units as HistoryBattleRoundPlayer
   }
 
   const getLineSequence = (
