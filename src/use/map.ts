@@ -319,6 +319,7 @@ export const useMap = () => {
 
           APP.setTerrainColor(p as HistoryPlayer, index, false)
           APP.setCitySprite(index, t1)
+          APP.setSquadSprite(t1)
         }
       }
 

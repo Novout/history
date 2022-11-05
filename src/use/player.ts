@@ -47,6 +47,10 @@ export const usePlayer = () => {
       : APP.IA.find((p) => p.name === name) || false
   }
 
+  const getAllPlayers = (): HistoryPlayer[] => {
+    return [APP.player as HistoryPlayer, ...APP.IA, ...APP.barbarians]
+  }
+
   const getTerritories = (player: HistoryPlayer | null) => {
     if (player === null) return []
 
@@ -462,6 +466,7 @@ export const usePlayer = () => {
     isKnownPlayer,
     isBarbarian,
     getPlayer,
+    getAllPlayers,
     getAllAdjacentTerritories,
     getCityTerritories,
     getAllCityTerritories,

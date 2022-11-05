@@ -17,8 +17,8 @@ export const useEvents = () => {
   }
 
   const defeatedPlayer = () => {
-    APP.IA.forEach((p) => {
-      if (player.getCityTerritories(p).length === 0) {
+    player.getAllPlayers().forEach((p) => {
+      if (player.getCityTerritories(p).length === 0 && p.isAlive) {
         p.isAlive = false
 
         APP.terrain.forEach((t) => {
@@ -26,10 +26,11 @@ export const useEvents = () => {
             t.owner = undefined
             t.structure = undefined
             t.city = undefined
+            t.units = t.units?.owner === p.name ? t.units : undefined
           }
         })
 
-        toast.success(`Jogador ${p.name} foi derrotado!`)
+        if (p.isIA) toast.success(`Jogador ${p.name} foi derrotado!`)
       }
     })
   }
