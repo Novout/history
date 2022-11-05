@@ -318,6 +318,12 @@ export const useBattle = () => {
     return count <= stack ? count : stack
   }
 
+  const getCounterUnitsInContext = (context: HistoryBattleRoundPlayer) => {
+    return context.reduce((sum, val) => {
+      return (sum += val[2])
+    }, 0)
+  }
+
   return {
     generateRandomBattle,
     splitUnitsByStack,
@@ -331,5 +337,6 @@ export const useBattle = () => {
     killUnits,
     getStack,
     getMaxCountByStack,
+    getCounterUnitsInContext,
   }
 }

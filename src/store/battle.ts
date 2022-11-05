@@ -60,7 +60,7 @@ export const useBattleStore = defineStore('battle', {
           battle.round.attacker
         )
 
-        if (battle.round.attacker.length === 0) {
+        if (useBattle().getCounterUnitsInContext(battle.round.attacker) === 0) {
           battle.isActive = false
           battle.winner = battle.defender.units?.owner
 
@@ -78,7 +78,7 @@ export const useBattleStore = defineStore('battle', {
           return
         }
 
-        if (battle.round.defender.length === 0) {
+        if (useBattle().getCounterUnitsInContext(battle.round.defender) === 0) {
           battle.isActive = false
           battle.winner = battle.attacker.units?.owner
 
@@ -94,6 +94,8 @@ export const useBattleStore = defineStore('battle', {
             useToast().success(
               `Você ganhou a batalha em ${battle.defender.id}!`
             )
+
+          useApplicationStore().moveSquad(battle.attacker, battle.defender)
 
           return
         }

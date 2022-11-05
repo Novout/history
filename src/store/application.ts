@@ -405,18 +405,41 @@ export const useApplicationStore = defineStore('application', {
       this.setSquad(to, squad)
     },
     async attack(from: HistoryTerrain, to: HistoryTerrain) {
-      if (!from.units || !to.units) return
+      if (!from.units) return
 
       const attacker = usePlayer().getPlayer(
         from.units.owner as string
       ) as HistoryPlayer
+
+      if (!to.units && to.owner) {
+        if (
+          !attacker.players.enemies.includes(to.owner) &&
+          !usePlayer().isBarbarian(to.owner)
+        ) {
+          if (confirm(`Deseja declarar guerra contra o jogador ${to.owner}?`)) {
+            attacker.players.enemies.unshift(to.owner as string)
+          } else {
+            return
+          }
+        }
+
+        this.moveSquad(from, to)
+
+        if (to.city) to.city = undefined
+        if (to.structure) to.structure = undefined
+
+        return
+      }
+
+      if (!to.units) return
+
       const defender = usePlayer().getPlayer(
         to.units.owner as string
       ) as HistoryPlayer
 
       const squad = from.units as HistoryTerrainUnits
 
-      if (!attacker || !defender) return
+      if (!attacker) return
 
       if (attacker.players.allies.includes(defender.name)) {
         if (!attacker.isIA)

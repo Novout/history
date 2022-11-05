@@ -107,8 +107,8 @@
           </GameTerrainInfoActionContainer>
           <GameTerrainInfoActionContainer
             v-if="
-              terrain.units &&
-              terrain.units.owner !== APP.player?.name &&
+              terrain.units?.owner !== APP.player?.name &&
+              (terrain.units || terrain.owner) &&
               player.getPossibleUnitsAttack(APP.player, terrain).length > 0
             "
           >

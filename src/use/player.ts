@@ -415,6 +415,10 @@ export const usePlayer = () => {
       (player.name !== terrain.owner && terrain.owner !== undefined)
     )
       return []
+
+    // TODO: Unify troops in terrain units is same owner than tr units
+    if (terrain.units) return []
+
     const possibleTroops = APP.terrain
       .filter((tr) => tr.units)
       .filter(
@@ -436,10 +440,13 @@ export const usePlayer = () => {
     player: HistoryPlayer | null,
     terrain: HistoryTerrain
   ): HistoryTerrain[] => {
+    if (!player) return []
+
     if (
-      !player ||
-      player.name === terrain.units?.owner ||
-      player.players.allies.includes(terrain.owner || '')
+      (player.name === terrain.units?.owner ||
+        player.players.allies.includes(terrain.owner || '')) &&
+      terrain.units &&
+      !isBarbarian(terrain.units.owner || '')
     )
       return []
 
@@ -448,14 +455,14 @@ export const usePlayer = () => {
         (tr) =>
           utils.isAdjacentHex(tr, terrain) &&
           getUnitsCountInTerrain(tr) > 0 &&
-          getUnitsCountInTerrain(terrain) > 0 &&
           !tr.units?.wasMoved
       )
       .filter(
         (tr) =>
-          (tr.units?.squad === 'Bárbaros' && terrain.owner === player.name) ||
-          tr.units?.owner === player.name ||
-          (!terrain.owner && !terrain.units)
+          ((terrain.units || terrain.owner) &&
+            tr.units?.squad === 'Bárbaros' &&
+            terrain.owner === player.name) ||
+          tr.units?.owner === player.name
       )
 
     return possibleAttack

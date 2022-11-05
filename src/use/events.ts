@@ -1,5 +1,6 @@
 import { useToast } from 'vue-toastification'
 import { useApplicationStore } from '../store/application'
+import { useMap } from './map'
 import { usePlayer } from './player'
 
 export const useEvents = () => {
@@ -7,6 +8,7 @@ export const useEvents = () => {
 
   const player = usePlayer()
   const toast = useToast()
+  const map = useMap()
 
   const setKnownPlayers = () => {
     player.getAllAdjacentTerritories(APP.player).forEach((t) => {
@@ -26,11 +28,13 @@ export const useEvents = () => {
             t.owner = undefined
             t.structure = undefined
             t.city = undefined
-            t.units = t.units?.owner === p.name ? t.units : undefined
+            t.units = t.units?.owner !== p.name ? t.units : undefined
           }
         })
 
         if (p.isIA) toast.success(`Jogador ${p.name} foi derrotado!`)
+
+        map.load()
       }
     })
   }

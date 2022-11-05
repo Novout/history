@@ -23,27 +23,31 @@
       v-for="(ia, index) in APP.IA"
       :key="index"
       :class="[APP.player?.players.known.includes(ia.name) ? 'p-2' : '']"
-      class="shadow-lg bg-blur border-b-5 rounded-b-md w-18"
     >
-      <p
-        v-if="APP.player?.players.known.includes(ia.name)"
-        class="text-base font-bold select-none truncate"
-      >
-        {{ ia.name }}
-      </p>
       <div
-        v-if="APP.player?.players.known.includes(ia.name)"
-        class="flex text-base items-center justify-between"
+        class="shadow-lg bg-blur border-b-5 rounded-b-md w-18"
+        v-if="ia.isAlive"
       >
-        <IconEconomic class="w-5 h-5" />
-        <p>{{ player.getEconomicPower(ia) }}</p>
-      </div>
-      <div
-        v-if="APP.player?.players.known.includes(ia.name)"
-        class="flex text-base items-center justify-between"
-      >
-        <IconMilitaryPower class="w-5 h-5" />
-        <p>{{ player.getMilitaryPower(ia) }}</p>
+        <p
+          v-if="APP.player?.players.known.includes(ia.name)"
+          class="text-base font-bold select-none truncate"
+        >
+          {{ ia.name }}
+        </p>
+        <div
+          v-if="APP.player?.players.known.includes(ia.name)"
+          class="flex text-base items-center justify-between"
+        >
+          <IconEconomic class="w-5 h-5" />
+          <p>{{ player.getEconomicPower(ia) }}</p>
+        </div>
+        <div
+          v-if="APP.player?.players.known.includes(ia.name)"
+          class="flex text-base items-center justify-between"
+        >
+          <IconMilitaryPower class="w-5 h-5" />
+          <p>{{ player.getMilitaryPower(ia) }}</p>
+        </div>
       </div>
     </div>
   </header>
