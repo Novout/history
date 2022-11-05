@@ -443,10 +443,9 @@ export const usePlayer = () => {
     if (!player) return []
 
     if (
-      (player.name === terrain.units?.owner ||
-        player.players.allies.includes(terrain.owner || '')) &&
-      terrain.units &&
-      !isBarbarian(terrain.units.owner || '')
+      player.name === terrain.units?.owner ||
+      player.players.allies.includes(terrain.owner || '') ||
+      terrain.owner === player.name
     )
       return []
 
@@ -457,13 +456,7 @@ export const usePlayer = () => {
           getUnitsCountInTerrain(tr) > 0 &&
           !tr.units?.wasMoved
       )
-      .filter(
-        (tr) =>
-          ((terrain.units || terrain.owner) &&
-            tr.units?.squad === 'Bárbaros' &&
-            terrain.owner === player.name) ||
-          tr.units?.owner === player.name
-      )
+      .filter((tr) => tr.units && tr.units.owner === player.name)
 
     return possibleAttack
   }

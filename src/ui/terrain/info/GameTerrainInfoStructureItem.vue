@@ -22,7 +22,7 @@
         }}</Food>
         <Production>{{
           terrain.resources.production +
-          (define.resources?.production ? define.resources.food[0] : 0)
+          (define.resources?.production ? define.resources.production[0] : 0)
         }}</Production>
         <Influence>{{
           terrain.resources.influence +
