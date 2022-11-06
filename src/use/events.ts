@@ -29,6 +29,8 @@ export const useEvents = () => {
             t.structure = undefined
             t.city = undefined
             t.units = t.units?.owner !== p.name ? t.units : undefined
+
+            APP.resetTerrain(t)
           }
         })
 

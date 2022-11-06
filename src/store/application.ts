@@ -102,6 +102,20 @@ export const useApplicationStore = defineStore('application', {
         target?.addChild(terrain)
       }
     },
+    resetTerrain(terrain: HistoryTerrain) {
+      const target = this.terrainContainer?.children[
+        terrain.id
+      ] as HistoryContainer
+
+      // @ts-expect-error
+      const tr = target.children.find((c) => c.type === 'territory')
+
+      // @ts-expect-error
+      const city = target.children.find((c) => c.type === 'city')
+
+      if (tr) target.removeChild(tr)
+      if (city) target.removeChild(city)
+    },
     annex(player: HistoryPlayer | null, terrain?: HistoryTerrain) {
       if (!player) return
 

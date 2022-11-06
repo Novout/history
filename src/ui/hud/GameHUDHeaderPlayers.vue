@@ -19,13 +19,13 @@
       </div>
     </div>
     <div
-      :style="{ borderColor: ia.color }"
       v-for="(ia, index) in APP.IA"
       :key="index"
       :class="[APP.player?.players.known.includes(ia.name) ? 'p-2' : '']"
     >
       <div
         class="shadow-lg bg-blur border-b-5 rounded-b-md w-18"
+        :style="{ borderColor: ia.color }"
         v-if="ia.isAlive"
       >
         <p
