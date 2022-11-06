@@ -155,9 +155,12 @@
               ]"
               class="flex items-center gap-2 mt-5"
             >
-              <Button @click="APP.upgradeCity(APP.player)"
-                >Prefeitura {{ terrain.city.structure.townHall }}</Button
+              <ButtonValue
+                @click="APP.upgradeCity(APP.player)"
+                :value="terrain.city.structure.townHall"
               >
+                Prefeitura
+              </ButtonValue>
               <Food>{{
                 COST_DEFINE.CITY_UPGRADE_FOOD[terrain.city.structure.townHall]
               }}</Food>
@@ -177,9 +180,12 @@
               ]"
               class="flex items-center gap-2 mt-5"
             >
-              <Button @click="APP.upgradeWall(APP.player)"
-                >Muralha {{ terrain.city.structure.wall }}</Button
+              <ButtonValue
+                @click="APP.upgradeWall(APP.player)"
+                :value="terrain.city.structure.wall"
               >
+                Muralha
+              </ButtonValue>
               <Food>{{
                 COST_DEFINE.CITY_WALL_UPGRADE_FOOD[terrain.city.structure.wall]
               }}</Food>
@@ -199,9 +205,12 @@
               ]"
               class="flex items-center gap-2 mt-5"
             >
-              <Button @click="APP.upgradeMilitarAcademy(APP.player)"
-                >Militar {{ terrain.city.structure.militaryAcademy }}</Button
+              <ButtonValue
+                @click="APP.upgradeMilitarAcademy(APP.player)"
+                :value="terrain.city.structure.militaryAcademy"
               >
+                Militar
+              </ButtonValue>
               <Food>{{
                 COST_DEFINE.CITY_MILITAR_ACADEMY_UPGRADE_FOOD[
                   terrain.city.structure.militaryAcademy

@@ -209,7 +209,7 @@ export const useBattle = () => {
       } else {
         if (isBarrier) {
           if (type === 'spearman')
-            val += (defines.getUnits().catapult.attack * maxCount) / 2
+            val += (defines.getUnits().spearman.attack * maxCount) / 2
           if (type === 'archer')
             val += (defines.getUnits().archer.attack * maxCount) / 2
           if (type === 'dragon')
@@ -235,7 +235,7 @@ export const useBattle = () => {
         val += maxCount
       } else {
         if (type === 'spearman')
-          val += defines.getUnits().catapult.attack * maxCount
+          val += defines.getUnits().spearman.attack * maxCount
         if (type === 'archer')
           val += defines.getUnits().archer.attack * maxCount
         if (type === 'dragon')
@@ -258,7 +258,7 @@ export const useBattle = () => {
         val += maxCount
       } else {
         if (type === 'spearman')
-          val += defines.getUnits().catapult.attack * maxCount
+          val += defines.getUnits().spearman.attack * maxCount
         if (type === 'archer')
           val += defines.getUnits().archer.attack * maxCount
         if (type === 'dragon')
