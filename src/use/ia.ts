@@ -76,6 +76,33 @@ export const useIA = () => {
               ns
             )
           break
+        case 'CREATE_SQUAD':
+          const cs = utils.getRandomInArray(
+            player.getTerritories(p).filter((p) => p.city && !p.units)
+          )
+
+          APP.createSquad(p, cs)
+          break
+        case 'RECRUIT_UNITS':
+          const ru = utils.getRandomInArray(
+            player
+              .getTerritories(p)
+              .filter((t) => t.city && t.units && t.units.owner === p.name)
+          )
+
+          const food = player.getFood(p)
+          const production = player.getFood(p)
+
+          if (food >= 2.0 && production >= 2.0 && ru) {
+            APP.recruitUnits(p, ru, {
+              spearman: Math.floor(Math.random() * 3),
+              archer: Math.floor(Math.random() * 2),
+              catapult: Math.floor(Math.random() * 1),
+              dragon: 0,
+            } as any)
+          }
+
+          break
       }
     }
   }
