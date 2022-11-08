@@ -3,6 +3,8 @@
 A 4X Strategy Game in Web Browser with Pixi.js v6, Vite 3.x and Vue 3.x. Only for study.
 
 ![Example of History Gameplay](./.github/rd.jpg)
+![UI](./.github/ui.png)
+![Example of War](./.github/war.png)
 
 ## Cycle
 
@@ -21,3 +23,9 @@ A 4X Strategy Game in Web Browser with Pixi.js v6, Vite 3.x and Vue 3.x. Only fo
 ## IA
 
 - Factor + Heuristic Best Case Choice.
+
+## Troops
+
+- Ikariam-style War;
+- Groups in hex-to-hex;
+- Count + line-type based.
