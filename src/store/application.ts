@@ -507,7 +507,14 @@ export const useApplicationStore = defineStore('application', {
     setSquadSprite(tr: HistoryTerrain, player?: HistoryPlayer) {
       if (!tr.units) return
 
+      const target = this.terrainContainer?.children[tr.id] as HistoryContainer
+
       this.removeSquadSprite(tr)
+
+      // @ts-expect-error
+      const fog = target.children.find((c) => c.type === 'fog')
+
+      if (fog) return
 
       player =
         player ||
@@ -522,7 +529,6 @@ export const useApplicationStore = defineStore('application', {
       rect.x = -25
       rect.y += 22
 
-      const target = this.terrainContainer?.children[tr.id] as HistoryContainer
       const icon = Sprite.from(
         // @ts-expect-error
         Loader.shared.resources['icon_unit'].texture
