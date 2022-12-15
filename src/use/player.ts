@@ -443,7 +443,7 @@ export const usePlayer = () => {
     if (terrain.units) return []
 
     const possibleTroops = APP.terrain
-      .filter((tr) => tr.units)
+      .filter((tr) => tr.units && tr.units?.owner === player.name)
       .filter(
         (tr) =>
           utils.isAdjacentHex(tr, terrain) &&

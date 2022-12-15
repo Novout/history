@@ -81,6 +81,9 @@ export const useIA = () => {
             player.getTerritories(p).filter((p) => p.city && !p.units)
           )
 
+          // Only terrain cities and no units edge case
+          if(!cs) return
+
           APP.createSquad(p, cs)
           break
         case 'RECRUIT_UNITS':

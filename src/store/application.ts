@@ -340,6 +340,8 @@ export const useApplicationStore = defineStore('application', {
 
       this.setSquad(terrain, units)
 
+      if(player.isIA) return
+
       await nextTick
 
       const div = document.querySelector('#terrain-info-right')
@@ -411,6 +413,7 @@ export const useApplicationStore = defineStore('application', {
     moveSquad(from: HistoryTerrain, to: HistoryTerrain) {
       const squad = from.units as HistoryTerrainUnits
 
+      // TODO: Refactor ESM Player Controller for better tracking player
       if (squad.inCombat || !to.isAccessible) return
 
       squad.wasMoved = true

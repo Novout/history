@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia'
 import { useToast } from 'vue-toastification'
 import { HistoryBattle } from '../types/battle'
+import { HistoryPlayer } from '../types/player'
 import { BattleState } from '../types/stores'
 import { useBattle } from '../use/battle'
+import { usePlayer } from '../use/player'
 import { useApplicationStore } from './application'
 
 export const useBattleStore = defineStore('battle', {
@@ -62,7 +64,7 @@ export const useBattleStore = defineStore('battle', {
 
         const isADefeatedAttacker = useBattle().getCounterUnitsInContext(battle.round.attacker) === 0
         const isADefeatedDefender = useBattle().getCounterUnitsInContext(battle.round.defender) === 0
-        
+
         if (isADefeatedAttacker) {
           battle.isActive = false
           battle.winner = battle.defender.units?.owner
