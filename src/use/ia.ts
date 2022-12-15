@@ -82,7 +82,7 @@ export const useIA = () => {
           )
 
           // Only terrain cities and no units edge case
-          if(!cs) return
+          if (!cs) return
 
           APP.createSquad(p, cs)
           break

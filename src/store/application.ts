@@ -340,7 +340,7 @@ export const useApplicationStore = defineStore('application', {
 
       this.setSquad(terrain, units)
 
-      if(player.isIA) return
+      if (player.isIA) return
 
       await nextTick
 

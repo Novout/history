@@ -122,7 +122,7 @@ export const useGame = () => {
   }
 
   const next = () => {
-    if(!CYCLE.exists) {
+    if (!CYCLE.exists) {
       toast.error('O jogo já terminou!')
 
       return

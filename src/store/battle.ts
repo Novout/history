@@ -63,8 +63,10 @@ export const useBattleStore = defineStore('battle', {
           battle.round.attacker
         )
 
-        const isADefeatedAttacker = useBattle().getCounterUnitsInContext(battle.round.attacker) === 0
-        const isADefeatedDefender = useBattle().getCounterUnitsInContext(battle.round.defender) === 0
+        const isADefeatedAttacker =
+          useBattle().getCounterUnitsInContext(battle.round.attacker) === 0
+        const isADefeatedDefender =
+          useBattle().getCounterUnitsInContext(battle.round.defender) === 0
 
         if (isADefeatedAttacker) {
           battle.isActive = false
@@ -101,8 +103,12 @@ export const useBattleStore = defineStore('battle', {
               `Você ganhou a batalha em ${battle.defender.id}!`
             )
 
-
-          if(useUtils().isAdjacentHex(battle.attacker, battle.defender)) useApplicationStore().setTerrainOwner(usePlayer().getPlayer(battle.winner as string) as HistoryPlayer, battle.terrainId, false)
+          if (useUtils().isAdjacentHex(battle.attacker, battle.defender))
+            useApplicationStore().setTerrainOwner(
+              usePlayer().getPlayer(battle.winner as string) as HistoryPlayer,
+              battle.terrainId,
+              false
+            )
 
           useApplicationStore().moveSquad(battle.attacker, battle.defender)
 

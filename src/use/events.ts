@@ -46,9 +46,11 @@ export const useEvents = () => {
   }
 
   const setWinnerPlayer = () => {
-    const lives = player.getAllPlayers().filter(p => p.isAlive && !p.isBarbarian)
+    const lives = player
+      .getAllPlayers()
+      .filter((p) => p.isAlive && !p.isBarbarian)
 
-    if(lives.length === 1) {
+    if (lives.length === 1) {
       const [target] = lives
 
       toast.success(`Jogador ${target.name} venceu!`)
