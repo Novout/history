@@ -31,6 +31,8 @@ export interface OptionsState {
   debug: boolean
 }
 
+export interface GlobalState {}
+
 export interface CycleState {
   exists: boolean
   started: boolean

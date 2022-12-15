@@ -1,12 +1,14 @@
 import { useToast } from 'vue-toastification'
 import { useApplicationStore } from '../store/application'
 import { useCycleState } from '../store/cycle'
+import { useGlobalStore } from '../store/global'
 import { useMap } from './map'
 import { usePlayer } from './player'
 
 export const useEvents = () => {
   const APP = useApplicationStore()
   const CYCLE = useCycleState()
+  const GLOBAL = useGlobalStore()
 
   const player = usePlayer()
   const toast = useToast()
@@ -51,11 +53,15 @@ export const useEvents = () => {
       .filter((p) => p.isAlive && !p.isBarbarian)
 
     if (lives.length === 1) {
-      const [target] = lives
+      const [{ name }] = lives
 
-      toast.success(`Jogador ${target.name} venceu!`)
+      toast.success(`Jogador ${name} venceu!`)
 
       CYCLE.exists = false
+
+      setTimeout(() => {
+        GLOBAL.reset()
+      }, 1000 * 5)
     }
   }
 
