@@ -1,10 +1,12 @@
 import { useToast } from 'vue-toastification'
 import { useApplicationStore } from '../store/application'
+import { useCycleState } from '../store/cycle'
 import { useMap } from './map'
 import { usePlayer } from './player'
 
 export const useEvents = () => {
   const APP = useApplicationStore()
+  const CYCLE = useCycleState()
 
   const player = usePlayer()
   const toast = useToast()
@@ -37,8 +39,22 @@ export const useEvents = () => {
         if (p.isIA) toast.success(`Jogador ${p.name} foi derrotado!`)
 
         map.load()
+
+        setWinnerPlayer()
       }
     })
+  }
+
+  const setWinnerPlayer = () => {
+    const lives = player.getAllPlayers().filter(p => p.isAlive && !p.isBarbarian)
+
+    if(lives.length === 1) {
+      const [target] = lives
+
+      toast.success(`Jogador ${target.name} venceu!`)
+
+      CYCLE.exists = false
+    }
   }
 
   return { setKnownPlayers, defeatedPlayer }

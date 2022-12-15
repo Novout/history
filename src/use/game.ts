@@ -10,6 +10,7 @@ import { computed, watch } from 'vue'
 import { useEvents } from './events'
 import { watchThrottled } from '@vueuse/core'
 import { useBattleStore } from '../store/battle'
+import { useToast } from 'vue-toastification'
 
 export const useGame = () => {
   const APP = useApplicationStore()
@@ -22,6 +23,7 @@ export const useGame = () => {
   const player = usePlayer()
   const ia = useIA()
   const events = useEvents()
+  const toast = useToast()
 
   const start = () => {
     map.create(OPTIONS.map)
@@ -120,6 +122,12 @@ export const useGame = () => {
   }
 
   const next = () => {
+    if(!CYCLE.exists) {
+      toast.error('O jogo já terminou!')
+
+      return
+    }
+
     runEvents()
 
     BATTLE.runBattles()

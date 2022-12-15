@@ -32,6 +32,7 @@ export interface OptionsState {
 }
 
 export interface CycleState {
+  exists: boolean
   started: boolean
   round: number
 }
