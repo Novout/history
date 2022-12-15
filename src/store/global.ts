@@ -13,6 +13,6 @@ export const useGlobalStore = defineStore('global', {
       useBattleStore().$reset()
       useOptionsState().$reset()
       useApplicationStore().$reset()
-    }
-  }
+    },
+  },
 })

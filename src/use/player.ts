@@ -110,7 +110,11 @@ export const usePlayer = () => {
     const add =
       getTerritories(player).reduce((sum, acc) => {
         return (sum +=
-          (acc.city ? acc.resources.food + acc.city.resources.food : 0) +
+          (acc.city
+            ? acc.resources.food +
+              acc.city.resources.food +
+              acc.city.structure.townHall
+            : 0) +
           (acc.structure ? getStructureValue(acc, acc.structure).food : 0))
       }, 0) * player.resources.multipliers.food
 
@@ -126,7 +130,9 @@ export const usePlayer = () => {
       getTerritories(player).reduce((sum, acc) => {
         return (sum +=
           (acc.city
-            ? acc.resources.production + acc.city.resources.production
+            ? acc.resources.production +
+              acc.city.resources.production +
+              acc.city.structure.townHall
             : 0) +
           (acc.structure
             ? getStructureValue(acc, acc.structure).production
