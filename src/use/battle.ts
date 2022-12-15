@@ -12,6 +12,7 @@ export const useBattle = () => {
 
   const generateRandomBattle = (): HistoryBattle => {
     const battle: HistoryBattle = {
+      terrainId: 0,
       isActive: true,
       attacker: {
         id: 1,
