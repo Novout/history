@@ -442,6 +442,8 @@ export const useApplicationStore = defineStore('application', {
         if (to.city) to.city = undefined
         if (to.structure) to.structure = undefined
 
+        this.setTerrainOwner(attacker, this.terrain[to.id].id, false)
+
         return
       }
 

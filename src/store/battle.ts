@@ -60,7 +60,10 @@ export const useBattleStore = defineStore('battle', {
           battle.round.attacker
         )
 
-        if (useBattle().getCounterUnitsInContext(battle.round.attacker) === 0) {
+        const isADefeatedAttacker = useBattle().getCounterUnitsInContext(battle.round.attacker) === 0
+        const isADefeatedDefender = useBattle().getCounterUnitsInContext(battle.round.defender) === 0
+        
+        if (isADefeatedAttacker) {
           battle.isActive = false
           battle.winner = battle.defender.units?.owner
 
@@ -78,7 +81,7 @@ export const useBattleStore = defineStore('battle', {
           return
         }
 
-        if (useBattle().getCounterUnitsInContext(battle.round.defender) === 0) {
+        if (isADefeatedDefender) {
           battle.isActive = false
           battle.winner = battle.attacker.units?.owner
 
