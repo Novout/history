@@ -15,6 +15,7 @@ export interface HistoryBattleRound {
 }
 
 export interface HistoryBattle {
+  terrainId: number
   isActive: boolean
   winner?: string
   attacker: HistoryTerrain

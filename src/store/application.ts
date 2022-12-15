@@ -490,6 +490,7 @@ export const useApplicationStore = defineStore('application', {
       to.units.inCombat = true
 
       useBattleStore().battles.push({
+        terrainId: this.terrain[to.id].id,
         isActive: true,
         winner: undefined,
         attacker: from,

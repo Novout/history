@@ -100,6 +100,8 @@ export const useBattleStore = defineStore('battle', {
               `Você ganhou a batalha em ${battle.defender.id}!`
             )
 
+          useApplicationStore().setTerrainOwner(usePlayer().getPlayer(battle.attacker.owner as string) as HistoryPlayer, battle.terrainId, false)
+
           useApplicationStore().moveSquad(battle.attacker, battle.defender)
 
           return
