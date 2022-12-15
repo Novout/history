@@ -5,6 +5,7 @@ import { HistoryPlayer } from '../types/player'
 import { BattleState } from '../types/stores'
 import { useBattle } from '../use/battle'
 import { usePlayer } from '../use/player'
+import { useUtils } from '../use/utils'
 import { useApplicationStore } from './application'
 
 export const useBattleStore = defineStore('battle', {
@@ -100,7 +101,8 @@ export const useBattleStore = defineStore('battle', {
               `Você ganhou a batalha em ${battle.defender.id}!`
             )
 
-          useApplicationStore().setTerrainOwner(usePlayer().getPlayer(battle.attacker.owner as string) as HistoryPlayer, battle.terrainId, false)
+
+          if(useUtils().isAdjacentHex(battle.attacker, battle.defender)) useApplicationStore().setTerrainOwner(usePlayer().getPlayer(battle.winner as string) as HistoryPlayer, battle.terrainId, false)
 
           useApplicationStore().moveSquad(battle.attacker, battle.defender)
 
