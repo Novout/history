@@ -32,9 +32,12 @@
             </p>
           </div>
           <div v-if="terrain.city" class="flex flex-col w-full gap-2">
-            <H2
-              >{{ terrain.city.name }} {{ terrain.city.structure.townHall }}</H2
-            >
+            <input
+              class="bg-transparent p-1 text-white border-none text-xl font-bold hover:bg-blur"
+              v-model="terrain.city.name"
+              type="text"
+            />
+            <p>{{ terrain.city.structure.townHall }}</p>
             <p>
               Produção por Turno:
               {{
