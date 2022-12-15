@@ -40,10 +40,10 @@ export const useGame = () => {
         enemies: [],
       },
       resources: {
-        influence: 5,
-        food: 30,
-        production: 30,
-        science: 2,
+        influence: import.meta.env.DEV ? 99999 : 5,
+        food: import.meta.env.DEV ? 99999 : 30,
+        production: import.meta.env.DEV ? 99999 : 30,
+        science: import.meta.env.DEV ? 99999 : 2,
         multipliers: {
           influence: 1.0,
           food: 1.0,
@@ -51,9 +51,9 @@ export const useGame = () => {
           science: 1.0,
         },
       },
-      militaryCapability: 0,
-      cityLimit: 3,
-      influenceBase: 3,
+      militaryCapability: import.meta.env.DEV ? 100 : 0,
+      cityLimit: import.meta.env.DEV ? 100 : 3,
+      influenceBase: import.meta.env.DEV ? 100 : 3,
     })
 
     for (let i = 0; i < OPTIONS.game.barbarians; i++) {
