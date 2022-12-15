@@ -11,6 +11,7 @@ import { useEvents } from './events'
 import { watchThrottled } from '@vueuse/core'
 import { useBattleStore } from '../store/battle'
 import { useToast } from 'vue-toastification'
+import { useNProgress } from '@vueuse/integrations/useNProgress'
 
 export const useGame = () => {
   const APP = useApplicationStore()
@@ -24,6 +25,7 @@ export const useGame = () => {
   const ia = useIA()
   const events = useEvents()
   const toast = useToast()
+  const progress = useNProgress()
 
   const start = () => {
     map.create(OPTIONS.map)
@@ -128,6 +130,8 @@ export const useGame = () => {
       return
     }
 
+    progress.start()
+
     runEvents()
 
     BATTLE.runBattles()
@@ -143,6 +147,8 @@ export const useGame = () => {
     CYCLE.round++
 
     runTerrainSets()
+
+    if (progress.isLoading) progress.done()
   }
 
   const runEvents = () => {

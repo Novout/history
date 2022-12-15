@@ -10,7 +10,9 @@
     "format": "prettier src/**/*.{vue,ts} --write"
   },
   "dependencies": {
-    "@vueuse/core": "^9.4.0",
+    "@vueuse/core": "^9.6.0",
+    "@vueuse/integrations": "^9.6.0",
+    "nprogress": "^0.2.0",
     "pinia": "^2.0.23",
     "pixi-viewport": "^4.37.0",
     "pixi.js": "^6.5.8",
